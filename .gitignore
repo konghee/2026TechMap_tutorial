@@ -1,0 +1,12 @@
+.DS_Store
+.build/
+docs/
+.swiftpm/xcode/xcuserdata/
+*.xcuserdatad/
+
+# Tools/의 컴파일된 실행 파일 — 소스(.swift)만 올립니다
+makeph
+makediagrams
+
+# 편집기·환경이 남기는 것
+.Rhistory

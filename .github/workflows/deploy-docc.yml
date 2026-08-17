@@ -1,0 +1,63 @@
+# main 브랜치에 push할 때마다 DocC 문서를 빌드해 GitHub Pages로 배포합니다.
+# 사전 준비: 리포지토리 Settings > Pages > Source를 "GitHub Actions"로 설정하세요.
+# 주의: hosting-base-path는 **리포지토리 이름**(2026TechMap_tutorial)과 일치해야 합니다.
+#       --target의 RoomAquarium은 Swift 타깃 이름이라 그대로 둡니다. 둘은 다릅니다.
+
+name: Deploy DocC to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build DocC (static hosting)
+        run: |
+          swift package --allow-writing-to-directory docs \
+            generate-documentation \
+            --target RoomAquarium \
+            --disable-indexing \
+            --transform-for-static-hosting \
+            --hosting-base-path 2026TechMap_tutorial \
+            --output-path docs
+
+      - name: Add root redirect
+        run: |
+          cat > docs/index.html << 'HTML'
+          <!doctype html>
+          <meta charset="utf-8">
+          <meta http-equiv="refresh" content="0; url=/2026TechMap_tutorial/tutorials/roomaquarium">
+          <title>RoomAquarium</title>
+          <script>
+            window.location.replace("/2026TechMap_tutorial/tutorials/roomaquarium");
+          </script>
+          <p><a href="/2026TechMap_tutorial/tutorials/roomaquarium">튜토리얼로 이동</a></p>
+          HTML
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

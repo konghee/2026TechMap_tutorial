@@ -1,0 +1,209 @@
+@Tutorial(time: 35) {
+    @Intro(title: "아쿠아리움에 생명 불어넣기") {
+        멈춰 있는 씬에 움직임과 소리를 더합니다. 해마를 따라 올라오는 기포,
+        지느러미를 흔드는 유영, 그리고 나중에 쓸 소리까지.
+
+        이 챕터의 핵심은 하나입니다. **여기서는 코드를 한 줄도 쓰지 않습니다.**
+        파티클도, 애니메이션도, 오디오 준비도 전부 Reality Composer Pro에서
+        끝납니다. `AquariumView.swift`는 Chapter 1에서 쓴 그대로 둡니다.
+
+        이게 애플이 권장하는 작업 순서입니다 — **RCP에서 할 수 있는 일은
+        RCP에서 끝내고, 코드는 RCP가 못 하는 일만 맡습니다.**
+
+        이 챕터도 **시뮬레이터에서** 확인할 수 있습니다.
+
+        @Image(source: "02-intro", alt: "기포가 올라오는 아쿠아리움 씬")
+    }
+
+    @Section(title: "파티클 이미터로 기포 만들기") {
+        @ContentAndMedia {
+            **파티클 이미터**는 작은 입자를 계속 뿜어내는 컴포넌트로,
+            불꽃·눈·연기 같은 효과에 쓰입니다. 우리는 위로 올라가는
+            작은 구슬로 물속 기포를 표현합니다.
+
+            이미터를 별도 엔티티가 아니라 **해마 자신에게** 붙입니다.
+            그러면 해마가 헤엄쳐 다닐 때 기포가 따라다녀서 물속을 가르는
+            느낌이 나고, Chapter 4에서 해마를 복제할 때 기포도 같이
+            복제되니 따로 관리할 것이 없습니다.
+
+            @Image(source: "02-section1", alt: "RCP 파티클 이미터 인스펙터")
+        }
+
+        @Steps {
+            @Step {
+                RCP에서 `RealityKitContent`를 열고, 계층 패널에서
+                `Seahorse`를 선택합니다. 우측 인스펙터 하단의
+                **Add Component**에서 **Particle Emitter**를 추가합니다.
+
+                기본값만으로도 즉시 입자가 뿜어져 나오는 것을 뷰포트에서
+                확인할 수 있습니다.
+
+                @Image(source: "02-s1-step1", alt: "Seahorse에 Particle Emitter 컴포넌트 추가")
+            }
+
+            @Step {
+                기포처럼 보이도록 값을 조절합니다. **Emitter Shape**을
+                `Cylinder`로 두고, **Birth Rate**(초당 생성 개수)를 `20`
+                정도로 낮춥니다.
+
+                해마가 작아서 기본값 그대로 두면 입자가 몸을 뒤덮습니다.
+
+                @Image(source: "02-s1-step2", alt: "Emitter Shape과 Birth Rate 설정")
+            }
+
+            @Step {
+                입자가 위로 떠오르도록 **Acceleration**의 Y 값을 `1`로
+                주고, **Opacity Over Life**를 `Gradual Fade In Out`으로
+                바꿔 자연스럽게 나타났다 사라지게 합니다.
+
+                @Image(source: "02-s1-step3", alt: "Acceleration Y와 Opacity Over Life 설정")
+            }
+
+            @Step {
+                저장(**Cmd+S**)하고 앱을 다시 실행해 보세요.
+
+                **코드를 한 줄도 고치지 않았는데 기포가 나타납니다.** RCP에서
+                붙인 컴포넌트가 `Scene.usda`에 저장되고, `Entity(named:in:)`이
+                씬을 불러올 때 컴포넌트도 그대로 딸려 오기 때문입니다.
+
+                @Image(source: "02-s1-step4", alt: "시뮬레이터에서 올라가는 기포")
+            }
+        }
+    }
+
+    @Section(title: "타임라인으로 해마를 헤엄치게 하기") {
+        @ContentAndMedia {
+            `seahorse.usdz`에는 몸을 흔드는 애니메이션이 이미 들어 있습니다.
+            RCP의 **타임라인(Timelines)**으로 이 애니메이션을 재생하고,
+            **비헤이비어(Behaviors)**로 "씬에 등장하면 자동으로 시작"하게
+            연결합니다. 여기도 코드는 필요 없습니다.
+
+            세 가지 새 개념이 나옵니다.
+
+            - **Animation Library**: 엔티티가 쓸 수 있는 애니메이션 목록입니다.
+              USD 애니메이션이 들어 있는 모델을 넣으면 RCP가 이 컴포넌트를
+              자동으로 붙여 줍니다.
+            - **타임라인**: 액션을 원하는 순서·시점에 배치하는 편집기입니다.
+              지금은 액션 하나짜리지만, Chapter 3에서 여러 개를 이어 붙입니다.
+            - **비헤이비어**: "언제 이 타임라인을 재생할지"를 정하는 방아쇠입니다.
+
+            애플 공식 샘플에서 나비가 계속 날갯짓하는 것도 정확히 이 구조입니다 —
+            무한 반복하는 타임라인 하나 + `On Added To Scene` 비헤이비어 하나.
+
+            @Image(source: "02-section2", alt: "RCP 타임라인 편집기와 애니메이션 액션")
+        }
+
+        @Steps {
+            @Step {
+                계층 패널에서 `Seahorse`를 선택하고 인스펙터를 봅니다.
+                **Animation Library** 컴포넌트가 **이미 붙어 있습니다.**
+                `seahorse.usdz`에 USD 애니메이션이 들어 있어서 RCP가 자동으로
+                추가해 준 것입니다. 목록에 기본 애니메이션이 몇 개 보입니다.
+
+                @Image(source: "02-s2-step1", alt: "Seahorse 인스펙터의 Animation Library 컴포넌트")
+            }
+
+            @Step {
+                하단 패널의 **Timelines** 탭으로 가서
+                **Create Timeline**을 누릅니다. 만들어진 타임라인을 더블탭해
+                이름을 `SwimLoop`으로 바꿉니다.
+
+                @Image(source: "02-s2-step2", alt: "SwimLoop 타임라인 생성")
+            }
+
+            @Step {
+                우측 액션 목록에서 **Animation** 액션을 타임라인 위로
+                드래그합니다. 인스펙터에서 **Target**을 `Seahorse`로,
+                **Animation**을 목록의 기본 애니메이션으로 지정하고,
+                **반복(Loop)**을 켭니다.
+
+                반복을 켜지 않으면 한 번 꿈틀하고 멈춥니다. 저장된 파일에서
+                이 설정은 `loopCount = 0`으로 나타나는데, **0이 "무한 반복"**
+                이라는 뜻입니다. 애플 샘플의 나비도 같은 값입니다.
+                타임라인 상단의 재생 버튼으로 미리 볼 수 있습니다.
+
+                @Image(source: "02-s2-step3", alt: "Animation 액션의 Target과 Loop 설정")
+            }
+
+            @Step {
+                이제 이 타임라인이 언제 시작될지 정합니다. `Seahorse`를 선택하고
+                **Add Component**에서 **Behaviors**를 추가합니다.
+                트리거를 **On Added To Scene**으로, 실행할 타임라인을
+                `SwimLoop`으로 지정하고 저장(**Cmd+S**)합니다.
+
+                "이 해마가 화면에 나타나는 순간 SwimLoop을 재생하라"는 뜻입니다.
+
+                @Image(source: "02-s2-step4", alt: "Behaviors의 On Added To Scene 트리거와 SwimLoop 연결")
+            }
+
+            @Step {
+                시뮬레이터에서 실행합니다. `AquariumView.swift`를 한 글자도
+                고치지 않았는데 해마가 헤엄칩니다.
+
+                > Note: 이 "코드 0줄"은 해마가 **한 마리일 때** 성립합니다.
+                > Chapter 4에서 여러 마리로 복제하면 사정이 달라지는데,
+                > 그 이유가 이 튜토리얼에서 가장 중요한 발견 중 하나입니다.
+                > 지금은 잘 동작하니 넘어가세요.
+
+                @Image(source: "02-s2-result", alt: "헤엄치는 해마")
+            }
+        }
+    }
+
+    @Section(title: "소리 재료 준비하기") {
+        @ContentAndMedia {
+            해마를 탭하면 고래 울음소리가 나게 만들 겁니다. 그 소리를
+            지금 씬에 얹어 둡니다.
+
+            여기서 앞의 두 섹션과 갈라집니다. **파티클과 애니메이션은
+            컴포넌트를 붙이는 순간 바로 동작했지만, 소리는 그렇지 않습니다.**
+            입자는 "계속 뿜는 것"이 자연스러운 기본값이고 애니메이션에는
+            "등장하면 시작"이라는 방아쇠를 달아 줬지만, 소리에는 아직
+            **언제 날지**가 없기 때문입니다.
+
+            그 "언제"를 Chapter 3에서 **탭**으로 만듭니다. 이 섹션은 재료만
+            준비합니다.
+
+            @Image(source: "02-section3", alt: "RCP 오디오 라이브러리 인스펙터")
+        }
+
+        @Steps {
+            @Step {
+                Chapter 1에서 받아 둔 `WhaleCry.usdz`가
+                `RealityKitContent.rkassets/` 안에 있는지 확인합니다.
+                없다면 지금 넣습니다.
+
+                > Note: 오디오인데 확장자가 `.usdz`인 게 이상해 보이지만,
+                > RealityKit은 소리도 USD 컨테이너에 담아 다룹니다. RCP 계층에
+                > 끌어다 놓으면 재생 가능한 리소스로 인식됩니다.
+
+                @Image(source: "02-s3-step1", alt: "rkassets 폴더의 WhaleCry.usdz")
+            }
+
+            @Step {
+                `Seahorse`를 선택하고 **Add Component**에서
+                **Audio Library**를 추가합니다. 그다음 `WhaleCry.usdz`를
+                이 컴포넌트의 리소스 목록으로 끌어다 놓습니다.
+
+                **Audio Library**는 "이 엔티티가 낼 수 있는 소리 목록"입니다.
+                여기 등록해 두면 타임라인의 오디오 액션이 이름으로 골라 쓸 수
+                있습니다.
+
+                @Image(source: "02-s3-step2", alt: "Seahorse에 Audio Library 컴포넌트 추가")
+            }
+
+            @Step {
+                인스펙터의 리소스 목록에 `WhaleCry.usdz`가 등록됐는지 확인하고
+                저장(**Cmd+S**)합니다.
+
+                실행해 보면 아직 아무 소리도 나지 않습니다. **정상입니다.**
+                재료를 얹어 뒀을 뿐 방아쇠를 안 달았으니까요. 여기까지가
+                Chapter 2인데 **코드는 한 글자도 고치지 않았습니다.** RCP는
+                "무엇이 어떻게 생겼고 무엇을 할 수 있는지"를, 코드는 "언제
+                무엇을 할지"를 맡습니다.
+
+                @Image(source: "02-s3-step3", alt: "Audio Library 리소스 목록에 등록된 WhaleCry")
+            }
+        }
+    }
+}

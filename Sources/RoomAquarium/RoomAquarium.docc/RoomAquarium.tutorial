@@ -1,0 +1,82 @@
+@Tutorials(name: "RoomAquarium") {
+    @Intro(title: "내 방 안에 아쿠아리움 만들기") {
+        RealityKit과 Reality Composer Pro를 이용해 아이패드 카메라 너머,
+        내 방 안에 살아 움직이는 아쿠아리움을 만들어 봅니다.
+
+        RealityKit이 처음이어도 괜찮습니다. 3D 씬을 GUI로 조립하는 것부터
+        시작해서, SwiftUI 코드 몇 줄로 그 씬을 불러오고, 실제 공간에
+        배치하고, 마지막에는 해마 떼가 방 안을 헤엄쳐 다니게 만드는 것까지
+        단계별로 따라갑니다.
+
+        @Image(source: "toc-intro", alt: "아이패드 화면 속 방 안에 떠 있는 가상 아쿠아리움")
+    }
+
+    @Chapter(name: "Chapter 1 · Building the Scene") {
+        Reality Composer Pro로 해마와 바닥이 있는 아쿠아리움 씬을
+        조립하고, SwiftUI의 RealityView로 화면에 띄웁니다.
+        시뮬레이터만으로 완주할 수 있습니다.
+
+        @Image(source: "ch1-card", alt: "Reality Composer Pro 뷰포트에 배치된 아쿠아리움 씬")
+
+        @TutorialReference(tutorial: "doc:01-BuildingTheScene")
+    }
+
+    @Chapter(name: "Chapter 2 · Bringing It to Life") {
+        파티클 이미터로 기포를 만들고, 타임라인과 비헤이비어로 해마를
+        헤엄치게 하고, 소리 재료까지 얹습니다. **코드는 한 줄도 쓰지 않습니다.**
+        이 챕터도 시뮬레이터에서 확인할 수 있습니다.
+
+        @Image(source: "ch2-card", alt: "기포 파티클이 올라오는 아쿠아리움 씬")
+
+        @TutorialReference(tutorial: "doc:02-BringingItToLife")
+    }
+
+    @Chapter(name: "Chapter 3 · Placing It in Your Room") {
+        카메라 패스스루를 켜고 아쿠아리움을 실제 방 안에 띄웁니다.
+        탭 연출을 RCP에 저작하고 코드는 한 줄로 전달하는 방식, 그리고
+        타임라인이 코드에게 알림을 보내는 반대 방향까지 배웁니다.
+        패스스루는 실기기(iPad)가 필요합니다.
+
+        @Image(source: "ch3-card", alt: "실제 방에 AR로 배치된 아쿠아리움")
+
+        @TutorialReference(tutorial: "doc:03-PlacingInYourRoom")
+    }
+
+    @Chapter(name: "Chapter 4 · Many of Them") {
+        해마를 여덟 마리로 복제하면 RCP가 해 주던 것들이 사라집니다.
+        그 이유를 파헤치고, 애플이 권장하는 설정/런타임 컴포넌트 분리와
+        System으로 다시 살려냅니다. 마지막에는 코드를 열지 않고 RCP에서
+        해마의 성격을 바꿔 봅니다.
+
+        @Image(source: "ch4-card", alt: "방 안을 떠다니는 해마 여러 마리")
+
+        @TutorialReference(tutorial: "doc:04-ManyOfThem")
+    }
+
+    @Resources {
+        더 깊이 배우고 싶다면 아래 자료를 참고하세요.
+
+        @Documentation(destination: "https://developer.apple.com/documentation/realitykit") {
+            RealityKit 공식 문서.
+
+            - [RealityView (iOS)](https://developer.apple.com/documentation/realitykit/realityview)
+            - [SpatialTrackingSession](https://developer.apple.com/documentation/realitykit/spatialtrackingsession)
+            - [Reality Composer Pro](https://developer.apple.com/documentation/visionos/designing-realitykit-content-with-reality-composer-pro)
+        }
+
+        @Videos(destination: "https://developer.apple.com/videos/") {
+            WWDC 세션.
+
+            - [Compose interactive 3D content in Reality Composer Pro (WWDC24)](https://developer.apple.com/videos/play/wwdc2024/10102/)
+            - [Discover RealityKit APIs for iOS, macOS and visionOS (WWDC24)](https://developer.apple.com/videos/play/wwdc2024/10103/)
+            - [Meet Reality Composer Pro (WWDC23)](https://developer.apple.com/videos/play/wwdc2023/10083/)
+        }
+
+        @SampleCode(destination: "https://github.com/konghee/SpatialComputing") {
+            완성된 프로젝트와 3D 에셋.
+
+            - [seahorse.usdz · WhaleCry.usdz](https://github.com/konghee/SpatialComputing)
+            - [Composing interactive 3D content with RealityKit and Reality Composer Pro (애플 공식 샘플)](https://developer.apple.com/documentation/realitykit/composing-interactive-3d-content-with-realitykit-and-reality-composer-pro)
+        }
+    }
+}
