@@ -8,7 +8,6 @@ RoomAquarium 튜토리얼을 **애플이 WWDC24 세션 10102에서 권장하는 
 - 이 문서 — 무엇을 왜 바꿨는지
 - `README.md` — 프로젝트 개요와 빌드 방법
 - `CAPTURE-CHECKLIST.md` — 남은 스크린샷 61장 목록
-- `~/.claude/plans/roomaquarium-fuzzy-pie.md` — 원래 세운 계획과 단계별 실측 로그
 
 ---
 
@@ -30,7 +29,7 @@ RoomAquarium 튜토리얼을 **애플이 WWDC24 세션 10102에서 권장하는 
 
 ## 2. Phase A — 레퍼런스 앱 완성
 
-작업 대상: `/Users/jeonghee/Desktop/WWDC24_RCP`
+작업 대상: 레퍼런스 앱 `WWDC24_RCP` (이 리포와 별개인 로컬 Xcode 프로젝트)
 
 RCP 쪽(타임라인 이름 정리, Collision/Input Target, OnTap 비헤이비어, Notification 액션)은
 직접 GUI에서 작업하고, Swift는 이쪽에서 썼습니다.
@@ -281,6 +280,6 @@ WWDC23 세션 [10273](https://developer.apple.com/videos/play/wwdc2023/10273)을
 
 ### 레퍼런스 앱 반영
 
-`/Users/jeonghee/Desktop/WWDC24_RCP`에 같은 코드가 들어가 있고 시뮬레이터에서 확인했습니다.
+레퍼런스 앱 `WWDC24_RCP`에 같은 코드가 들어가 있고 시뮬레이터에서 확인했습니다.
 `Scene.usda`에 본보기 마커 `SpawnPoint_Left` 하나가 손으로 저작돼 있습니다
 (`RealityAssetsCompile` 통과 확인).
