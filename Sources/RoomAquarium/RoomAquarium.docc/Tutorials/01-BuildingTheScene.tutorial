@@ -1,10 +1,10 @@
 @Tutorial(time: 45) {
     @Intro(title: "아쿠아리움 씬 만들기") {
         Reality Composer Pro(이하 RCP)로 해마와 바닥이 있는 3D 씬을 조립하고,
-        SwiftUI의 RealityView로 앱 화면에 띄웁니다.
-
-        이 챕터는 **시뮬레이터만으로** 완주할 수 있습니다. 실기기는
-        Chapter 3에서 필요합니다.
+        SwiftUI의 ContentView로 앱 화면에 띄웁니다.
+<!---->
+<!--        이 챕터는 **시뮬레이터만으로** 완주할 수 있습니다. 실기기는-->
+<!--        Chapter 3에서 필요합니다.-->
 
         @Image(source: "01-intro", alt: "RCP 뷰포트에 배치된 아쿠아리움 씬")
     }
