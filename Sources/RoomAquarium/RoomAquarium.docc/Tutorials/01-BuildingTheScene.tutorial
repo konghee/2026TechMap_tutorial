@@ -1,10 +1,10 @@
 @Tutorial(time: 45) {
     @Intro(title: "아쿠아리움 씬 만들기") {
         Reality Composer Pro(이하 RCP)로 해마와 바닥이 있는 3D 씬을 조립하고,
-        SwiftUI의 ContentView로 앱 화면에 띄웁니다.
-<!---->
-<!--        이 챕터는 **시뮬레이터만으로** 완주할 수 있습니다. 실기기는-->
-<!--        Chapter 3에서 필요합니다.-->
+        SwiftUI의 RealityView로 앱 화면에 띄웁니다.
+
+        이 챕터는 **시뮬레이터만으로** 완주할 수 있습니다. 실기기는
+        Chapter 3에서 필요합니다.
 
         @Image(source: "01-intro", alt: "RCP 뷰포트에 배치된 아쿠아리움 씬")
     }
@@ -24,16 +24,19 @@
             RCP 패키지가 자동으로 생기지 않습니다.** RCP를 직접 실행해
             패키지를 만들고, 앱에 로컬 의존성으로 추가하는 과정이 필요합니다.
 
-
+            이 섹션이 튜토리얼 전체에서 가장 많이 막히는 곳입니다. 마지막
+            스텝에 "제대로 연결됐는지 확인하는 방법"을 넣어 뒀으니, 거기서
+            반드시 한 번 확인하고 넘어가세요.
 
             @Image(source: "01-section1", alt: "Xcode 프로젝트 내비게이터에 추가된 RealityKitContent 패키지")
         }
 
         @Steps {
             @Step {
-                Xcode에서 **File > New > Project**를 선택하고, iOS 탭의
-                **App** 템플릿으로 새 프로젝트를 만듭니다. 이름은
-                `RoomAquarium`, Interface는 **SwiftUI**로 설정합니다.
+                Xcode에서 **File > New > Project**를 선택합니다. 상단 **iOS** 탭의
+                **App** 템플릿을 선택한 뒤 Next를 누릅니다. 
+                
+                다음 화면에서 프로젝트 이름은 `RoomAquarium`, Interface는 **SwiftUI**로 설정합니다.
 
                 @Image(source: "01-s1-step1", alt: "Xcode 새 프로젝트 생성 화면에서 iOS App 템플릿 선택")
             }
