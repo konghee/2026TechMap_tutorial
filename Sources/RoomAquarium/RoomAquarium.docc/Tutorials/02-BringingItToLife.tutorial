@@ -113,8 +113,15 @@
 
             @Step {
                 우측 액션 목록에서 **Animation** 액션을 타임라인 위로
-                드래그합니다. 인스펙터에서 **Target**을 `Seahorse`로,
-                **Animation**을 목록의 기본 애니메이션으로 지정하고,
+                드래그합니다.
+
+                @Image(source: "02-s2-step3", alt: "Animation 액션을 타임라인 위로 드래그")
+            }
+
+            @Step {
+                드래그를 놓으면 타임라인에 **Animation** 액션 클립이 생깁니다.
+                클립을 선택해 인스펙터를 열고, **Target**을 `Seahorse`로,
+                **Animation**을 목록의 기본 애니메이션으로 지정한 뒤
                 **반복(Loop)**을 켭니다.
 
                 반복을 켜지 않으면 한 번 꿈틀하고 멈춥니다. 저장된 파일에서
@@ -122,18 +129,29 @@
                 이라는 뜻입니다. 애플 샘플의 나비도 같은 값입니다.
                 타임라인 상단의 재생 버튼으로 미리 볼 수 있습니다.
 
-                @Image(source: "02-s2-step3", alt: "Animation 액션의 Target과 Loop 설정")
+                @Image(source: "02-s2-step3b", alt: "타임라인에 놓인 Animation 액션 클립")
             }
 
             @Step {
                 이제 이 타임라인이 언제 시작될지 정합니다. `Seahorse`를 선택하고
                 **Add Component**에서 **Behaviors**를 추가합니다.
-                트리거를 **On Added To Scene**으로, 실행할 타임라인을
-                `SwimLoop`으로 지정하고 저장(**Cmd+S**)합니다.
+
+                @Image(source: "02-s2-step4", alt: "Add Component에서 Behaviors 검색")
+            }
+
+            @Step {
+                트리거를 **On Added To Scene**으로 두고, 실행할 타임라인을
+                `SwimLoop`으로 지정합니다.
+
+                @Image(source: "02-s2-step4b", alt: "On Added To Scene 트리거에 SwimLoop 지정")
+            }
+
+            @Step {
+                저장(**Cmd+S**)합니다.
 
                 "이 해마가 화면에 나타나는 순간 SwimLoop을 재생하라"는 뜻입니다.
 
-                @Image(source: "02-s2-step4", alt: "Behaviors의 On Added To Scene 트리거와 SwimLoop 연결")
+                @Image(source: "02-s2-step4c", alt: "Behaviors의 On Added To Scene과 SwimLoop 연결 완료")
             }
 
             @Step {
