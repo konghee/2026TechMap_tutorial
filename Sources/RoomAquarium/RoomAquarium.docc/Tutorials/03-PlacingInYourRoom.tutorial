@@ -74,9 +74,13 @@
 
         @Steps {
             @Step {
-                RCP의 **Timelines** 탭에서 새 타임라인을 만들고 이름을
+                Editor Panel의 **Timelines** 탭에서 새 타임라인을 만들고 이름을
                 `TapSeahorse`로 짓습니다.
 
+                @Image(source: "03-s2-step1", alt: "TapSeahorse 타임라인의 Emphasize와 Play Audio 액션")
+            }
+
+        @Step {
                 액션 목록에서 **Emphasize**를 끌어다 놓고 Target을
                 `Seahorse`, Motion Type을 `Spin`으로 지정합니다. 그 아래
                 **새 트랙**에 **Play Audio**를 놓고 Target을 `Seahorse`,
