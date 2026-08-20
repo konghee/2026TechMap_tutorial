@@ -1,264 +1,259 @@
-@Tutorial(time: 45) {
-    @Intro(title: "아쿠아리움 씬 만들기") {
-        Reality Composer Pro(이하 RCP)로 해마와 바닥이 있는 3D 씬을 조립하고,
-        SwiftUI의 RealityView로 앱 화면에 띄웁니다.
+@Tutorial(time: 30) {
+    @Intro(title: "아쿠아리움 Scene 만들기") {
+        iOS 앱 프로젝트를 만들고 Reality Composer Pro 패키지를 연결한 뒤,
+        해마 모델을 배치한 Scene을 SwiftUI의 RealityView에 표시합니다.
 
-        이 챕터는 **시뮬레이터만으로** 완주할 수 있습니다. 실기기는
-        Chapter 3에서 필요합니다.
+        이 과정을 통해 Reality Composer Pro에서 만든 3D 콘텐츠가
+        `AquariumContent`를 거쳐 앱 화면에 나타나는 전체 흐름을
+        확인합니다.
 
-        @Image(source: "01-intro", alt: "RCP 뷰포트에 배치된 아쿠아리움 씬")
+        @Image(source: "01-intro", alt: "Reality Composer Pro 뷰포트에 배치된 해마 모델")
     }
 
     @Section(title: "프로젝트와 RCP 패키지 준비하기") {
         @ContentAndMedia {
-            iOS 앱 프로젝트를 만들고, 3D 콘텐츠를 담을 Reality Composer Pro
-            패키지를 연결합니다.
+            iOS 앱 프로젝트를 만들고, 3D 콘텐츠를 담을 Reality Composer
+            Pro 패키지를 연결합니다.
 
-            이 패키지를 "에셋 폴더"라고 생각하기 쉬운데, 그러면 나중에 크게
-            헤맵니다. **RCP 패키지는 3D 콘텐츠와 _그 콘텐츠를 위한 Swift 코드_가
-            함께 사는 곳입니다.** Chapter 4에서 만들 커스텀 컴포넌트도 앱이
-            아니라 이 패키지 안에 들어갑니다. RCP가 그 Swift 파일을 읽어야
-            인스펙터에 UI를 그려 주기 때문입니다.
+            RCP 패키지를 단순한 에셋 폴더라고 생각하기 쉽지만, 실제로는
+            3D 콘텐츠와 그 콘텐츠를 위한 Swift 코드를 함께 담는
+            **Swift Package**입니다. 이후 Chapter에서 만들 커스텀
+            컴포넌트도 앱 프로젝트가 아니라 이 패키지 안에 작성합니다.
 
-            한 가지 알아둘 점: visionOS 앱 템플릿과 달리 **iOS 템플릿에는
-            RCP 패키지가 자동으로 생기지 않습니다.** RCP를 직접 실행해
-            패키지를 만들고, 앱에 로컬 의존성으로 추가하는 과정이 필요합니다.
+            visionOS 앱 템플릿과 달리 iOS 앱 템플릿에는 RCP 패키지가
+            자동으로 생성되지 않습니다. 따라서 Reality Composer Pro에서
+            `AquariumContent` 패키지를 직접 만들고, Xcode의
+            `RoomAquarium` 앱에서 사용할 수 있도록 연결해야 합니다.
 
-            이 섹션이 튜토리얼 전체에서 가장 많이 막히는 곳입니다. 마지막
-            스텝에 "제대로 연결됐는지 확인하는 방법"을 넣어 뒀으니, 거기서
-            반드시 한 번 확인하고 넘어가세요.
-
-            @Image(source: "01-section1", alt: "Xcode 프로젝트 내비게이터에 추가된 RealityKitContent 패키지")
+            @Image(source: "01-section1", alt: "Xcode 프로젝트 내비게이터에 추가된 AquariumContent 패키지")
         }
 
         @Steps {
             @Step {
-                Xcode에서 **File > New > Project**를 선택합니다. 상단 **iOS** 탭의
-                **App** 템플릿을 선택한 뒤 Next를 누릅니다. 
-                
-                다음 화면에서 프로젝트 이름은 `RoomAquarium`, Interface는 **SwiftUI**로 설정합니다.
+                Xcode에서 **File > New > Project**를 선택합니다. 상단의
+                **iOS** 탭에서 **App** 템플릿을 선택한 뒤 **Next**를
+                누릅니다.
 
-                @Image(source: "01-s1-step1", alt: "Xcode 새 프로젝트 생성 화면에서 iOS App 템플릿 선택")
+                프로젝트 이름은 `RoomAquarium`, Interface는
+                **SwiftUI**로 설정합니다.
+
+                @Image(source: "01-s1-step1", alt: "Xcode에서 iOS App 템플릿으로 RoomAquarium 프로젝트 생성")
             }
 
             @Step {
-                프로젝트 설정의 **General > Minimum Deployments**를
-                **iOS 18.0** 이상으로 맞춥니다. 이 튜토리얼에서 쓰는
-                RealityView와 `targetedToAnyEntity()`가 iOS 18부터
-                지원되기 때문입니다.
+                프로젝트 설정에서 **TARGETS > RoomAquarium > General**로
+                이동합니다. **Minimum Deployments**가 **iOS 18.0**
+                이상인지 확인합니다.
 
-                > Note: 이 문서의 화면은 **Xcode 26** 기준으로 캡처했습니다.
-                > 그 이전 버전에서도 코드는 그대로 동작하지만, RCP의 패널
-                > 위치와 메뉴 이름이 조금씩 다를 수 있습니다.
+                이 튜토리얼에서 사용하는 RealityView 등의 기능을
+                iPhone과 iPad에서 사용하려면 iOS 18 이상이 필요합니다.
 
-                @Image(source: "01-s1-step2", alt: "Minimum Deployments를 iOS 18.0으로 설정")
+                @Image(source: "01-s1-step2", alt: "RoomAquarium 타깃의 Minimum Deployments를 iOS 18.0 이상으로 설정")
             }
 
             @Step {
-                메뉴 바에서 **Xcode > Open Developer Tool >
-                Reality Composer Pro**를 선택해 RCP를 실행합니다.
-                RCP는 별도 다운로드 없이 Xcode에 내장되어 있습니다.
+                메뉴 바에서 **Xcode > Open Developer Tool > Reality
+                Composer Pro**를 선택합니다.
+
+                Reality Composer Pro(이하 RCP)는 Xcode와 함께 제공되지만,
+                실행하면 Xcode와 별도의 앱 창으로 열립니다.
 
                 @Image(source: "01-s1-step3", alt: "Xcode 메뉴에서 Reality Composer Pro 실행")
             }
 
             @Step {
-                RCP에서 **File > New**로 새 프로젝트를 만들고, 이름을
-                `RealityKitContent`로 지정해 앱 프로젝트 폴더 **안에**
-                저장합니다. 이때 `.rkassets`(3D 에셋 번들)가 포함된
-                **Swift Package**가 통째로 생성됩니다.
+                RCP에서 **File > New**를 선택해 새 프로젝트를 만듭니다.
+                프로젝트 이름은 `AquariumContent`로 지정하고, 앞에서 만든
+                `RoomAquarium` 프로젝트 폴더 **안에** 저장합니다.
 
-                > Important: 여기서 정한 이름이 그대로 코드에 나타납니다.
-                > `import RealityKitContent`와 `realityKitContentBundle`은
-                > 패키지 이름에서 자동으로 만들어집니다. 다른 이름을 쓰고
-                > 싶다면 이후 코드의 두 이름도 함께 바꿔야 합니다.
-                >
-                > `RealityKitContent`는 애플의 visionOS 템플릿과 공식 샘플이
-                > 쓰는 이름이라 그대로 따랐습니다.
+                RCP 프로젝트를 만들면 `.rkassets`와 Swift 코드를 포함하는
+                Swift Package가 생성됩니다. 이후 RCP에서 작업한 Scene과
+                커스텀 컴포넌트 코드는 모두 이 패키지에 저장됩니다.
 
-                @Image(source: "01-s1-step4", alt: "RCP 새 프로젝트 저장 다이얼로그")
+                > Important: `AquariumContent` 모듈 이름과
+                > `aquariumContentBundle` 번들 상수는 패키지 이름을
+                > 기준으로 자동 생성됩니다. 튜토리얼과 같은 이름을
+                > 사용해 주세요.
+
+                @Image(source: "01-s1-step4", alt: "RoomAquarium 프로젝트 폴더 안에 AquariumContent 패키지 생성")
             }
 
             @Step {
-                다시 Xcode로 돌아와, 프로젝트 내비게이터에
-                `RealityKitContent` 폴더를 드래그해서 넣습니다. 그다음
-                앱 타깃의 **General > Frameworks, Libraries, and Embedded
-                Content**에서 **+** 버튼으로 `RealityKitContent`
-                라이브러리를 추가합니다.
+                다시 Xcode로 돌아옵니다. 메뉴에서 **File > Add Files to
+                \"RoomAquarium\"…**을 선택하고, 앞에서 만든
+                `AquariumContent` 폴더를 선택해 프로젝트에 추가합니다.
+                파일 추가 옵션에서는 **Move files to destination**을
+                선택합니다.
 
-                @Image(source: "01-s1-step5", alt: "앱 타깃에 RealityKitContent 라이브러리 추가")
+                추가가 완료되면 Xcode의 Project Navigator에서
+                `AquariumContent`를 확인할 수 있습니다.
+
+                앱 Target의 **General > Frameworks, Libraries, and Embedded
+                Content**에서 **+** 버튼을 누르고 `AquariumContent`를
+                추가합니다. 이 작업을 통해 `RoomAquarium` 앱에서
+                `AquariumContent` 패키지 안의 3D Scene과 Swift 코드를
+                사용할 수 있습니다.
+
+                @Image(source: "01-s1-step5", alt: "RoomAquarium 프로젝트와 앱 타깃에 AquariumContent 패키지 추가")
             }
 
             @Step {
-                **연결이 됐는지 지금 확인합니다.** `ContentView.swift`를 열고
-                아무 줄에나 `import RealityKitContent`를 타이핑해 보세요.
-                자동완성 목록에 이름이 뜨고 **Cmd+B** 빌드가 통과하면
-                성공입니다.
+                패키지가 앱에서 정상적으로 사용되는지 확인합니다.
+                Swift 파일에서 `import AquariumContent`를 입력했을 때
+                자동 완성에 모듈이 나타나고, **Cmd+B**로 빌드했을 때
+                오류가 없다면 연결이 완료된 것입니다.
 
-                빨간 에러가 난다면 두 가지를 확인하세요. ① 내비게이터의
-                `RealityKitContent`가 폴더 아이콘이 아니라 **패키지 아이콘**인지,
-                ② General > Frameworks 목록에 실제로 들어가 있는지.
-                확인했다면 방금 넣은 `import` 줄은 지웁니다.
+                연결되지 않는다면 다음 항목을 확인합니다.
 
-                @Image(source: "01-s1-step6", alt: "import RealityKitContent 자동완성과 빌드 성공")
-            }
-        }
-    }
+                1. Project Navigator에 `AquariumContent`가 Swift Package로
+                   추가되어 있는지 확인합니다.
+                2. 앱 Target의 **Frameworks, Libraries, and Embedded
+                   Content**에 `AquariumContent`가 있는지 확인합니다.
+                3. RCP 프로젝트 이름과 `import AquariumContent`의 이름이
+                   같은지 확인합니다.
 
-    @Section(title: "RCP에서 아쿠아리움 조립하기") {
-        @ContentAndMedia {
-            코드 없이 GUI만으로 씬을 조립합니다. 해마와 모래 바닥을 배치하고,
-            나중에 탭을 받을 준비까지 해 둡니다.
-
-            이 튜토리얼은 완성된 프로젝트의 에셋을 그대로 씁니다. 직접 모델을
-            구하러 다닐 필요가 없고, "내려받은 USDZ에 애니메이션이 없어서
-            Chapter 2를 못 한다" 같은 일도 생기지 않습니다.
-
-            @Image(source: "01-section2", alt: "RCP 계층 패널과 뷰포트")
-        }
-
-        @Steps {
-            @Step {
-                에셋을 먼저 내려받습니다.
-                [SpatialComputing 리포지토리](https://github.com/konghee/SpatialComputing)에서
-                `seahorse.usdz`(해마 모델, 유영 애니메이션 내장)와
-                `WhaleCry.usdz`(고래 울음소리)를 받아, 방금 만든 패키지의
-                `Sources/RealityKitContent/RealityKitContent.rkassets/` 폴더에
-                넣습니다.
-
-                @Image(source: "01-s2-step1", alt: "rkassets 폴더에 추가된 seahorse.usdz와 WhaleCry.usdz")
-            }
-
-            @Step {
-                RCP 좌측 계층(Hierarchy) 패널에서 루트 엔티티 이름이
-                `Root`인지, 씬 파일 이름이 `Scene.usda`인지 확인합니다.
-                나중에 코드가 `Entity(named: "Scene")`으로 이 파일을
-                불러오므로 바꾸지 말고 그대로 둡니다.
-
-                @Image(source: "01-s2-step2", alt: "계층 패널의 Root 엔티티와 Scene.usda")
-            }
-
-            @Step {
-                `seahorse.usdz`를 뷰포트로 드래그해 넣고, 계층 패널에서
-                이름을 대문자 `Seahorse`로 바꿉니다. 우측 인스펙터의
-                **Transform**에서 Scale을 `0.01`로 줄이고 Position을
-                Y `0.5`, Z `-0.5`로 둡니다.
-
-                RCP의 기본 단위는 미터입니다. 원본 모델이 아주 크게 만들어져
-                있어서 `0.01`로 줄여야 손바닥만 해집니다.
-
-                > Important: `0.01`로 줄였다는 사실을 기억해 두세요. 이
-                > 엔티티 **안쪽**에서 쓰는 좌표는 이제 1 단위 = 1cm입니다.
-                > 두 스텝 뒤에 이것 때문에 실수하기 아주 쉽습니다.
-
-                @Image(source: "01-s2-step3", alt: "Seahorse 엔티티의 Transform 인스펙터")
-            }
-
-            @Step {
-                상단 툴바의 **+** (Insert) 버튼으로 콘텐츠 라이브러리를
-                열고, 원기둥(Cylinder)을 하나 추가합니다. 이름을
-                `Floor`로 바꾸고 Scale을 X `1.0`, Y `0.02`, Z `1.0`으로
-                납작하게 눌러 모래 바닥을 만듭니다.
-
-                > Note: 이 바닥은 Chapter 1~2에서 크기와 방향을 가늠하는
-                > 기준으로 쓰고, Chapter 3에서 **진짜 방바닥**이 생기면
-                > 지웁니다. 지금은 있는 편이 훨씬 보기 좋습니다.
-
-                @Image(source: "01-s2-step4", alt: "납작한 원기둥으로 만든 바닥")
-            }
-
-            @Step {
-                `Seahorse`를 선택하고 **Add Component**에서
-                **Collision**과 **Input Target**을 추가합니다.
-                Collision의 Shape는 `Box`로 두고, 뷰포트의 초록 와이어프레임이
-                해마 몸을 넉넉히 감싸도록 크기를 맞춥니다.
-
-                > Important: 이 크기는 미터가 아니라 **엔티티 로컬 단위**입니다.
-                > 앞에서 Scale을 `0.01`로 줄였으니 로컬 1 = 1cm이고, 해마 몸통은
-                > 로컬로 약 `3 × 26 × 10`입니다. 12cm짜리 탭 영역을 원한다면
-                > `0.12`가 아니라 **`12`**를 넣어야 합니다. 미터로 착각해
-                > `0.12`를 넣으면 200배 작은 박스가 되어, Chapter 3에서
-                > 아무리 탭해도 반응이 없습니다.
-                >
-                > RCP는 박스의 **위치**는 몸통 중심에 자동으로 맞춰 주지만
-                > **크기**는 입력한 값을 그대로 씁니다.
-
-                지금은 아무 일도 일어나지 않습니다. 이 두 컴포넌트는 Chapter 3에서
-                해마를 탭할 수 있게 만드는 재료입니다. 여기서 미리 붙여 두는 이유는,
-                **손으로 만질 수 있는 몸통도 모양의 일부**이고 모양은 RCP가 맡는
-                영역이기 때문입니다.
-
-                @Image(source: "01-s2-step5", alt: "Seahorse에 추가한 Collision과 Input Target 컴포넌트")
-            }
-
-            @Step {
-                계층 패널에서 `Seahorse`와 `Floor`가 모두 `Root` 아래에
-                있는지 확인하고 **Cmd+S**로 저장합니다.
-
-                RCP의 저장은 곧 Swift Package 안의 `.rkassets`가 갱신되는
-                것이므로 별도의 내보내기 과정이 없습니다.
-
-                @Image(source: "01-s2-step6", alt: "정리된 씬 계층 구조와 저장")
+                @Image(source: "01-s1-step6", alt: "AquariumContent 모듈을 import하고 빌드 성공 확인")
             }
         }
     }
 
-    @Section(title: "RealityView로 씬 띄우기") {
+    @Section(title: "RCP에서 아쿠아리움 콘텐츠 준비하기") {
         @ContentAndMedia {
-            이제 코드를 씁니다. SwiftUI의 **RealityView**는 3D 콘텐츠를
-            담는 뷰로, iOS 18부터 아이폰과 아이패드에서도 사용할 수
-            있습니다. RCP에서 저장한 씬을 불러와 화면에 띄우고,
-            시뮬레이터에서 확인합니다.
+            RCP에서 아쿠아리움에 사용할 3D 모델과 오디오 에셋을
+            준비합니다.
 
-            @Image(source: "01-section3", alt: "시뮬레이터에 표시된 아쿠아리움 씬")
+            Apple의 AR Quick Look Gallery에서 제공하는 `seahorse.usdz`와
+            RCP Asset Library의 **Whale Cry** 오디오 에셋을 패키지에
+            추가합니다. 그런 다음 해마를 하나의 Entity로 Scene에
+            배치하고, 이후 사용자 입력을 받을 수 있도록 필요한
+            Component를 구성합니다.
+
+            이 단계에서는 아직 상호작용을 구현하지 않습니다. 모델을
+            Scene에 배치하고 상호작용에 필요한 구조를 준비하는 과정에
+            집중합니다.
+
+            @Image(source: "01-section2", alt: "Reality Composer Pro의 해마 Scene과 Project Browser")
         }
 
         @Steps {
             @Step {
-                프로젝트에 새 SwiftUI 파일 `AquariumView.swift`를
-                만듭니다. 아직은 빈 화면을 표시하는 뼈대만 있습니다.
+                Apple Developer의 [AR Quick Look Gallery](https://developer.apple.com/augmented-reality/quick-look/)에서
+                `seahorse.usdz`를 내려받아 `AquariumContent.rkassets`에
+                추가합니다.
 
-                @Code(name: "AquariumView.swift", file: "01-code-01.swift")
+                고래 소리는 RCP 상단의 **+** 버튼으로 Asset Library를
+                열고 **Whale Cry**를 검색해 추가합니다. 추가가 끝나면
+                Project Browser에서 `seahorse.usdz`와 `WhaleCry.usdz`를
+                확인할 수 있습니다.
+
+                @Image(source: "01-s2-step1", alt: "Project Browser에 추가된 seahorse와 Whale Cry 에셋")
             }
 
             @Step {
-                `RealityKit`과 `RealityKitContent`를 import 하고, body를
-                `RealityView`로 바꿉니다. RealityView의 클로저는 뷰가
-                만들어질 때 한 번 실행되며, 여기에 3D 콘텐츠를 추가하게
-                됩니다.
+                Project Browser의 `seahorse.usdz`를 RCP 중앙 뷰포트로
+                드래그합니다.
+
+                생성된 Entity를 선택하고 왼쪽 계층 패널에서 이름을
+                `Seahorse`로 변경합니다. 뷰포트에서 자연스럽게 보이도록
+                우측 **Transform**에서 Position과 Scale을 조절합니다.
+
+                @Image(source: "01-s2-step2", alt: "RCP Scene에 배치하고 이름을 Seahorse로 변경한 해마 Entity")
+            }
+
+            @Step {
+                `Seahorse`를 선택하고 **Add Component**에서 **Collision**과
+                **Input Target**을 추가합니다.
+
+                Collision은 해마가 공간에서 차지하는 영역을 정의하고,
+                Input Target은 해당 Entity가 사용자의 입력 대상이 되도록
+                준비합니다. 이후 Chapter에서 해마를 탭해 애니메이션이나
+                사운드를 실행할 때 이 Component들을 사용합니다.
+
+                > Important: RCP에서는 3D 객체의 외형뿐 아니라 해당
+                > 객체가 어떤 RealityKit Component를 가지는지도 함께
+                > 구성할 수 있습니다. 지금은 나중에 상호작용할 Entity의
+                > 기반을 준비하는 단계입니다.
+
+                @Image(source: "01-s2-step3", alt: "Seahorse에 Collision과 Input Target Component 추가")
+            }
+
+            @Step {
+                계층 패널에서 `Seahorse`가 `Root` 아래에 있는지 확인하고
+                **Cmd+S**로 저장합니다.
+
+                RCP에서 저장하면 `AquariumContent` 패키지 안의 `.rkassets`
+                내용이 바로 갱신됩니다. 앱에서 사용하기 위한 별도의
+                Export 과정은 필요하지 않습니다.
+
+                @Image(source: "01-s2-step4", alt: "Root 아래에 Seahorse가 배치되고 저장된 Scene")
+            }
+        }
+    }
+
+    @Section(title: "RealityView로 Scene 띄우기") {
+        @ContentAndMedia {
+            RCP에서 준비한 Scene을 SwiftUI 앱으로 가져옵니다.
+
+            SwiftUI의 **RealityView**는 RealityKit의 3D 콘텐츠를 앱 화면에
+            표시하는 뷰입니다. `AquariumContent` 패키지에 저장된 Scene을
+            불러와 RealityView에 추가하고, 실제 앱에서 해마가 나타나는지
+            확인합니다.
+
+            이 과정을 통해 `AquariumContent`에서 SwiftUI의 RealityView로
+            3D 콘텐츠가 전달되는 전체 연결 흐름을 완성합니다.
+
+            @Image(source: "01-section3", alt: "RealityView에 표시된 해마 Scene")
+        }
+
+        @Steps {
+            @Step {
+                Xcode 프로젝트에 새 Swift 파일 `AquariumView.swift`를
+                만듭니다. `SwiftUI`, `RealityKit`, `AquariumContent`를
+                import하고 body에 RealityView를 작성합니다.
+
+                RealityView 클로저의 `content`는 화면에 표시할 RealityKit
+                콘텐츠를 담는 공간입니다. 이후 이곳에 RCP에서 만든
+                Scene을 추가합니다.
 
                 @Code(name: "AquariumView.swift", file: "01-code-02.swift")
             }
 
             @Step {
-                `Entity(named:in:)`으로 RCP 씬을 불러와 `content`에
-                추가합니다. 3D 에셋 로딩은 시간이 걸릴 수 있어서
-                `await`(비동기 대기)가 붙습니다. 씬 이름 `"Scene"`은
-                RCP의 씬 파일 이름(`Scene.usda`)과 정확히 같아야 합니다.
+                `Entity(named:in:)`으로 RCP에서 만든 `Scene`을 불러와
+                `content`에 추가합니다.
 
-                `realityKitContentBundle`은 RCP 패키지가 자동으로 만들어
-                주는 번들 참조입니다. 이 이름이 안 뜬다면 앞 섹션의
-                연결 확인 스텝으로 돌아가세요.
+                3D 콘텐츠를 읽는 데 시간이 걸릴 수 있으므로 `await`를
+                사용합니다. `"Scene"`은 `AquariumContent.rkassets` 안의
+                Scene 이름이며, `aquariumContentBundle`은 패키지가 생성한
+                번들 참조 상수입니다.
+
+                > Important: 번들 상수의 이름은 `AquariumContent` 패키지의
+                > `AquariumContent.swift`에서 직접 확인해 사용합니다.
 
                 @Code(name: "AquariumView.swift", file: "01-code-03.swift")
             }
 
             @Step {
-                `.realityViewCameraControls(.orbit)`을 붙입니다. 이
-                수정자 하나로 드래그 회전·핀치 줌 카메라 조작이 공짜로
-                생깁니다.
+                RealityView에 `.realityViewCameraControls(.orbit)`을
+                추가합니다.
+
+                이제 화면을 드래그해 Scene을 회전하고, 핀치 제스처로
+                확대하거나 축소할 수 있습니다. 필요한 경우 Scene의
+                위치를 조절해 해마가 카메라에 잘 보이도록 배치합니다.
 
                 @Code(name: "AquariumView.swift", file: "01-code-04.swift")
             }
 
             @Step {
-                앱 진입점의 `ContentView()`를 `AquariumView()`로 바꾸고
-                **iPad 시뮬레이터**에서 실행합니다. 드래그로 씬을
-                빙글빙글 돌려보세요. 해마와 바닥이 보이면 Chapter 1
-                완료입니다.
+                앱의 진입점인 `RoomAquariumApp.swift`에서 `WindowGroup`의
+                시작 화면을 `AquariumView()`로 설정합니다.
+
+                앱을 빌드하고 실행했을 때 화면에 해마가 나타나면
+                `AquariumContent`에서 RealityView까지의 연결이 정상적으로
+                완료된 것입니다.
 
                 @Code(name: "RoomAquariumApp.swift", file: "01-code-05.swift") {
-                    @Image(source: "01-s3-result", alt: "시뮬레이터에서 회전 중인 아쿠아리움 씬")
+                    @Image(source: "01-s3-result", alt: "앱의 RealityView에 표시된 해마")
                 }
             }
         }
