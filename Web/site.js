@@ -36,8 +36,12 @@
   function injectStyles() {
     if (document.getElementById("rq-site-style")) return;
     var css = [
-      /* 사이트 전체 기준 크기. DocC 의 모든 치수가 rem 이라 이 한 줄로 같이 커집니다. 기본 17px */
-      ":root { font-size: 18px; }",
+      /* 사이트 전체 기준 크기.
+         DocC 의 치수는 전부 rem 이고 그 값들이 17px 기준으로 계산돼 있습니다
+         (.8235294118rem = 14/17, 2.8235294118rem = 48/17). 그런데 렌더러가
+         :root 를 지정하지 않아 브라우저 기본값(보통 16px)으로 떨어집니다.
+         17px 로 못박아 DocC 가 의도한 비율을 되찾습니다. */
+      ":root { font-size: 17px; }",
 
       /* 스텝 카드 본문. 기본 14px 은 한글에 작습니다. */
       ".steps { font-size: 0.875rem !important; line-height: 1.75 !important; }",
