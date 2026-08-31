@@ -17,10 +17,10 @@ WWDC24 세션 [Compose interactive 3D content in Reality Composer Pro](https://d
 
 | 챕터 | 내용 | 필요 환경 |
 |---|---|---|
-| 1. Building the Scene | RCP 패키지 생성·연결, 씬 조립, 충돌 도형 저작, RealityView 로딩 | 시뮬레이터 가능 |
-| 2. Bringing It to Life | 파티클 기포, 타임라인 + 비헤이비어 유영, 오디오 재료 — **코드 0줄** | 시뮬레이터 가능 |
-| 3. Placing It in Your Room | 카메라 패스스루, RCP 저작 탭 연출, Notification 왕복 | 패스스루만 **실기기(iPad)** |
-| 4. Many of Them | 복제, 설정/런타임 컴포넌트 분리, System, RCP에서 성격 조절, **마커로 마릿수·배치까지 RCP 이관** | 시뮬레이터 가능 |
+| 1. Scene 조립하기 · *Building the Scene* | RCP 패키지 생성·연결, 씬 조립, 충돌 도형 저작, RealityView 로딩 | 시뮬레이터 가능 |
+| 2. 살아 움직이게 하기 · *Bringing It to Life* | 파티클 기포, 타임라인 + 비헤이비어 유영, 오디오 재료 — **코드 0줄** | 시뮬레이터 가능 |
+| 3. 내 방에 놓기 · *Placing It in Your Room* | 카메라 패스스루, RCP 저작 탭 연출, Notification 왕복 | 패스스루만 **실기기(iPad)** |
+| 4. 여러 마리로 늘리기 · *Many of Them* | 복제, 설정/런타임 컴포넌트 분리, System, RCP에서 성격 조절, **마커로 마릿수·배치까지 RCP 이관** | 시뮬레이터 가능 |
 
 ## 요구사항
 
@@ -40,32 +40,129 @@ WWDC24 세션 [Compose interactive 3D content in Reality Composer Pro](https://d
 
 ## 로컬 미리보기
 
+한국어:
+
 ```bash
-swift package --disable-sandbox preview-documentation --target RoomAquarium \
-  --experimental-enable-custom-templates
+swift package --disable-sandbox preview-documentation --target RoomAquarium
+```
+
+영어(오버레이를 덮어쓴 임시 트리에서 빌드합니다):
+
+```bash
+./Tools/overlay-en.sh .build/en-preview
+cd .build/en-preview && swift package --disable-sandbox preview-documentation --target RoomAquarium
 ```
 
 브라우저에서 `http://localhost:8080/tutorials/roomaquarium` 접속.
 
+> 미리보기에는 `Web/site.js`가 주입되지 않습니다. **UI 한글화와 언어 전환
+> 버튼은 미리보기에서 보이지 않습니다.** 그것까지 확인하려면 아래 "정적
+> 빌드로 통째로 확인하기"를 쓰세요.
+
 ## 문서 외형 손보기
 
-DocC 렌더러가 열어 둔 곳은 두 군데뿐입니다.
+손댈 수 있는 곳은 두 군데입니다.
 
 | 파일 | 바꿀 수 있는 것 |
 |---|---|
 | `RoomAquarium.docc/theme-settings.json` | 색, 글꼴 **패밀리**, 모서리 반경 (`--color-*`, `--typography-*`, `--border-radius`) |
-| `RoomAquarium.docc/header.html` | 그 밖의 모든 CSS — 글자 **크기**, 행간, 한글 줄바꿈 |
+| `Web/site.js` | 그 밖의 모든 CSS — 글자 **크기**, 행간, 한글 줄바꿈 — 과 UI 한글화, 언어 전환 버튼 |
 
 `theme-settings.json`의 `theme.color.tutorial-hero-background` 같은 키는 그대로
 CSS 변수 `--color-tutorial-hero-background`가 됩니다. 값에 `{"light": ..., "dark": ...}`를
-쓰면 라이트/다크를 따로 줄 수 있습니다.
+쓰면 라이트/다크를 따로 줄 수 있습니다. 이 파일은 렌더러가 런타임에 직접
+fetch 하므로 별도 플래그가 필요 없습니다.
 
-글자 크기는 `header.html`의 `:root { font-size: 18px }` 한 줄이 기준점입니다.
+글자 크기는 `Web/site.js`의 `:root { font-size: 18px }` 한 줄이 기준점입니다.
 DocC의 모든 치수가 `rem`이라 이 값만 바꾸면 전체가 같은 비율로 커지고 작아집니다
 (렌더러 기본값은 17px).
 
-> `header.html`은 `--experimental-enable-custom-templates` 플래그가 있어야 반영됩니다.
-> 워크플로와 위 미리보기 명령에 이미 들어가 있습니다.
+> **`header.html`(커스텀 헤더)은 쓰지 않습니다.** DocC의
+> `--experimental-enable-custom-templates`는 그 파일을
+> `<template id="custom-header">` 안에 넣는데, `custom-header` 커스텀 엘리먼트를
+> 정의하는 코드가 렌더러에 없고 `<template>` 안의 `<script>`는 실행되지
+> 않습니다. 즉 아무 효과가 없습니다. 그래서 배포 워크플로가 `Web/site.js`를
+> 각 `index.html`의 앱 번들 **앞에** 직접 끼워 넣습니다.
+
+## 한국어 / 영어
+
+한 리포지토리에서 두 벌을 빌드합니다. 하위 경로가 같아서 언어 전환은
+`/en` 세그먼트를 넣고 빼는 것으로 끝납니다.
+
+| | 주소 | 소스 |
+|---|---|---|
+| 한국어 | `/2026TechMap_tutorial/tutorials/roomaquarium/...` | `Sources/RoomAquarium/RoomAquarium.docc/` |
+| English | `/2026TechMap_tutorial/en/tutorials/roomaquarium/...` | 위 카탈로그 + `Localizations/en/Catalog/` 오버레이 |
+
+영어는 **오버레이**입니다. `Localizations/en/Catalog/`에 넣은 파일만 한국어
+카탈로그를 덮어쓰고, 없는 것(아직 번역하지 않은 챕터, 이미지 대부분,
+`theme-settings.json`)은 한국어 원본을 그대로 상속합니다.
+
+현재 번역된 것은 **랜딩 페이지와 Chapter 3**입니다. Chapter 1 / 2 / 4는
+영어 빌드에서도 한국어 본문이 나옵니다 — 번역하려면 같은 경로에 파일을
+추가하기만 하면 됩니다.
+
+```
+Localizations/en/Catalog/
+  RoomAquarium.md
+  RoomAquarium.tutorial
+  Tutorials/
+    03-PlacingInYourRoom.tutorial
+    Resources/
+      03-code-01…04.swift      주석이 영어인 코드
+      03-section3.png          영어 다이어그램 (같은 파일명으로 덮어씀)
+```
+
+한글 텍스트가 그려진 다이어그램은 `Tools/MakeDiagrams.swift`가 만듭니다.
+두 번째 인자로 언어를 줍니다.
+
+```bash
+cd Tools
+xcrun --toolchain XcodeDefault swiftc -O MakeDiagrams.swift -o makediagrams
+./makediagrams ../Sources/RoomAquarium/RoomAquarium.docc/Tutorials/Resources
+./makediagrams ../Localizations/en/Catalog/Tutorials/Resources en
+```
+
+### UI 언어는 어떻게 한글이 되었나
+
+DocC 렌더러에는 한국어(`ko-KR`) 메시지 카탈로그가 **이미 통째로 들어있습니다**
+(`예상 시간`, `{number}단계`, `다음` …). 다만 기본 locale이 `en-US`로 고정되어
+있어 쓰이지 않을 뿐입니다. `Web/site.js`가 하는 일:
+
+1. vue-i18n의 locale을 `ko-KR`로 바꾸고 **setter를 막습니다.** 라우터가
+   페이지를 옮길 때마다 `en-US`로 되돌리기 때문에, 막지 않으면 챕터를
+   클릭하는 순간 영어로 돌아갑니다. `<html lang>`도 같은 이유로 붙잡아 둡니다.
+2. `Chapter {number}` / `Section {number}` 두 라벨만 다시 영어로 덮어씁니다.
+   본문에서 "Chapter 2에서 등록한"처럼 쓰기 때문입니다.
+3. i18n을 거치지 않고 DocC가 JSON에 직접 박아 넣는 문구
+   (`Get started`, `Documentation` / `Videos` / `Sample Code`, `View more`,
+   알림 상자의 `Note` / `Important`, 소요 시간 `2hr 35min`)를 치환합니다.
+
+### 정적 빌드로 통째로 확인하기
+
+`site.js` 주입까지 포함해 배포본과 같은 것을 로컬에서 보려면:
+
+```bash
+# 워크플로와 같은 4단계
+swift package --allow-writing-to-directory docs generate-documentation \
+  --target RoomAquarium --disable-indexing --transform-for-static-hosting \
+  --hosting-base-path 2026TechMap_tutorial --output-path docs
+
+./Tools/overlay-en.sh /tmp/en
+(cd /tmp/en && swift package --allow-writing-to-directory "$PWD/../docs" generate-documentation \
+  --target RoomAquarium --disable-indexing --transform-for-static-hosting \
+  --hosting-base-path 2026TechMap_tutorial/en --output-path "$OLDPWD/docs/en")
+
+cp Web/site.js docs/site.js && cp Web/site.js docs/en/site.js
+find docs -name index.html -print0 | xargs -0 sed -i '' \
+  -e 's#<script defer="defer" src="\([^"]*\)js/chunk-vendors#<script defer="defer" src="\1site.js"></script><script defer="defer" src="\1js/chunk-vendors#'
+
+# baseUrl 이 절대경로라 경로를 맞춰서 띄워야 합니다
+mkdir -p /tmp/serve && ln -sfn "$PWD/docs" /tmp/serve/2026TechMap_tutorial
+(cd /tmp/serve && python3 -m http.server 8765)
+```
+
+`http://localhost:8765/2026TechMap_tutorial/tutorials/roomaquarium` 접속.
 
 ## GitHub Pages 배포
 
@@ -81,14 +178,9 @@ DocC의 모든 치수가 `rem`이라 이 값만 바꾸면 전체가 같은 비�
 > `--target RoomAquarium`은 **Swift 타깃 이름**이라 리포 이름과 별개입니다. 그대로 두세요.
 > 문서 안의 경로 `/tutorials/roomaquarium`도 타깃 이름에서 나온 것이라 바뀌지 않습니다.
 
-수동 배포를 원하면 로컬에서:
-
-```bash
-swift package --allow-writing-to-directory docs \
-  generate-documentation --target RoomAquarium \
-  --disable-indexing --transform-for-static-hosting \
-  --hosting-base-path 2026TechMap_tutorial --output-path docs
-```
+수동 배포를 원하면 위 "정적 빌드로 통째로 확인하기"의 명령을 그대로 쓰고
+`docs/`를 올리면 됩니다. 한국어만 빌드한 채로 올리면 `/en`이 404가 되니
+두 언어를 함께 빌드하세요.
 
 ## 스크린샷 교체 안내
 
@@ -107,7 +199,11 @@ swift package --allow-writing-to-directory docs \
 
 모든 `@Image(source:)`와 `@Code(file:)` 참조가 실제 파일과 1:1로 맞는지 확인합니다.
 
+영어 오버레이는 없는 파일을 한국어 원본에서 상속하므로, 오버레이만 따로
+검사하면 "누락"이 잘못 뜹니다. 오버레이를 씌운 트리에서 검사하세요.
+
 ```bash
+./Tools/overlay-en.sh /tmp/en-check   # 영어를 검사할 때만
 cd Sources/RoomAquarium/RoomAquarium.docc && python3 - <<'PY'
 import re, pathlib
 res = pathlib.Path("Tutorials/Resources")
@@ -182,9 +278,17 @@ python3 sync-placeholder-list.py            # 본문에서 목록 재추출
 cd Tools
 xcrun --toolchain XcodeDefault swiftc -O MakeDiagrams.swift -o makediagrams
 ./makediagrams ../Sources/RoomAquarium/RoomAquarium.docc/Tutorials/Resources
+
+# 영어판 — 두 번째 인자로 언어를 줍니다.
+# 아직 영어 라벨이 있는 03-section3 만 그립니다.
+./makediagrams ../Localizations/en/Catalog/Tutorials/Resources en
 ```
 
 900×560을 2배(1800×1120)로 렌더링해 레티나에서도 글자가 또렷합니다.
+
+`04-section1` / `04-section2`는 아직 한글 라벨뿐이라 영어 모드에서 건너뜁니다.
+Chapter 4를 번역할 때 `MakeDiagrams.swift`의 `L(ko, en)`으로 라벨을 채우고
+실행부의 언어 분기를 풀면 됩니다.
 
 > `swiftc`를 그냥 쓰면 실패할 수 있습니다. PATH에 Swift 개발 스냅샷 툴체인이 걸려 있으면
 > stdlib를 못 찾기 때문에 `xcrun --toolchain XcodeDefault`를 붙입니다.

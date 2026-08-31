@@ -2,6 +2,9 @@
 # 사전 준비: 리포지토리 Settings > Pages > Source를 "GitHub Actions"로 설정하세요.
 # 주의: hosting-base-path는 **리포지토리 이름**(2026TechMap_tutorial)과 일치해야 합니다.
 #       --target의 RoomAquarium은 Swift 타깃 이름이라 그대로 둡니다. 둘은 다릅니다.
+#
+# 한국어는 지금 자리(/2026TechMap_tutorial/)를 지키고 영어가 /en/으로 들어갑니다.
+# 하위 경로가 완전히 같아서 언어 전환은 /en 세그먼트를 넣고 빼는 것으로 끝납니다.
 
 name: Deploy DocC to GitHub Pages
 
@@ -25,28 +28,62 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build DocC (static hosting)
+      # 한국어 — 기존 URL 그대로.
+      - name: Build DocC (Korean)
         run: |
           swift package --allow-writing-to-directory docs \
             generate-documentation \
             --target RoomAquarium \
             --disable-indexing \
-            --experimental-enable-custom-templates \
             --transform-for-static-hosting \
             --hosting-base-path 2026TechMap_tutorial \
             --output-path docs
+
+      # 영어 — 한국어 카탈로그 위에 Localizations/en/Catalog/를 덮어쓴 임시 트리에서
+      # 빌드합니다. 반드시 한국어 빌드 뒤에 와야 docs/가 지워지지 않습니다.
+      - name: Build DocC (English)
+        run: |
+          ./Tools/overlay-en.sh "$RUNNER_TEMP/en"
+          cd "$RUNNER_TEMP/en"
+          swift package --allow-writing-to-directory "$GITHUB_WORKSPACE/docs" \
+            generate-documentation \
+            --target RoomAquarium \
+            --disable-indexing \
+            --transform-for-static-hosting \
+            --hosting-base-path 2026TechMap_tutorial/en \
+            --output-path "$GITHUB_WORKSPACE/docs/en"
+
+      # DocC의 커스텀 헤더(header.html)는 <template> 안에 들어가 실행되지 않습니다.
+      # 그래서 site.js를 앱 번들 "앞"에 직접 끼워 넣습니다. 앱보다 먼저 실행돼야
+      # 데이터 fetch 가로채기가 첫 요청을 놓치지 않습니다.
+      # src의 base 경로는 각 index.html에서 그대로 캡처해 쓰므로 한/영 모두 맞습니다.
+      - name: Inject site script
+        run: |
+          cp Web/site.js docs/site.js
+          cp Web/site.js docs/en/site.js
+          find docs -name index.html -print0 | xargs -0 sed -i '' \
+            -e 's#<script defer="defer" src="\([^"]*\)js/chunk-vendors#<script defer="defer" src="\1site.js"></script><script defer="defer" src="\1js/chunk-vendors#'
+          echo "주입 확인:"
+          grep -c 'site.js' docs/tutorials/roomaquarium/index.html
+          grep -c 'site.js' docs/en/tutorials/roomaquarium/index.html
 
       - name: Add root redirect
         run: |
           cat > docs/index.html << 'HTML'
           <!doctype html>
           <meta charset="utf-8">
-          <meta http-equiv="refresh" content="0; url=/2026TechMap_tutorial/tutorials/roomaquarium">
           <title>RoomAquarium</title>
           <script>
-            window.location.replace("/2026TechMap_tutorial/tutorials/roomaquarium");
+            // 저장된 선택이 있으면 그것을, 없으면 브라우저 언어를 따릅니다.
+            (function () {
+              var saved = null;
+              try { saved = localStorage.getItem("roomaquarium.lang"); } catch (e) {}
+              var ko = saved ? saved === "ko" : /^ko/i.test(navigator.language || "");
+              location.replace("/2026TechMap_tutorial/" + (ko ? "" : "en/") + "tutorials/roomaquarium");
+            })();
           </script>
-          <p><a href="/2026TechMap_tutorial/tutorials/roomaquarium">튜토리얼로 이동</a></p>
+          <p><a href="/2026TechMap_tutorial/tutorials/roomaquarium">튜토리얼로 이동</a>
+             · <a href="/2026TechMap_tutorial/en/tutorials/roomaquarium">Go to the tutorial</a></p>
           HTML
 
       - uses: actions/upload-pages-artifact@v3
