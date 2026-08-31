@@ -82,13 +82,13 @@
 
         @Step {
                 액션 목록에서 **Emphasize**를 끌어다 놓습니다.
-                @Image(source: "03-s2-step1", alt: "TapSeahorse 타임라인의 Emphasize와 Play Audio 액션")
+                @Image(source: "03-s2-step2", alt: "TapSeahorse 타임라인의 Emphasize와 Play Audio 액션")
             }
 
         @Step {
                 Target을 `Seahorse`, Motion Type을 `Spin`으로 지정합니다. Duration은 1로 설정합니다.
 
-                @Image(source: "03-s2-step1", alt: "TapSeahorse 타임라인의 Emphasize와 Play Audio 액션")
+                @Image(source: "03-s2-step3", alt: "TapSeahorse 타임라인의 Emphasize와 Play Audio 액션")
             }
 
         @Step {
@@ -98,14 +98,14 @@
                 트랙을 나눠 놓아야 두 액션이 **동시에** 재생됩니다 — 같은
                 트랙에 놓으면 순서대로 재생되니 주의하세요.
 
-                @Image(source: "03-s2-step1", alt: "TapSeahorse 타임라인의 Emphasize와 Play Audio 액션")
+                @Image(source: "03-s2-step4", alt: "TapSeahorse 타임라인의 Emphasize와 Play Audio 액션")
             }
 
             @Step {
                 `Seahorse`를 선택하고 **Behaviors** 컴포넌트에 On Tap 트리거를 추가합니다. 
                 실행할 타임라인은 TapSeahorse로 설정하고, 저장(Cmd+S)합니다.
 
-                @Image(source: "03-s2-step2", alt: "On Tap 트리거와 TapSeahorse 연결")
+                @Image(source: "03-s2-step5", alt: "On Tap 트리거와 TapSeahorse 연결")
             }
 
             @Step {
