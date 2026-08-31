@@ -1,20 +1,19 @@
 @Tutorial(time: 45) {
     @Intro(title: "내 방을 아쿠아리움으로") {
-        가상 배경 대신 아이패드 카메라로 실제 방을 비추고, 아쿠아리움을
-        내 주위 공간에 띄웁니다.
+        아이패드 카메라로 실제 내 방을 비추고, 아쿠아리움을
+        주위 공간에 띄웁니다.
 
         > Important: 이 챕터는 실기기(iPad, iPadOS 18 이상)가
-        > 필요합니다. 다만 탭과 알림은 시뮬레이터에서도 확인할 수 있도록 만들 예정입니다.
+        > 필요합니다.
 
         @Image(source: "03-intro", alt: "실제 방에 배치된 AR 아쿠아리움")
     }
 
     @Section(title: "카메라로 전환하기") {
         @ContentAndMedia {
-            지금까지 RealityView는 가상 카메라로 씬을 보여줬습니다.
-            카메라 모드를 `.spatialTracking`으로 바꾸면 기기 카메라
-            영상이 배경이 되고(passthrough), 기기를 들고 움직이면 시점도
-            따라 움직입니다.
+            지금까지 RealityView는 가상 카메라로 씬을 보여주었습니다.
+            카메라 모드를 `.spatialTracking`으로 바꾸어 내 방이 배경이
+            되도록 만들어 봅시다.
 
             @Image(source: "03-section1", alt: "카메라 패스스루로 본 방과 월드 원점")
         }
@@ -22,28 +21,32 @@
         @Steps {
             @Step {
                 카메라 사용에 대한 사용자 허용이 필요합니다. 프로젝트 설정의
-                **Build Settings**에서 `Privacy-Camera Usage Description`을
+                **Build Settings**에서 Info.plist Values 목록을 확인합니다. `Privacy-Camera Usage Description`을
                 찾아 "방을 아쿠아리움으로 바꾸기 위해 카메라를 사용합니다."
                 라고 적습니다.
+
+                해당 항목이 없다면, 직접 + 버튼을 눌러 추가한 후 작성합니다.
 
                 @Image(source: "03-s1-step1", alt: "빌드 세팅의 카메라 권한 문구")
             }
 
             @Step {
-                카메라를 `.spatialTracking`으로 바꾸고 `SpatialTrackingSession`을
-                실행합니다. 세션은 오클루전(진짜 사물이 해마를 가림)과 그림자를
-                켜 줍니다.
+                content.camera를 .spatialTracking으로 바꾸면 배경이 후면 카메라 영상이 되고,
+                기기가 공간을 추적하기 시작합니다.
 
-                뷰가 세션을 `@State`로 들고 있어야 화면이 떠 있는 동안 트래킹이
-                유지됩니다. 이 기능들은 LiDAR가 있는 기기에서만 실제로 켜지므로,
-                안 되는 기능을 `print`로 찍어 확인할 수 있게 해 뒀습니다.
+                여기에 trackingSession.run으로 SpatialTrackingSession을 실행하면서
+                .occlusion과 .shadow를 요청합니다. 이제 실제 사물이 해마를 가리고,
+                바닥에 그림자가 생깁니다. 단, 두 기능 모두 공간의 3D 형태를 알아야 하므로 LiDAR가 있는 기기에서만 동작합니다
+
+                세션은 한 번 실행하고 끝나는 게 아니라 계속 돌아가는 작업이라, 객체가 사라지면 추적도 함께 멈춥니다. 
+                그래서 @State에 담아 뷰가 화면에 떠 있는 동안 세션을 붙잡아 둡니다.
 
                 @Code(name: "AquariumView.swift", file: "03-code-01.swift")
             }
 
             @Step {
-                시뮬레이터에서도 빌드되도록 갈라 둡니다.
-
+                **------삭제 예정------**
+                Reality 후면 카메라 영상을 배경으로 사용하면, 와 카메라 컨트롤은 같이 사용할 수 없습니다. 
                 패스스루와 카메라 컨트롤은 **같이 쓸 수 없습니다.** 그래서
                 시뮬레이터에서는 가상 카메라 + orbit 컨트롤을, 실기기에서는
                 패스스루를 쓰도록 `#if targetEnvironment(simulator)`로
@@ -66,25 +69,32 @@
         @ContentAndMedia {
             해마를 탭하면 몸을 한 바퀴 돌리며 소리가 나도록 합니다.
 
-            탭 순간 무엇이 일어날지를 타임라인에 그려 두고
-            비헤이비어로 묶습니다.
-
             @Image(source: "03-section2", alt: "탭에 반응하는 해마")
         }
 
         @Steps {
             @Step {
-                Editor Panel의 **Timelines** 탭에서 새 타임라인을 만들고 이름을
+                하단 Editor Panel의 **Timelines** 에서 새 타임라인을 만들고 이름을
                 `TapSeahorse`로 짓습니다.
 
                 @Image(source: "03-s2-step1", alt: "TapSeahorse 타임라인의 Emphasize와 Play Audio 액션")
             }
 
         @Step {
-                액션 목록에서 **Emphasize**를 끌어다 놓고 Target을
-                `Seahorse`, Motion Type을 `Spin`으로 지정합니다. 그 아래
-                **새 트랙**에 **Play Audio**를 놓고 Target을 `Seahorse`,
-                오디오를 Chapter 2에서 등록한 `WhaleCry.usdz`로 지정합니다.
+                액션 목록에서 **Emphasize**를 끌어다 놓습니다.
+                @Image(source: "03-s2-step1", alt: "TapSeahorse 타임라인의 Emphasize와 Play Audio 액션")
+            }
+
+        @Step {
+                Target을 `Seahorse`, Motion Type을 `Spin`으로 지정합니다. Duration은 1로 설정합니다.
+
+                @Image(source: "03-s2-step1", alt: "TapSeahorse 타임라인의 Emphasize와 Play Audio 액션")
+            }
+
+        @Step {
+                Emphasize 바로 아래 트랙에 **Play Audio** 액션을 놓고 Target을 `Seahorse`,
+                오디오를 Chapter 2에서 등록한 `WhaleCry.usdz`로 지정합니다. Duration은 1로 설정합니다.
+
                 트랙을 나눠 놓아야 두 액션이 **동시에** 재생됩니다 — 같은
                 트랙에 놓으면 순서대로 재생되니 주의하세요.
 
@@ -92,24 +102,18 @@
             }
 
             @Step {
-                `Seahorse`를 선택하고 **Behaviors** 컴포넌트에
-                비헤이비어를 **하나 더** 추가합니다. Chapter 2에서 만든
-                `On Added To Scene`은 그대로 두세요.
-
-                새 비헤이비어의 트리거를 **On Tap**으로, 실행할 타임라인을
-                `TapSeahorse`로 지정하고 저장(**Cmd+S**)합니다.
+                `Seahorse`를 선택하고 **Behaviors** 컴포넌트에 On Tap 트리거를 추가합니다. 
+                실행할 타임라인은 TapSeahorse로 설정하고, 저장(Cmd+S)합니다.
 
                 @Image(source: "03-s2-step2", alt: "On Tap 트리거와 TapSeahorse 연결")
             }
 
             @Step {
-                이제 Swift 차례입니다. 탭 제스처를 받아
-                `applyTapForBehaviors()`를 부르는 게 전부입니다.
-
-                이 한 줄이 "이 엔티티에 걸린 On Tap 비헤이비어를 발동시켜라"
-                라는 뜻입니다. 무엇이 일어날지는 코드가 모릅니다 — RCP가
-                압니다. 나중에 연출을 바꾸고 싶으면 타임라인만 고치면 되고
-                이 줄은 그대로입니다.
+                Xcode로 돌아옵니다. 이제 탭 제스처를 받아, 탭된 엔티티(해마)에 applyTapForBehaviors()를 부르도록 합니다. 
+                이 코드를 통해 해마에게 설정해둔 OnTap Behavior가 작동합니다. 
+                
+                나중에 Reality Composer Pro에서 behavior의 onTap timeline을 변경하더라도
+                Xcode의 변경없이 해마의 행동을 바꿀 수 있습니다.
 
                 @Code(name: "AquariumView.swift", file: "03-code-03.swift")
             }
