@@ -1,0 +1,15 @@
+{
+  "theme": {
+    "typography": {
+      "html-font": "-apple-system, BlinkMacSystemFont, \"Pretendard Variable\", Pretendard, \"Apple SD Gothic Neo\", \"Segoe UI\", Roboto, \"Malgun Gothic\", sans-serif",
+      "html-font-mono": "ui-monospace, SFMono-Regular, \"SF Mono\", Menlo, monospace"
+    },
+    "color": {
+      "tutorials-overview-background": "#0c1b2a",
+      "tutorial-hero-background": "#0c1b2a",
+      "figure-blue": { "light": "#0071e3", "dark": "#409cff" },
+      "fill-blue": { "light": "#0071e3", "dark": "#0a84ff" }
+    },
+    "border-radius": "6px"
+  }
+}

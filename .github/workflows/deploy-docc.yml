@@ -31,6 +31,7 @@ jobs:
             generate-documentation \
             --target RoomAquarium \
             --disable-indexing \
+            --experimental-enable-custom-templates \
             --transform-for-static-hosting \
             --hosting-base-path 2026TechMap_tutorial \
             --output-path docs

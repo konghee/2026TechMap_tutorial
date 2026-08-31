@@ -1,0 +1,32 @@
+<!--
+  DocC 렌더러의 CSS를 덮어쓰기 위한 커스텀 헤더입니다.
+  빌드할 때 --experimental-enable-custom-templates 플래그가 필요합니다.
+
+  이 파일은 <template id="custom-header"> 안에 들어가 Shadow DOM으로 복제되므로
+  여기에 <style>을 직접 쓰면 페이지 본문에는 적용되지 않습니다.
+  그래서 스크립트로 document.head에 <style>을 심습니다.
+
+  색과 글꼴(패밀리)은 theme-settings.json에서, 글자 "크기"와 줄바꿈 규칙처럼
+  DocC가 변수로 열어 두지 않은 것만 여기서 손봅니다.
+-->
+<script>
+(function () {
+  if (document.getElementById("rq-typography")) return;
+  var style = document.createElement("style");
+  style.id = "rq-typography";
+  style.textContent = [
+    /* 사이트 전체 기준 크기. DocC의 모든 치수가 rem이라 이 한 줄로 같이 커집니다. 기본 17px */
+    ":root { font-size: 18px; }",
+
+    /* 한글은 어절 단위로 줄바꿈해야 읽힙니다. 없으면 "시뮬레이/터만으로"처럼 잘립니다. */
+    "body { word-break: keep-all; overflow-wrap: break-word; }",
+
+    /* 스텝 카드 본문. 기본 14px은 한글에 작습니다. */
+    ".steps { font-size: 0.875rem !important; line-height: 1.75 !important; }",
+
+    /* 본문 문단 행간. 기본 1.47은 한글에 답답합니다. */
+    ".content p, .intro p, .steps p { line-height: 1.7; }"
+  ].join("\n");
+  document.head.appendChild(style);
+})();
+</script>

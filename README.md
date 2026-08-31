@@ -41,10 +41,31 @@ WWDC24 세션 [Compose interactive 3D content in Reality Composer Pro](https://d
 ## 로컬 미리보기
 
 ```bash
-swift package --disable-sandbox preview-documentation --target RoomAquarium
+swift package --disable-sandbox preview-documentation --target RoomAquarium \
+  --experimental-enable-custom-templates
 ```
 
 브라우저에서 `http://localhost:8080/tutorials/roomaquarium` 접속.
+
+## 문서 외형 손보기
+
+DocC 렌더러가 열어 둔 곳은 두 군데뿐입니다.
+
+| 파일 | 바꿀 수 있는 것 |
+|---|---|
+| `RoomAquarium.docc/theme-settings.json` | 색, 글꼴 **패밀리**, 모서리 반경 (`--color-*`, `--typography-*`, `--border-radius`) |
+| `RoomAquarium.docc/header.html` | 그 밖의 모든 CSS — 글자 **크기**, 행간, 한글 줄바꿈 |
+
+`theme-settings.json`의 `theme.color.tutorial-hero-background` 같은 키는 그대로
+CSS 변수 `--color-tutorial-hero-background`가 됩니다. 값에 `{"light": ..., "dark": ...}`를
+쓰면 라이트/다크를 따로 줄 수 있습니다.
+
+글자 크기는 `header.html`의 `:root { font-size: 18px }` 한 줄이 기준점입니다.
+DocC의 모든 치수가 `rem`이라 이 값만 바꾸면 전체가 같은 비율로 커지고 작아집니다
+(렌더러 기본값은 17px).
+
+> `header.html`은 `--experimental-enable-custom-templates` 플래그가 있어야 반영됩니다.
+> 워크플로와 위 미리보기 명령에 이미 들어가 있습니다.
 
 ## GitHub Pages 배포
 
