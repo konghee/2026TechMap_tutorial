@@ -3,6 +3,10 @@
 //   xcrun --toolchain XcodeDefault swiftc -O MakeDiagrams.swift -o makediagrams
 //   ./makediagrams ../Sources/RoomAquarium/RoomAquarium.docc/Tutorials/Resources
 //
+// 두 번째 인자로 언어를 줄 수 있습니다(기본 ko). en 을 주면 영어 라벨이 있는
+// 다이어그램만 그립니다 — 영어 오버레이가 한글 원본을 같은 파일명으로 덮어씁니다:
+//   ./makediagrams ../Localizations/en/Catalog/Tutorials/Resources en
+//
 // 만들어지는 것:
 //   03-section3.png  타임라인의 Notification 액션이 코드에 도착하는 흐름
 //   04-section1.png  원점을 비워둔 도넛 배치 (위에서 내려다본 그림)
@@ -17,6 +21,13 @@ import CoreGraphics
 import CoreText
 import ImageIO
 import UniformTypeIdentifiers
+
+// MARK: - 언어
+
+let LANG = CommandLine.arguments.count > 2 ? CommandLine.arguments[2] : "ko"
+
+/// 라벨 한 쌍에서 현재 언어를 고릅니다.
+func L(_ ko: String, _ en: String) -> String { LANG == "en" ? en : ko }
 
 // MARK: - 팔레트
 
@@ -185,13 +196,15 @@ final class Canvas {
 
 func drawNotificationFlow(to dir: URL) {
     let c = Canvas()
-    c.title("\"언제\"는 RCP가, \"무엇을\"은 코드가",
-            "타임라인에 놓은 Notification 액션이 그 시각에 앱으로 도착한다")
+    c.title(L("\"언제\"는 RCP가, \"무엇을\"은 코드가",
+              "RCP decides \"when,\" your code decides \"what\""),
+            L("타임라인에 놓은 Notification 액션이 그 시각에 앱으로 도착한다",
+              "A Notification action on the timeline arrives in the app at that time"))
 
     // --- 타임라인 패널 ---
     let tl = CGRect(x: 56, y: 296, width: W - 112, height: 148)
     c.box(tl, fill: rcpTint, stroke: rcpEdge, radius: 8)
-    c.text("TapSeahorse  타임라인", x: tl.minX + 16, y: tl.maxY - 26,
+    c.text(L("TapSeahorse  타임라인", "TapSeahorse  Timeline"), x: tl.minX + 16, y: tl.maxY - 26,
            size: 13, color: ink, bold: true)
 
     let t0 = tl.minX + 130            // 시각 0 의 x
@@ -258,10 +271,10 @@ func drawNotificationFlow(to dir: URL) {
            size: 11.5, color: codeInk, mono: true)
     c.text("    case \"SeahorseStartled\":", x: lx, y: lineY[2],
            size: 11.5, color: violet, mono: true)
-    c.text("→  놀란 상태로", x: lx + 300, y: lineY[2], size: 11.5, color: codeDim)
+    c.text(L("→  놀란 상태로", "→  startled"), x: lx + 300, y: lineY[2], size: 11.5, color: codeDim)
     c.text("    case \"SeahorseCalmed\":", x: lx, y: lineY[3],
            size: 11.5, color: teal, mono: true)
-    c.text("→  평소로", x: lx + 300, y: lineY[3], size: 11.5, color: codeDim)
+    c.text(L("→  평소로", "→  back to normal"), x: lx + 300, y: lineY[3], size: 11.5, color: codeDim)
     c.text("    }", x: lx, y: lineY[4], size: 11.5, color: codeInk, mono: true)
     c.text("}", x: lx, y: lineY[5], size: 11.5, color: codeInk, mono: true)
 
@@ -272,10 +285,11 @@ func drawNotificationFlow(to dir: URL) {
         c.text(t, x: m.x + 10, y: (m.y + cp.maxY) / 2 - 4,
                size: 11, color: color, bold: true, mono: true)
     }
-    c.text("같은 색끼리 짝", x: cp.midX, y: cp.maxY + 12,
+    c.text(L("같은 색끼리 짝", "matching colors pair up"), x: cp.midX, y: cp.maxY + 12,
            size: 11, color: inkSoft, align: .center)
 
-    c.footer("연출을 0.5초 늦추고 싶으면 타임라인에서 액션을 끌어 옮기면 된다. 코드는 그대로다.")
+    c.footer(L("연출을 0.5초 늦추고 싶으면 타임라인에서 액션을 끌어 옮기면 된다. 코드는 그대로다.",
+               "To delay the performance by 0.5 s, drag the action along the timeline. The code stays as it is."))
     c.write("03-section3", to: dir)
 }
 
@@ -486,5 +500,10 @@ func drawECS(to dir: URL) {
 let outDir = URL(fileURLWithPath: CommandLine.arguments.count > 1
                  ? CommandLine.arguments[1] : ".")
 drawNotificationFlow(to: outDir)
-drawDonut(to: outDir)
-drawECS(to: outDir)
+
+// 04-section1 / 04-section2 는 아직 한글뿐입니다. 영어 모드에서 그리면
+// 번역되지 않은 그림이 오버레이로 들어가 버리므로 건너뜁니다.
+if LANG != "en" {
+    drawDonut(to: outDir)
+    drawECS(to: outDir)
+}

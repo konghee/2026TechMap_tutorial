@@ -1,0 +1,82 @@
+@Tutorials(name: "RoomAquarium") {
+    @Intro(title: "Build an Aquarium in Your Room") {
+        Use RealityKit and Reality Composer Pro to put a living aquarium
+        inside your own room, on the far side of the iPad camera.
+
+        You start by assembling a 3D scene in Reality Composer Pro, then
+        bring that scene into real space with SwiftUI code, and finish by
+        making seahorses swim around the room.
+
+        @Image(source: "toc-intro", alt: "A virtual aquarium floating in a room, seen on an iPad")
+    }
+
+    @Chapter(name: "Building the Scene") {
+        Assemble an aquarium scene with a seahorse and a floor in Reality
+        Composer Pro, then put it on screen with SwiftUI's RealityView.
+        You can finish this chapter in the simulator alone.
+
+        @Image(source: "ch1-card", alt: "The aquarium scene laid out in the Reality Composer Pro viewport")
+
+        @TutorialReference(tutorial: "doc:01-BuildingTheScene")
+    }
+
+    @Chapter(name: "Bringing It to Life") {
+        Make bubbles with a Particle Emitter, set the seahorse swimming
+        with a Timeline and a Behavior, and add sound on top.
+
+        @Image(source: "ch2-card", alt: "The aquarium scene with bubble particles rising through it")
+
+        @TutorialReference(tutorial: "doc:02-BringingItToLife")
+    }
+
+    @Chapter(name: "Placing It in Your Room") {
+        Float the aquarium in your actual room. In Reality Composer Pro you
+        make the seahorse respond to a Tap; in Xcode you forward that tap in
+        a single line. Then you learn the opposite direction — a Timeline
+        sending notifications back to your code. From this chapter on you
+        need a real device (iPad).
+
+        @Image(source: "ch3-card", alt: "The aquarium placed in a real room in AR")
+
+        @TutorialReference(tutorial: "doc:03-PlacingInYourRoom")
+    }
+
+    @Chapter(name: "Many of Them") {
+        Clone the seahorse into eight, and everything RCP was doing for you
+        disappears. You dig into why, then bring it back with the split
+        between settings and runtime components that Apple recommends, plus
+        a System. At the end you change the seahorses' personality from RCP
+        without opening the code.
+
+        @Image(source: "ch4-card", alt: "Several seahorses drifting around a room")
+
+        @TutorialReference(tutorial: "doc:04-ManyOfThem")
+    }
+
+    @Resources {
+        If you want to go deeper, start here.
+
+        @Documentation(destination: "https://developer.apple.com/documentation/realitykit") {
+            Official RealityKit documentation.
+
+            - [RealityView (iOS)](https://developer.apple.com/documentation/realitykit/realityview)
+            - [SpatialTrackingSession](https://developer.apple.com/documentation/realitykit/spatialtrackingsession)
+            - [Reality Composer Pro](https://developer.apple.com/documentation/visionos/designing-realitykit-content-with-reality-composer-pro)
+        }
+
+        @Videos(destination: "https://developer.apple.com/videos/") {
+            WWDC sessions.
+
+            - [Compose interactive 3D content in Reality Composer Pro (WWDC24)](https://developer.apple.com/videos/play/wwdc2024/10102/)
+            - [Discover RealityKit APIs for iOS, macOS and visionOS (WWDC24)](https://developer.apple.com/videos/play/wwdc2024/10103/)
+            - [Meet Reality Composer Pro (WWDC23)](https://developer.apple.com/videos/play/wwdc2023/10083/)
+        }
+
+        @SampleCode(destination: "https://github.com/konghee/SpatialComputing") {
+            The finished project and its 3D assets.
+
+            - [seahorse.usdz · WhaleCry.usdz](https://github.com/konghee/SpatialComputing)
+            - [Composing interactive 3D content with RealityKit and Reality Composer Pro (Apple's official sample)](https://developer.apple.com/documentation/realitykit/composing-interactive-3d-content-with-realitykit-and-reality-composer-pro)
+        }
+    }
+}
