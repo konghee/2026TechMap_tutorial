@@ -3,7 +3,7 @@
         RealityKit과 Reality Composer Pro를 이용해 아이패드 카메라 너머,
         내 방 안에 살아 움직이는 아쿠아리움을 만듭니다.
 
-        3D 씬을 Reality Composer Pro로 조립하는 것부터
+        Reality Composer Pro로 3D 씬을 조립하는 것부터
         시작해서, SwiftUI 코드로 씬을 실제 공간에 불러오고,
         마지막에는 해마가 방 안을 헤엄쳐 다니게 만드는 것까지 단계별로 학습합니다.
 
@@ -21,9 +21,8 @@
     }
 
     @Chapter(name: "Bringing It to Life") {
-        파티클 이미터로 기포를 만들고, 타임라인과 비헤이비어로 해마를
-        헤엄치게 하고, 소리 재료까지 얹습니다. **코드는 한 줄도 쓰지 않습니다.**
-        이 챕터도 시뮬레이터에서 확인할 수 있습니다.
+        Particle Emitter로 기포를 만들고, Timeline과 Behavior로 해마를
+        헤엄치게 하고, 소리까지 얹습니다.
 
         @Image(source: "ch2-card", alt: "기포 파티클이 올라오는 아쿠아리움 씬")
 
@@ -31,10 +30,11 @@
     }
 
     @Chapter(name: "Placing It in Your Room") {
-        카메라 패스스루를 켜고 아쿠아리움을 실제 방 안에 띄웁니다.
-        탭 연출을 RCP에 저작하고 코드는 한 줄로 전달하는 방식, 그리고
-        타임라인이 코드에게 알림을 보내는 반대 방향까지 배웁니다.
-        패스스루는 실기기(iPad)가 필요합니다.
+        아쿠아리움을 실제 방 안에 띄웁니다.
+        Reality Composer Pro에서는 Tap을 통해 해마와 상호작용하도록 만들고, 
+        Xcode에서는 코드는 한 줄로 전달하는 방식, 그리고
+        Timeline이 코드에게 알림을 보내는 반대 방향까지 배웁니다.
+        이 챕터부터는 실기기(iPad)가 필요합니다.
 
         @Image(source: "ch3-card", alt: "실제 방에 AR로 배치된 아쿠아리움")
 
