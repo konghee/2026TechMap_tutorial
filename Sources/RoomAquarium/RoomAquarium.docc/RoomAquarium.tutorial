@@ -10,7 +10,7 @@
         @Image(source: "toc-intro", alt: "아이패드 화면 속 방 안에 떠 있는 가상 아쿠아리움")
     }
 
-    @Chapter(name: "Building the Scene") {
+    @Chapter(name: "Scene 조립하기") {
         Reality Composer Pro로 해마와 바닥이 있는 아쿠아리움 씬을
         조립하고, SwiftUI의 RealityView로 화면에 띄웁니다.
         시뮬레이터만으로 완주할 수 있습니다.
@@ -20,7 +20,7 @@
         @TutorialReference(tutorial: "doc:01-BuildingTheScene")
     }
 
-    @Chapter(name: "Bringing It to Life") {
+    @Chapter(name: "살아 움직이게 하기") {
         Particle Emitter로 기포를 만들고, Timeline과 Behavior로 해마를
         헤엄치게 하고, 소리까지 얹습니다.
 
@@ -29,11 +29,11 @@
         @TutorialReference(tutorial: "doc:02-BringingItToLife")
     }
 
-    @Chapter(name: "Placing It in Your Room") {
+    @Chapter(name: "내 방에 놓기") {
         아쿠아리움을 실제 방 안에 띄웁니다.
-        Reality Composer Pro에서는 Tap을 통해 해마와 상호작용하도록 만들고, 
-        Xcode에서는 코드는 한 줄로 전달하는 방식, 그리고
-        Timeline이 코드에게 알림을 보내는 반대 방향까지 배웁니다.
+        Reality Composer Pro에서 Tap으로 해마와 상호작용하게 만들고,
+        Xcode에서는 그 탭을 한 줄로 전달합니다. 마지막에는 Timeline이
+        코드에게 알림을 보내는 반대 방향까지 배웁니다.
         이 챕터부터는 실기기(iPad)가 필요합니다.
 
         @Image(source: "ch3-card", alt: "실제 방에 AR로 배치된 아쿠아리움")
@@ -41,7 +41,7 @@
         @TutorialReference(tutorial: "doc:03-PlacingInYourRoom")
     }
 
-    @Chapter(name: "Many of Them") {
+    @Chapter(name: "여러 마리로 늘리기") {
         해마를 여덟 마리로 복제하면 RCP가 해 주던 것들이 사라집니다.
         그 이유를 파헤치고, 애플이 권장하는 설정/런타임 컴포넌트 분리와
         System으로 다시 살려냅니다. 마지막에는 코드를 열지 않고 RCP에서

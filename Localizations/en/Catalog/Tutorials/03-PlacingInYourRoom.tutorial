@@ -1,0 +1,211 @@
+@Tutorial(time: 45) {
+    @Intro(title: "Turn Your Room Into an Aquarium") {
+        Point the iPad camera at your actual room and float the aquarium
+        in the space around you.
+
+        > Important: This chapter needs a real device (iPad running
+        > iPadOS 18 or later).
+
+        @Image(source: "03-intro", alt: "An AR aquarium placed in a real room")
+    }
+
+    @Section(title: "Switching to the Camera") {
+        @ContentAndMedia {
+            So far RealityView has shown the scene through a virtual camera.
+            Change the camera mode to `.spatialTracking` so that your own
+            room becomes the background.
+
+            @Image(source: "03-section1", alt: "A room seen through camera passthrough, with the world origin marked")
+        }
+
+        @Steps {
+            @Step {
+                Go back to Xcode and open the RoomAquarium project settings.
+                To use the camera you have to state why and get the user's
+                permission. In **Build Settings**, find the Info.plist Values
+                list, look for `Privacy - Camera Usage Description`, and write
+                "We use the camera to turn your room into an aquarium."
+
+                If the entry isn't there, add it yourself with the + button
+                and then fill it in.
+
+                @Image(source: "03-s1-step1", alt: "The camera permission string in Build Settings")
+            }
+
+            @Step {
+                Setting content.camera to .spatialTracking makes the rear camera
+                feed the background and starts the device tracking the space.
+
+                On top of that, trackingSession.run starts a SpatialTrackingSession
+                and asks for .occlusion and .shadow. Now real objects hide the
+                seahorse and a shadow falls on the floor. Both features need the
+                3D shape of the space, so they only work on devices with LiDAR.
+
+                A session isn't something you run once and forget — it keeps
+                running, and tracking stops when the object goes away. So it lives
+                in @State, which holds the session for as long as the view is on screen.
+
+                @Code(name: "AquariumView.swift", file: "03-code-01.swift")
+            }
+
+            @Step {
+                Passthrough and camera controls **cannot be used together.** The
+                moment the rear camera feed becomes the background, the camera
+                controls you dragged to orbit the view stop working.
+
+                So split them with `#if targetEnvironment(simulator)`. The
+                simulator gets the virtual camera and orbit controls; the device
+                gets passthrough. No more commenting and uncommenting every time
+                you change the run destination.
+
+                @Code(name: "AquariumView.swift", file: "03-code-02.swift")
+            }
+
+            @Step {
+                Connect the iPad to your Mac and run against the device.
+                Allow camera access and your room appears as the background,
+                with the seahorse floating right there. Pick the device up
+                and walk around it.
+
+                @Image(source: "03-s1-result", alt: "The aquarium floating in a room, running on a device")
+            }
+        }
+    }
+
+    @Section(title: "Interacting With the Seahorse") {
+        @ContentAndMedia {
+            Make the seahorse spin once and play a sound when you tap it.
+
+            @Image(source: "03-section2", alt: "The seahorse reacting to a tap")
+        }
+
+        @Steps {
+            @Step {
+                In **Timelines** in the Editor Panel at the bottom, create a
+                new timeline and name it `TapSeahorse`.
+
+                @Image(source: "03-s2-step1", alt: "An empty timeline named TapSeahorse")
+            }
+
+            @Step {
+                Drag **Emphasize** out of the action list and drop it in.
+
+                @Image(source: "03-s2-step2", alt: "An Emphasize action placed on a timeline track")
+            }
+
+            @Step {
+                Set Target to `Seahorse` and Motion Type to `Spin`.
+                Set Duration to 1.
+
+                @Image(source: "03-s2-step3", alt: "Target, Motion Type, and Duration settings for the Emphasize action")
+            }
+
+            @Step {
+                On the track just below Emphasize, place a **Play Audio** action, set
+                Target to `Seahorse`, and pick the `WhaleCry.usdz` audio you registered
+                in Chapter 2. Set Duration to 1.
+
+                They have to be on separate tracks to play at the **same time** —
+                put them on one track and they play in sequence, so watch out.
+
+                @Image(source: "03-s2-step4", alt: "Emphasize and Play Audio side by side on two tracks")
+            }
+
+            @Step {
+                Select `Seahorse` and add an On Tap trigger to its **Behaviors**
+                component. Set the timeline to run to TapSeahorse, then save (Cmd+S).
+
+                @Image(source: "03-s2-step5", alt: "An On Tap trigger wired to TapSeahorse")
+            }
+
+            @Step {
+                Back to Xcode. Take the tap gesture and call applyTapForBehaviors()
+                on the tapped entity — the seahorse. That one call is what fires the
+                On Tap Behavior you set up on it.
+
+                Later you can change the Behavior's On Tap timeline in Reality
+                Composer Pro and the seahorse behaves differently without opening
+                Xcode at all.
+
+                @Code(name: "AquariumView.swift", file: "03-code-03.swift")
+            }
+
+            @Step {
+                Run it and tap the seahorse. If it spins once while a whale
+                call plays, it worked. This works in the simulator too.
+
+                If nothing happens, suspect the **Collision size from Chapter 1**.
+                That's the most common cause. If you entered something like `0.12`
+                as if it were meters, the box is 200 times smaller than the seahorse
+                and your finger can never reach it. Select `Seahorse` in RCP and
+                check with your own eyes that the green wireframe wraps its body.
+
+                @Image(source: "03-s2-result", alt: "The seahorse spinning in response to a tap")
+            }
+        }
+    }
+
+    @Section(title: "The Timeline Talks Back to Your Code") {
+        @ContentAndMedia {
+            Everything so far went one way: code → RCP. Now build the
+            **other direction**.
+
+            A timeline can hold a **Notification** action. When playback reaches
+            that point, it sends a notification to the app. You decide in RCP,
+            in time, when "the whale call starts" and when "it's over" — and the
+            code only has to react at those moments.
+
+            This is powerful because **the timing leaves your code**. To delay
+            the performance by half a second you drag the action along the
+            timeline. Nothing like `Task.sleep(0.5)` has to be buried in code.
+
+            Here are the two notifications you'll place in the next step.
+
+            - `SeahorseStartled` — at time `0`. The moment of the tap.
+            - `SeahorseCalmed` — at time `1.9`. Where the whale call ends.
+
+            Set **Target to `Seahorse`** for both.
+
+            @Image(source: "03-section3", alt: "Notification actions on the timeline and the receiving side in code")
+        }
+
+        @Steps {
+            @Step {
+                Open the `TapSeahorse` timeline in RCP and place two
+                **Notification** actions on a new track. Fill in the names and
+                times from the list above, then save.
+
+                @Image(source: "03-s3-step1", alt: "Two Notification actions placed on the timeline")
+            }
+
+            @Step {
+                Receive the notifications in code. Everything RCP sends arrives
+                under a single name, `"RealityKit.NotificationTrigger"`, and
+                **which action it was is told apart by the `Identifier` in
+                `userInfo`**.
+
+                Take that and show a badge on screen. The reaction is modest for
+                now, but in Chapter 4 this same notification changes the seahorse's
+                **state** and makes it actually move differently.
+
+                > Note: `userInfo` also carries `SourceEntity`. But that is
+                > **not the Target you set on the Notification action.** There's a
+                > trap there, so Chapter 4 covers it separately. You don't use it here.
+
+                @Code(name: "AquariumView.swift", file: "03-code-04.swift")
+            }
+
+            @Step {
+                Run it and tap the seahorse: the badge appears, then disappears
+                1.9 seconds later when the whale call ends.
+
+                Look again at what you just built — **RCP decided "when," and the
+                code decided "what."** The robot in Apple's official sample turns
+                its watering can on and off with exactly this structure. This is as
+                far as one seahorse goes. Chapter 4 turns it into many.
+
+                @Image(source: "03-s3-result", alt: "The badge shown on screen in response to a tap")
+            }
+        }
+    }
+}
