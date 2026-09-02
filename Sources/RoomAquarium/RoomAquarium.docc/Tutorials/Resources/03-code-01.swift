@@ -1,6 +1,6 @@
 import SwiftUI
 import RealityKit
-import RealityKitContent
+import AquariumContent
 
 struct AquariumView: View {
     // 뷰가 세션을 들고 있어야 화면이 떠 있는 동안 트래킹이 유지됩니다.
