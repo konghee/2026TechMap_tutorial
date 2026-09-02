@@ -1,6 +1,6 @@
 import SwiftUI
 import RealityKit
-import RealityKitContent
+import AquariumContent
 
 struct AquariumView: View {
     @State private var trackingSession = SpatialTrackingSession()
