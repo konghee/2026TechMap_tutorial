@@ -96,41 +96,41 @@
                 @Image(source: "01-s1-step5", alt: "Project Navigator에서 RoomAquarium 프로젝트에 AquariumContent 패키지 추가")
             }
                 
-                @Step {
-                    `AquariumContent` 패키지 제품을 앱 타깃에 연결합니다.
+            @Step {
+                `AquariumContent` 패키지 제품을 앱 타깃에 연결합니다.
 
-                    프로젝트 설정에서 **TARGETS > RoomAquarium > General**로
-                    이동합니다. **Frameworks, Libraries, and Embedded Content**의
-                    **+** 버튼을 누른 뒤, **Workspace > AquariumContent** 아래에
-                    표시되는 `AquariumContent`를 선택하고 **Add**를 누릅니다.
-                    이 작업을 통해 `RoomAquarium` 앱에서 패키지에 포함된 Swift
-                    코드와 3D 콘텐츠 번들을 사용할 수 있습니다.
+                프로젝트 설정에서 **TARGETS > RoomAquarium > General**로
+                이동합니다. **Frameworks, Libraries, and Embedded Content**의
+                **+** 버튼을 누른 뒤, **Workspace > AquariumContent** 아래에
+                표시되는 `AquariumContent`를 선택하고 **Add**를 누릅니다.
+                이 작업을 통해 `RoomAquarium` 앱에서 패키지에 포함된 Swift
+                코드와 3D 콘텐츠 번들을 사용할 수 있습니다.
 
-                    @Image(source: "01-s1-step6", alt: "RoomAquarium 프로젝트와 앱 타깃에 AquariumContent 패키지 추가")
-                }
+                @Image(source: "01-s1-step6", alt: "RoomAquarium 프로젝트와 앱 타깃에 AquariumContent 패키지 추가")
+            }
 
-                @Step {
-                    패키지가 앱에서 정상적으로 사용되는지 확인합니다.
+            @Step {
+                패키지가 앱에서 정상적으로 사용되는지 확인합니다.
 
-                    앱의 Swift 파일을 열고 `import AquariumContent`를 입력합니다.
-                    자동 완성 목록에 `AquariumContent` 모듈이 나타나는지 확인한 뒤,
-                    **Cmd+B**를 눌러 프로젝트를 빌드합니다. import 문에 오류가 없고
-                    Xcode 상단에 **Build Succeeded**가 표시되면 패키지 연결이
-                    완료된 것입니다.
+                앱의 Swift 파일을 열고 `import AquariumContent`를 입력합니다.
+                자동 완성 목록에 `AquariumContent` 모듈이 나타나는지 확인한 뒤,
+                **Cmd+B**를 눌러 프로젝트를 빌드합니다. import 문에 오류가 없고
+                Xcode 상단에 **Build Succeeded**가 표시되면 패키지 연결이
+                완료된 것입니다.
+                
+                > Important: 연결되지 않는다면 다음 항목을 확인합니다.
+                >
+                > 1. Project Navigator에 `AquariumContent`가 갈색 Swift Package
+                >    아이콘으로 추가되어 있는지 확인합니다.
+                > 2. 앱 타깃의 **Frameworks, Libraries, and Embedded Content**에
+                >    `AquariumContent`가 추가되어 있는지 확인합니다.
+                > 3. `AquariumContent` 패키지의 `Package.swift`에 같은 이름의
+                >    library product와 target이 정의되어 있는지 확인합니다.
+                > 4. 패키지 모듈 이름과 `import AquariumContent`의 대소문자가
+                >    정확히 일치하는지 확인합니다.
 
-                    > Important: 연결되지 않는다면 다음 항목을 확인합니다.
-                    >
-                    > 1. Project Navigator에 `AquariumContent`가 갈색 Swift Package
-                    >    아이콘으로 추가되어 있는지 확인합니다.
-                    > 2. 앱 타깃의 **Frameworks, Libraries, and Embedded Content**에
-                    >    `AquariumContent`가 추가되어 있는지 확인합니다.
-                    > 3. `AquariumContent` 패키지의 `Package.swift`에 같은 이름의
-                    >    library product와 target이 정의되어 있는지 확인합니다.
-                    > 4. 패키지 모듈 이름과 `import AquariumContent`의 대소문자가
-                    >    정확히 일치하는지 확인합니다.
-
-                    @Image(source: "01-s1-step7", alt: "AquariumContent 모듈을 import한 뒤 빌드에 성공한 Xcode 화면")
-                }
+                @Image(source: "01-s1-step7", alt: "AquariumContent 모듈을 import한 뒤 빌드에 성공한 Xcode 화면")
+            }
         }
     }
 
@@ -171,17 +171,18 @@
             @Step {
                 Project Browser에서 `Scene`을 더블 클릭해 Scene을 엽니다.
                 화면 왼쪽의 Scene Hierarchy에 `Root`가 표시되고, 중앙
-                Viewport에 빈 Scene이 열려 있는지 확인합니다.
+                Viewport에 빈 Scene이 열리는지 확인합니다.
 
-                Project Browser의 `seahorse.usdz`를 Scene Hierarchy의
-                `Root` 위로 드래그합니다. `Root` 아래에 새로운 Entity가
-                나타나면 해마 모델의 인스턴스가 Scene에 추가된 것입니다.
-                추가된 Entity를 선택해 이름을 `Seahorse`로 변경합니다.
-                오른쪽 Inspector의 **Transform**에서 Position과 Scale을
-                조절해 해마가 Viewport에 잘 보이도록 배치합니다.
+                Project Browser의 `seahorse.usdz`를 Scene Hierarchy의 `Root`
+                위로 드래그합니다. `Root` 아래에 추가된 Entity를 선택하고 이름을
+                `Seahorse`로 변경합니다. 오른쪽 Inspector의 **Transform**에서
+                Position, Rotation, Scale을 조절해 해마의 위치와 방향, 크기를
+                정리합니다. Viewport에 해마가 표시되고 Scene Hierarchy의
+                `Root` 아래에 `Seahorse`가 나타나면 모델이 정상적으로 배치된
+                것입니다.
 
                 @Image(source: "01-s2-step2", alt: "RCP Scene에 배치하고 이름을 Seahorse로 변경한 해마 Entity")
-            }
+            }   
 
             @Step {
                 `Seahorse`를 선택하고 **Add Component**에서 **Collision**과
