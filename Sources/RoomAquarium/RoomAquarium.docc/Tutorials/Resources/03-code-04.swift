@@ -13,23 +13,17 @@ struct AquariumView: View {
 
     var body: some View {
         RealityView { content in
-            #if !targetEnvironment(simulator)
             content.camera = .spatialTracking
 
             let unavailable = await trackingSession.run(
                 .init(tracking: [], sceneUnderstanding: [.occlusion, .shadow])
             )
-            if let unavailable {
-                print("이 기기에서 쓸 수 없는 기능: \(unavailable.sceneUnderstanding)")
-            }
-            #endif
 
             if let scene = try? await Entity(named: "Scene",
                                              in: realityKitContentBundle) {
                 content.add(scene)
             }
         }
-        .modifier(SimulatorCameraControls())
         .gesture(
             TapGesture()
                 .targetedToAnyEntity()
@@ -63,16 +57,6 @@ struct AquariumView: View {
             }
         }
         .animation(.easeInOut(duration: 0.25), value: isStartled)
-    }
-}
-
-private struct SimulatorCameraControls: ViewModifier {
-    func body(content: Content) -> some View {
-        #if targetEnvironment(simulator)
-        content.realityViewCameraControls(.orbit)
-        #else
-        content
-        #endif
     }
 }
 
