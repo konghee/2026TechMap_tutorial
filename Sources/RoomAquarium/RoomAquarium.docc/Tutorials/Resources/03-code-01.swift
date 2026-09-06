@@ -9,15 +9,6 @@ struct AquariumView: View {
 
     var body: some View {
         RealityView { content in
-            // 가상 카메라 대신 후면 카메라 영상을 배경으로 씁니다.
-            content.camera = .spatialTracking
-
-            // 진짜 사물이 해마를 가리는 오클루전과, 바닥에 지는 그림자를 켭니다.
-            // 씬 재구성이 되는 LiDAR 기기에서만 실제로 켜집니다.
-            let unavailable = await trackingSession.run(
-                .init(tracking: [], sceneUnderstanding: [.occlusion, .shadow])
-            )
-
             if let scene = try? await Entity(named: "Scene",
                                              in: aquariumContentBundle) {
                 content.add(scene)
