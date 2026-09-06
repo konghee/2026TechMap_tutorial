@@ -124,7 +124,7 @@
                 나중에 Reality Composer Pro에서 Behavior의 On Tap 타임라인을 바꾸더라도
                 Xcode를 열지 않고 해마의 행동을 바꿀 수 있습니다.
 
-                @Code(name: "AquariumView.swift", file: "03-code-03.swift")
+                @Code(name: "AquariumView.swift", file: "03-code-04.swift")
             }
 
             @Step {
