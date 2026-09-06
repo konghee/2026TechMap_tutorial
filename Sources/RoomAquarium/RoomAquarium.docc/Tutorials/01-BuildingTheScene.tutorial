@@ -251,9 +251,10 @@
                 Scene 이름이며, `aquariumContentBundle`은 패키지가 생성한
                 번들 참조 상수입니다.
 
-                > Important: 번들 상수의 이름은 `AquariumContent` 패키지의
-                > `AquariumContent.swift`에서 직접 확인해 사용합니다.
-
+                > Important: AquariumContent는 모듈 이름이므로 import AquariumContent
+                > 처럼 대문자로 시작합니다. 반면 aquariumContentBundle은 
+                > 번들을 가리키는 Swift 상수이므로 소문자로 시작합니다.
+                
                 @Code(name: "AquariumView.swift", file: "01-code-03.swift")
             }
 
