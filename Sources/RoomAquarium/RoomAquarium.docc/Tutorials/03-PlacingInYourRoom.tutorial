@@ -47,7 +47,7 @@
                 이제 RealityKit의 가상 카메라 대신 실제 기기의 움직임을 따라가는 카메라를 사용합니다. iPad를 움직이면
                 RealityKit 속 카메라도 함께 움직여 해마가 실제 공간에 놓여있는 것처럼 보이게 됩니다.
 
-                @Code(name: "AquariumView.swift", file: "03-code-01.swift")
+                @Code(name: "AquariumView.swift", file: "03-code-02.swift")
             }
 
 
@@ -58,20 +58,7 @@
                 .occlusion은 실제 물체가 해마보다 앞에 있을 때 해마가 가려지도록 합니다.
                 .shaow는 해마에 그림자를 만들어주어 실제 공간에 놓여있는 것처럼 표현되도록 합니다.
 
-                @Code(name: "AquariumView.swift", file: "03-code-01.swift")
-            }
-
-            @Step {
-                ---삭제----패스스루와 카메라 컨트롤은 **같이 쓸 수 없습니다.** 후면 카메라
-                영상을 배경으로 쓰는 순간, 드래그로 시점을 돌리던 카메라 컨트롤은
-                동작하지 않습니다.
-
-                그래서 `#if targetEnvironment(simulator)`로 갈라 둡니다.
-                시뮬레이터에서는 가상 카메라와 orbit 컨트롤을, 실기기에서는
-                패스스루를 씁니다. 실행 대상을 바꿀 때마다 주석을 지웠다
-                살렸다 할 필요가 없어집니다.
-
-                @Code(name: "AquariumView.swift", file: "03-code-02.swift")
+                @Code(name: "AquariumView.swift", file: "03-code-03.swift")
             }
 
             @Step {
