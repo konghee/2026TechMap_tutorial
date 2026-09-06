@@ -41,17 +41,6 @@
         @TutorialReference(tutorial: "doc:03-PlacingInYourRoom")
     }
 
-    @Chapter(name: "여러 마리로 늘리기") {
-        해마를 여덟 마리로 복제하면 RCP가 해 주던 것들이 사라집니다.
-        그 이유를 파헤치고, 애플이 권장하는 설정/런타임 컴포넌트 분리와
-        System으로 다시 살려냅니다. 마지막에는 코드를 열지 않고 RCP에서
-        해마의 성격을 바꿔 봅니다.
-
-        @Image(source: "ch4-card", alt: "방 안을 떠다니는 해마 여러 마리")
-
-        @TutorialReference(tutorial: "doc:04-ManyOfThem")
-    }
-
     @Resources {
         더 깊이 배우고 싶다면 아래 자료를 참고하세요.
 
