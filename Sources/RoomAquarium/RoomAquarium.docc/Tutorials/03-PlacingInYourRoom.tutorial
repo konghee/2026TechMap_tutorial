@@ -1,4 +1,4 @@
-@Tutorial(time: 45) {
+@Tutorial(time: 20) {
     @Intro(title: "내 방을 아쿠아리움으로") {
         아이패드 카메라로 실제 내 방을 비추고, 아쿠아리움을
         주위 공간에 띄웁니다.
