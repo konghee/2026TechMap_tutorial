@@ -32,25 +32,11 @@
     @Chapter(name: "Placing It in Your Room") {
         Float the aquarium in your actual room. In Reality Composer Pro you
         make the seahorse respond to a Tap; in Xcode you forward that tap in
-        a single line. Then you learn the opposite direction — a Timeline
-        sending notifications back to your code. From this chapter on you
-        need a real device (iPad).
+        a single line. From this chapter on you need a real device (iPad).
 
         @Image(source: "ch3-card", alt: "The aquarium placed in a real room in AR")
 
         @TutorialReference(tutorial: "doc:03-PlacingInYourRoom")
-    }
-
-    @Chapter(name: "Many of Them") {
-        Clone the seahorse into eight, and everything RCP was doing for you
-        disappears. You dig into why, then bring it back with the split
-        between settings and runtime components that Apple recommends, plus
-        a System. At the end you change the seahorses' personality from RCP
-        without opening the code.
-
-        @Image(source: "ch4-card", alt: "Several seahorses drifting around a room")
-
-        @TutorialReference(tutorial: "doc:04-ManyOfThem")
     }
 
     @Resources {

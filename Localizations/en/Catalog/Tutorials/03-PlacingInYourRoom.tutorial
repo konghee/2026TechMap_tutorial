@@ -1,4 +1,4 @@
-@Tutorial(time: 45) {
+@Tutorial(time: 30) {
     @Intro(title: "Turn Your Room Into an Aquarium") {
         Point the iPad camera at your actual room and float the aquarium
         in the space around you.
@@ -41,9 +41,10 @@
                 seahorse and a shadow falls on the floor. Both features need the
                 3D shape of the space, so they only work on devices with LiDAR.
 
-                A session isn't something you run once and forget — it keeps
-                running, and tracking stops when the object goes away. So it lives
-                in @State, which holds the session for as long as the view is on screen.
+                > Note: A session isn't something you run once and forget — it
+                > keeps running, and tracking stops when the object goes away. So
+                > it lives in `@State`, which holds the session for as long as the
+                > view is on screen.
 
                 @Code(name: "AquariumView.swift", file: "03-code-01.swift")
             }
@@ -141,70 +142,6 @@
                 check with your own eyes that the green wireframe wraps its body.
 
                 @Image(source: "03-s2-result", alt: "The seahorse spinning in response to a tap")
-            }
-        }
-    }
-
-    @Section(title: "The Timeline Talks Back to Your Code") {
-        @ContentAndMedia {
-            Everything so far went one way: code → RCP. Now build the
-            **other direction**.
-
-            A timeline can hold a **Notification** action. When playback reaches
-            that point, it sends a notification to the app. You decide in RCP,
-            in time, when "the whale call starts" and when "it's over" — and the
-            code only has to react at those moments.
-
-            This is powerful because **the timing leaves your code**. To delay
-            the performance by half a second you drag the action along the
-            timeline. Nothing like `Task.sleep(0.5)` has to be buried in code.
-
-            Here are the two notifications you'll place in the next step.
-
-            - `SeahorseStartled` — at time `0`. The moment of the tap.
-            - `SeahorseCalmed` — at time `1.9`. Where the whale call ends.
-
-            Set **Target to `Seahorse`** for both.
-
-            @Image(source: "03-section3", alt: "Notification actions on the timeline and the receiving side in code")
-        }
-
-        @Steps {
-            @Step {
-                Open the `TapSeahorse` timeline in RCP and place two
-                **Notification** actions on a new track. Fill in the names and
-                times from the list above, then save.
-
-                @Image(source: "03-s3-step1", alt: "Two Notification actions placed on the timeline")
-            }
-
-            @Step {
-                Receive the notifications in code. Everything RCP sends arrives
-                under a single name, `"RealityKit.NotificationTrigger"`, and
-                **which action it was is told apart by the `Identifier` in
-                `userInfo`**.
-
-                Take that and show a badge on screen. The reaction is modest for
-                now, but in Chapter 4 this same notification changes the seahorse's
-                **state** and makes it actually move differently.
-
-                > Note: `userInfo` also carries `SourceEntity`. But that is
-                > **not the Target you set on the Notification action.** There's a
-                > trap there, so Chapter 4 covers it separately. You don't use it here.
-
-                @Code(name: "AquariumView.swift", file: "03-code-04.swift")
-            }
-
-            @Step {
-                Run it and tap the seahorse: the badge appears, then disappears
-                1.9 seconds later when the whale call ends.
-
-                Look again at what you just built — **RCP decided "when," and the
-                code decided "what."** The robot in Apple's official sample turns
-                its watering can on and off with exactly this structure. This is as
-                far as one seahorse goes. Chapter 4 turns it into many.
-
-                @Image(source: "03-s3-result", alt: "The badge shown on screen in response to a tap")
             }
         }
     }

@@ -1,13 +1,33 @@
-# 작업 기록 — 2026-08-17
+# 작업 기록
 
-RoomAquarium 튜토리얼을 **애플이 WWDC24 세션 10102에서 권장하는 구조**로 전면 개정한 세션의 기록입니다.
-레퍼런스 앱을 먼저 완성해 실제로 동작을 확인한 뒤, 거기서 나온 코드와 발견으로 문서를 다시 썼습니다.
+RoomAquarium 튜토리얼 작업의 누적 기록입니다. **아래로 갈수록 오래된 기록**이고,
+1~9장은 2026-08-17 전면 개정 세션, 10장부터가 그 이후입니다.
 
 관련 파일:
 
 - 이 문서 — 무엇을 왜 바꿨는지
 - `README.md` — 프로젝트 개요와 빌드 방법
-- `CAPTURE-CHECKLIST.md` — 남은 스크린샷 61장 목록
+- `CAPTURE-CHECKLIST.md` — 남은 스크린샷 목록
+
+## 지금 상태 한눈에 (2026-09-07 기준)
+
+| | |
+|---|---|
+| 챕터 | **3개** (1 Scene 조립 · 2 살아 움직이게 · 3 내 방에 놓기) |
+| 스텝 | 41개, 그중 34개가 이미지 전용 GUI 스텝 |
+| 참조 이미지 | 50장 — **43장 촬영 완료, 7장 남음** |
+| DocC 빌드 | 한국어·영어 **경고 0** |
+| 실기기 미확인 | Chapter 3 패스스루의 오클루전·그림자 |
+
+**빠져 있는 것**: Chapter 4 "여러 마리로 늘리기" 전체와 Chapter 3의 세 번째 섹션
+"Notification 왕복". 10장을 보세요.
+
+---
+
+# 1~9장 — 2026-08-17 전면 개정
+
+RoomAquarium 튜토리얼을 **애플이 WWDC24 세션 10102에서 권장하는 구조**로 전면 개정한 세션의 기록입니다.
+레퍼런스 앱을 먼저 완성해 실제로 동작을 확인한 뒤, 거기서 나온 코드와 발견으로 문서를 다시 썼습니다.
 
 ---
 
@@ -283,3 +303,119 @@ WWDC23 세션 [10273](https://developer.apple.com/videos/play/wwdc2023/10273)을
 레퍼런스 앱 `WWDC24_RCP`에 같은 코드가 들어가 있고 시뮬레이터에서 확인했습니다.
 `Scene.usda`에 본보기 마커 `SpawnPoint_Left` 하나가 손으로 저작돼 있습니다
 (`RealityAssetsCompile` 통과 확인).
+
+---
+
+# 10. 2026-09-07 — Chapter 4·Chapter 3 세 번째 섹션 삭제 반영
+
+`dbbf720`("ch4 삭제 및 ch3 section3 삭제")이 본문 `.tutorial` 두 파일만 지우고
+나머지를 그대로 두어, 문서와 실제 상태가 크게 어긋나 있었습니다. 그 뒷정리입니다.
+
+## 무엇이 어긋나 있었나
+
+| 증상 | 실제 |
+|---|---|
+| 목차가 없는 챕터를 가리킴 | `RoomAquarium.tutorial`의 `@TutorialReference(tutorial: "doc:04-ManyOfThem")`가 남아 DocC가 `warning: '04-ManyOfThem' doesn't exist`를 냄. 사이트에 눌리지 않는 챕터 카드가 보였습니다 |
+| 두 언어의 내용이 다름 | 영어 오버레이 `03-PlacingInYourRoom.tutorial`에 삭제된 세 번째 섹션이 그대로 남아, `/`는 2개 섹션·`/en`은 3개 섹션이었습니다 |
+| `Extraneous element` 경고 7건 | 7장에 "경고 0"으로 적혀 있었지만 되살아나 있었습니다. ch1 6건 + ch3 1건, 스텝 본문이 조용히 잘려 나가는 중이었습니다 |
+| 이름이 반쯤 바뀜 | ch1·ch3 본문은 `AquariumContent`, ch2 본문과 `01-code-03/04.swift`는 `RealityKitContent`. ch1 본문은 `aquariumContentBundle`을 설명하는데 코드 샘플은 `realityKitContentBundle`을 보여 주고 있었습니다 |
+| 문서의 캡처 현황이 옛날 것 | README·체크리스트가 "61장 placeholder"라고 했지만 실제로는 **43장이 이미 촬영 완료**, 남은 건 8장이었습니다 |
+
+## 고친 것
+
+**목차 (한/영)** — Chapter 4 `@Chapter` 블록을 양쪽에서 제거했습니다.
+Chapter 3 소개 문구에서도 "마지막에는 Timeline이 코드에게 알림을 보내는 반대
+방향까지 배웁니다"를 뺐습니다. 그 섹션이 없기 때문입니다.
+
+**영어 오버레이** — `03-PlacingInYourRoom.tutorial`에서 세 번째 섹션
+"The Timeline Talks Back to Your Code"를 통째로 지워 한국어와 맞췄습니다.
+섹션이 하나 빠졌으므로 `@Tutorial(time:)`을 45 → 30으로 낮췄습니다(한/영 모두).
+
+**`Extraneous element` 7건** — 규칙은 여전히 **1 지시 문단 + 최대 1 보조 문단**이고,
+실측해 보니 **aside(`> Note:`)는 세 번째 블록이어도 경고가 나지 않습니다.**
+그래서 두 가지로 나눠 고쳤습니다.
+
+| 위치 | 처리 |
+|---|---|
+| `01-s1-step5` · `01-s2-step1` · `01-s2-step2` | 이어지는 내용이라 앞 문단에 **합침** |
+| `01-s1-step6` · `01-s1-step7` · `03-code-01` 스텝(한/영) | 부연이라 **`> Note:` / `> Tip:` aside로 전환** |
+
+`01-s1-step7`의 번호 매긴 문제 해결 목록 4개는 리스트째로 버려지고 있었습니다.
+`> Tip:` aside 안의 한 문단으로 풀어썼습니다.
+
+**이름 통일** — 본문이 참조하는 코드 파일에서만 `RealityKitContent` →
+`AquariumContent`, `realityKitContentBundle` → `aquariumContentBundle`로 맞췄습니다
+(한국어 `01-code-03/04`, `03-code-01/02/03` · 영어 `03-code-01/02/03`).
+ch2 본문의 `RealityKitContent` 2곳도 함께 고쳤습니다. 참조가 끊긴 파일
+(`04-code-*`, `01-code-01`, `03-code-04`)은 **손대지 않았습니다.**
+
+**ch2에 남아 있던 Chapter 4 언급 2곳** — 없는 챕터를 가리키므로 다시 썼습니다.
+"Chapter 4에서 복제할 때" → "해마를 옮기거나 복제해도", 그리고 "코드 0줄" Note는
+`clone(recursive:)`이 비헤이비어를 가져오지 않는다는 사실만 남겼습니다.
+
+**랜딩 페이지 (한/영)** — "4개 챕터" / "four-chapter"를 3으로 고치고,
+커스텀 컴포넌트·System으로 끝난다는 설명을 카메라 패스스루로 끝난다는 설명으로
+바꿨습니다.
+
+## 지우지 않은 것
+
+Chapter 4와 Chapter 3 세 번째 섹션의 **리소스는 전부 남겨 두었습니다** —
+PNG 21장과 Swift 10개입니다. 되살릴 여지를 두기 위한 것이고, 그 결과
+참조 무결성 검사의 "고아" 항목이 0이 아닙니다. **정상입니다.**
+README와 체크리스트에 그 사실과 목록을 적어 두었습니다.
+
+다이어그램 3장(`03-section3`, `04-section1`, `04-section2`)도 그대로 있습니다.
+되살릴 때 다시 그릴 필요가 없습니다.
+
+## 캡처 현황 재측정
+
+placeholder는 전부 900×560으로 생성되므로, 그 크기인 것만 세면 남은 장수를
+정확히 알 수 있습니다.
+
+```bash
+cd Sources/RoomAquarium/RoomAquarium.docc/Tutorials/Resources
+for f in *.png; do
+  sips -g pixelWidth -g pixelHeight "$f" 2>/dev/null \
+    | awk -v n="$f" '/pixelWidth/{w=$2}/pixelHeight/{h=$2}END{if(w==900&&h==560)print n}'
+done
+```
+
+결과: 본문이 참조하는 50장 중 **43장 촬영 완료**, 남은 7장은
+`02-section2` · `02-s2-result` · `02-section3` · `02-s3-step3` ·
+`03-s1-result` · `03-section2` · `03-s2-result`.
+실기기가 필요한 건 `03-s1-result` 하나뿐입니다.
+(`ch4-card`도 촬영 전이지만 Chapter 4가 빠지면서 참조가 사라졌습니다.)
+
+발견 두 가지:
+
+- `01-section3`과 `01-s3-result`가 **같은 파일**입니다(1206×2622, 215KB).
+  의도한 것이 아니라면 둘 중 하나를 다시 찍어야 합니다.
+- `toc-intro`(6.8MB) · `03-section1`(7.4MB) · `ch2-card`(3.5MB)가 상당히 큽니다.
+  페이지 로딩에 부담이 되니 줄이는 편이 좋습니다.
+
+> **`./generate-placeholders.sh`는 이제 위험합니다.** 목록에 있는 이름을 전부
+> 다시 그리므로 **이미 찍은 43장을 덮어씁니다.** 한 장씩 `./makeph`를 쓰세요.
+> README와 체크리스트 양쪽에 경고를 넣었습니다.
+
+## 검증
+
+| 항목 | 결과 |
+|---|---|
+| DocC 빌드 (한국어) | exit 0, **경고 0** |
+| DocC 빌드 (영어 오버레이) | exit 0, **경고 0** |
+| `04-ManyOfThem` 끊긴 참조 | 해소 |
+| `Extraneous element` | **7 → 0** |
+| 참조 무결성 — 누락 | 이미지 0, 코드 0 |
+| 참조 무결성 — 고아 | 이미지 21, 코드 10 (**의도된 보존**) |
+
+## 남은 일
+
+- **스크린샷 7장.** `CAPTURE-CHECKLIST.md` 참고.
+- **실기기 확인**: Chapter 3 패스스루의 오클루전·그림자. 현재 본문에서 실기기가
+  필요한 곳은 여기 하나뿐입니다.
+- **영어 번역**: 현재 랜딩 페이지와 Chapter 3만 번역돼 있습니다. Chapter 1·2는
+  영어 빌드에서도 한국어 본문이 나옵니다.
+- `01-section3` / `01-s3-result` 중복 이미지 정리.
+- Chapter 4를 되살린다면: `dbbf720` 이전 커밋에서 `04-ManyOfThem.tutorial`과
+  `03-PlacingInYourRoom.tutorial`을 꺼내고, 두 목차에 `@Chapter` 블록을 다시 넣고,
+  ch2의 Chapter 4 언급을 원래대로 돌리면 됩니다. 리소스는 이미 다 있습니다.

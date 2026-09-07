@@ -23,15 +23,15 @@
 
             이미터를 별도 엔티티가 아니라 **해마 자신에게** 붙입니다.
             그러면 해마가 헤엄쳐 다닐 때 기포가 따라다녀서 물속을 가르는
-            느낌이 나고, Chapter 4에서 해마를 복제할 때 기포도 같이
-            복제되니 따로 관리할 것이 없습니다.
+            느낌이 나고, 해마를 옮기거나 복제해도 기포가 따라오므로
+            따로 관리할 것이 없습니다.
 
             @Image(source: "02-section1", alt: "RCP 파티클 이미터 인스펙터")
         }
 
         @Steps {
             @Step {
-                RCP에서 `RealityKitContent`를 열고, 계층 패널에서
+                RCP에서 `AquariumContent`를 열고, 계층 패널에서
                 `Seahorse`를 선택합니다. 우측 인스펙터 하단의
                 **Add Component**에서 **Particle Emitter**를 추가합니다.
 
@@ -159,9 +159,9 @@
                 고치지 않았는데 해마가 헤엄칩니다.
 
                 > Note: 이 "코드 0줄"은 해마가 **한 마리일 때** 성립합니다.
-                > Chapter 4에서 여러 마리로 복제하면 사정이 달라지는데,
-                > 그 이유가 이 튜토리얼에서 가장 중요한 발견 중 하나입니다.
-                > 지금은 잘 동작하니 넘어가세요.
+                > `clone(recursive:)`으로 여러 마리를 만들면 비헤이비어가
+                > 복제본에 따라오지 않아 사정이 달라집니다. 지금은 한 마리라
+                > 잘 동작하니 넘어가세요.
 
                 @Image(source: "02-s2-result", alt: "헤엄치는 해마")
             }
@@ -188,7 +188,7 @@
         @Steps {
             @Step {
                 Chapter 1에서 받아 둔 `WhaleCry.usdz`가
-                `RealityKitContent.rkassets/` 안에 있는지 확인합니다.
+                `AquariumContent.rkassets/` 안에 있는지 확인합니다.
                 없다면 지금 넣습니다.
 
                 > Note: 오디오인데 확장자가 `.usdz`인 게 이상해 보이지만,

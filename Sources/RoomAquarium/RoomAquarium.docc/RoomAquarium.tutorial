@@ -32,8 +32,7 @@
     @Chapter(name: "내 방에 놓기") {
         아쿠아리움을 실제 방 안에 띄웁니다.
         Reality Composer Pro에서 Tap으로 해마와 상호작용하게 만들고,
-        Xcode에서는 그 탭을 한 줄로 전달합니다. 마지막에는 Timeline이
-        코드에게 알림을 보내는 반대 방향까지 배웁니다.
+        Xcode에서는 그 탭을 한 줄로 전달합니다.
         이 챕터부터는 실기기(iPad)가 필요합니다.
 
         @Image(source: "ch3-card", alt: "실제 방에 AR로 배치된 아쿠아리움")
