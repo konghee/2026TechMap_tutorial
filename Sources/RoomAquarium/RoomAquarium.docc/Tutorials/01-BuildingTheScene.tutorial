@@ -90,10 +90,10 @@
                 올바른 위치에 있으므로 파일을 복사하거나 이동하지 않고 현재
                 위치를 참조하도록 추가합니다. Xcode 버전에 따라 파일 추가
                 옵션이 표시된다면 **Copy items if needed** 또는
-                **Move files to destination**을 선택하지 않습니다.
-
-                추가가 완료되면 Project Navigator에서 갈색 패키지 아이콘과 함께
+                **Move files to destination**을 선택하지 않습니다. 추가가
+                완료되면 Project Navigator에서 갈색 패키지 아이콘과 함께
                 `AquariumContent`가 표시되는지 확인합니다.
+
                 @Image(source: "01-s1-step5", alt: "Project Navigator에서 RoomAquarium 프로젝트에 AquariumContent 패키지 추가")
             }
                 
@@ -105,8 +105,8 @@
                 **+** 버튼을 누른 뒤, **Workspace > AquariumContent** 아래에
                 표시되는 `AquariumContent`을 선택하고 **Add**를 누릅니다.
 
-                이 작업을 통해 `RoomAquarium` 앱에서 패키지에 포함된 Swift 코드와
-                3D 콘텐츠 번들을 사용할 수 있습니다.
+                > Note: 이 작업을 통해 `RoomAquarium` 앱에서 패키지에 포함된
+                > Swift 코드와 3D 콘텐츠 번들을 사용할 수 있습니다.
 
                 @Image(source: "01-s1-step6", alt: "RoomAquarium 프로젝트와 앱 타깃에 AquariumContent 패키지 추가")
             }
@@ -120,16 +120,13 @@
                 Xcode 상단에 **Build Succeeded**가 표시되면 패키지 연결이
                 완료된 것입니다.
 
-                연결되지 않는다면 다음 항목을 확인합니다.
-
-                1. Project Navigator에 `AquariumContent`가 갈색 Swift Package
-                   아이콘으로 추가되어 있는지 확인합니다.
-                2. 앱 타깃의 **Frameworks, Libraries, and Embedded Content**에
-                   `AquariumContent`가 추가되어 있는지 확인합니다.
-                3. `AquariumContent` 패키지의 `Package.swift`에 같은 이름의
-                   library product와 target이 정의되어 있는지 확인합니다.
-                4. 패키지 모듈 이름과 `import AquariumContent`의 대소문자가
-                   정확히 일치하는지 확인합니다.
+                > Tip: 연결되지 않는다면 네 가지를 확인합니다. Project
+                > Navigator에 `AquariumContent`가 갈색 Swift Package 아이콘으로
+                > 들어와 있는지, 앱 타깃의 **Frameworks, Libraries, and Embedded
+                > Content**에 추가되어 있는지, 패키지의 `Package.swift`에 같은
+                > 이름의 library product와 target이 정의되어 있는지, 그리고
+                > 모듈 이름과 `import AquariumContent`의 대소문자가 정확히
+                > 일치하는지 봅니다.
 
                 @Image(source: "01-s1-step7", alt: "AquariumContent 모듈을 import한 뒤 빌드에 성공한 Xcode 화면")
             }
@@ -160,13 +157,12 @@
                 해마 모델을 찾아 내려받습니다.
                 
                 RCP로 돌아와 화면 아래쪽의 **Project Browser**를 엽니다.
-                내려 받은 해마 모델을 Projecct Browser로 직접 드래그해 가져옵니다. 
-                메뉴 바에서 **File > Import File**을 선택해도 됩니다.
-
-                고래 소리는 RCP 상단의 **+** 버튼으로 Asset Library를
-                열고 Whale Cry를 검색해 추가합니다. 가져오기가 끝나면
-                Project Browser에서 `seahorse.usdz`와 `WhaleCry.usdz`를
-                확인할 수 있습니다.
+                내려받은 해마 모델을 Project Browser로 직접 드래그해
+                가져옵니다. 메뉴 바에서 **File > Import File**을 선택해도
+                됩니다. 고래 소리는 RCP 상단의 **+** 버튼으로 Asset Library를
+                열고 Whale Cry를 검색해 추가합니다. 가져오기가 끝나면 Project
+                Browser에서 `seahorse.usdz`와 `WhaleCry.usdz`를 확인할 수
+                있습니다.
 
                 @Image(source: "01-s2-step1", alt: "Project Browser에 추가된 seahorse와 Whale Cry 에셋")
             }
@@ -176,13 +172,12 @@
                 화면 왼쪽의 Scene Hierarchy에 `Root`가 표시되고, 중앙 Viewport에
                 빈 Scene이 열려 있는지 확인합니다.
                 
-                Project Browser의 `seahorse.usdz`를 Scene Hierarchy의 `Root` 위로
-                드래그합니다. `Root` 아래에 새로운 Entity가 나타나면 Scene에
-                해마 모델의 인스턴스가 추가된 것입니다.
-
-                추가된 Entity를 선택하고 이름을 `Seahorse`로 변경합니다.
-                오른쪽 Inspector의 **Transform**에서 Position과 Scale을 조절해
-                해마가 Viewport에 잘 보이도록 배치합니다.
+                Project Browser의 `seahorse.usdz`를 Scene Hierarchy의 `Root`
+                위로 드래그합니다. `Root` 아래에 새로운 Entity가 나타나면
+                Scene에 해마 모델의 인스턴스가 추가된 것입니다. 추가된 Entity를
+                선택해 이름을 `Seahorse`로 바꾸고, 오른쪽 Inspector의
+                **Transform**에서 Position과 Scale을 조절해 해마가 Viewport에
+                잘 보이도록 배치합니다.
 
                 @Image(source: "01-s2-step2", alt: "RCP Scene에 배치하고 이름을 Seahorse로 변경한 해마 Entity")
             }

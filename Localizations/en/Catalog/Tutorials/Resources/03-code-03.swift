@@ -1,6 +1,6 @@
 import SwiftUI
 import RealityKit
-import RealityKitContent
+import AquariumContent
 
 struct AquariumView: View {
     @State private var trackingSession = SpatialTrackingSession()
@@ -19,7 +19,7 @@ struct AquariumView: View {
             #endif
 
             if let scene = try? await Entity(named: "Scene",
-                                             in: realityKitContentBundle) {
+                                             in: aquariumContentBundle) {
                 content.add(scene)
             }
         }

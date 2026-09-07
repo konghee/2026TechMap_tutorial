@@ -11,7 +11,6 @@ WWDC24 세션 [Compose interactive 3D content in Reality Composer Pro](https://d
 | **Reality Composer Pro** | 모양·배치·컴포넌트·연출과 그 타이밍 |
 | **코드** | 여러 개를 관리하고 매 프레임 상태를 굴리는 일 |
 | **비헤이비어** | 코드 → RCP (`applyTapForBehaviors()`) |
-| **Notification 액션** | RCP → 코드 (`NotificationCenter`) |
 
 ## 커리큘럼
 
@@ -19,14 +18,19 @@ WWDC24 세션 [Compose interactive 3D content in Reality Composer Pro](https://d
 |---|---|---|
 | 1. Scene 조립하기 · *Building the Scene* | RCP 패키지 생성·연결, 씬 조립, 충돌 도형 저작, RealityView 로딩 | 시뮬레이터 가능 |
 | 2. 살아 움직이게 하기 · *Bringing It to Life* | 파티클 기포, 타임라인 + 비헤이비어 유영, 오디오 재료 — **코드 0줄** | 시뮬레이터 가능 |
-| 3. 내 방에 놓기 · *Placing It in Your Room* | 카메라 패스스루, RCP 저작 탭 연출, Notification 왕복 | 패스스루만 **실기기(iPad)** |
-| 4. 여러 마리로 늘리기 · *Many of Them* | 복제, 설정/런타임 컴포넌트 분리, System, RCP에서 성격 조절, **마커로 마릿수·배치까지 RCP 이관** | 시뮬레이터 가능 |
+| 3. 내 방에 놓기 · *Placing It in Your Room* | 카메라 패스스루, RCP 저작 탭 연출 | 패스스루만 **실기기(iPad)** |
+
+> **Chapter 4 "여러 마리로 늘리기"와 Chapter 3의 세 번째 섹션 "Notification 왕복"은
+> 현재 빠져 있습니다.** 리소스(이미지·코드·다이어그램)는
+> `Tutorials/Resources/`에 그대로 남아 있고, 본문 `.tutorial`은 git 히스토리의
+> `dbbf720` 이전 커밋에 있습니다. 되살리려면 그 두 파일을 복원하고 목차
+> (`RoomAquarium.tutorial`)에 `@Chapter` 블록을 다시 넣으면 됩니다.
 
 ## 요구사항
 
 - **Xcode 26 기준으로 작성**했습니다 (Reality Composer Pro 내장). 그 이전 버전에서도 코드는 동작하지만 RCP의 패널 위치와 메뉴 이름이 다를 수 있습니다.
 - 배포 대상: iOS / iPadOS **18 이상** (`RealityView`, `targetedToAnyEntity()`, `applyTapForBehaviors()`, `SpatialTrackingSession`)
-- Chapter 3의 카메라 패스스루: 실제 iPad. 탭과 알림은 시뮬레이터에서도 확인됩니다.
+- Chapter 3의 카메라 패스스루: 실제 iPad. 탭 상호작용은 시뮬레이터에서도 확인됩니다.
 - 문서 빌드: Swift 5.9+ 또는 macOS 러너의 GitHub Actions
 
 ## 에셋
@@ -98,7 +102,7 @@ DocC의 모든 치수가 `rem`이라 이 값만 바꾸면 전체가 같은 비�
 카탈로그를 덮어쓰고, 없는 것(아직 번역하지 않은 챕터, 이미지 대부분,
 `theme-settings.json`)은 한국어 원본을 그대로 상속합니다.
 
-현재 번역된 것은 **랜딩 페이지와 Chapter 3**입니다. Chapter 1 / 2 / 4는
+현재 번역된 것은 **랜딩 페이지와 Chapter 3**입니다. Chapter 1 / 2는
 영어 빌드에서도 한국어 본문이 나옵니다 — 번역하려면 같은 경로에 파일을
 추가하기만 하면 됩니다.
 
@@ -109,9 +113,15 @@ Localizations/en/Catalog/
   Tutorials/
     03-PlacingInYourRoom.tutorial
     Resources/
-      03-code-01…04.swift      주석이 영어인 코드
-      03-section3.png          영어 다이어그램 (같은 파일명으로 덮어씀)
+      03-code-01…03.swift      주석이 영어인 코드
+      03-code-04.swift         (현재 미사용 — 삭제된 세 번째 섹션의 코드)
+      03-section3.png          (현재 미사용 — 삭제된 세 번째 섹션의 다이어그램)
 ```
+
+> **두 언어의 목차는 같아야 합니다.** 영어 오버레이의
+> `RoomAquarium.tutorial`과 `Tutorials/03-PlacingInYourRoom.tutorial`은
+> 한국어 원본을 **통째로** 덮어씁니다. 한국어에서 섹션이나 챕터를 지우면
+> 오버레이의 같은 파일도 같이 고쳐야 `/`와 `/en`의 내용이 어긋나지 않습니다.
 
 한글 텍스트가 그려진 다이어그램은 `Tools/MakeDiagrams.swift`가 만듭니다.
 두 번째 인자로 언어를 줍니다.
@@ -184,7 +194,13 @@ mkdir -p /tmp/serve && ln -sfn "$PWD/docs" /tmp/serve/2026TechMap_tutorial
 
 ## 스크린샷 교체 안내
 
-`Sources/RoomAquarium/RoomAquarium.docc/Tutorials/Resources/` 안의 `*.png` 64장 중 **61장이 placeholder**입니다 (다이어그램 3장은 코드로 그려 완성). **각 이미지에 파일명과 "무엇을 찍어야 하는지"가 적혀 있으므로**, 열어 보고 그대로 캡처해 같은 이름으로 덮어쓰면 됩니다. 자세한 목록은 `CAPTURE-CHECKLIST.md`에 있습니다.
+본문이 참조하는 이미지는 **50장**이고, 그중 **43장은 촬영이 끝났습니다. 남은 것은 7장**입니다.
+placeholder 이미지 안에는 파일명과 "무엇을 찍어야 하는지"가 적혀 있으니, 열어 보고 그대로
+캡처해 같은 이름으로 덮어쓰면 됩니다. 남은 목록과 촬영 순서는 `CAPTURE-CHECKLIST.md`에
+있습니다.
+
+폴더에는 PNG가 71장 있지만 나머지 21장은 Chapter 4·Chapter 3 세 번째 섹션이 빠지면서
+참조가 끊긴 것들입니다. 되살릴 때를 위해 남겨 둔 것이라 찍을 필요가 없습니다.
 
 네이밍 규칙:
 
@@ -193,7 +209,7 @@ mkdir -p /tmp/serve && ln -sfn "$PWD/docs" /tmp/serve/2026TechMap_tutorial
 - `NN-sK-result` — 섹션 완료 결과 화면
 - `chN-card` / `toc-intro` — 목차 카드와 표지
 
-전체 59개 스텝 중 **40개가 이미지 전용 GUI 스텝**이므로, 실제 캡처 전까지는 튜토리얼이 절반만 완성된 상태입니다.
+전체 41개 스텝 중 **34개가 이미지 전용 GUI 스텝**입니다.
 
 ## 참조 무결성 검사
 
@@ -221,6 +237,13 @@ print("고아 코드  :", sorted(swift - codes) or "없음")
 PY
 ```
 
+> **지금은 "고아"가 0이 아닙니다.** Chapter 4와 Chapter 3 세 번째 섹션을
+> 되살릴 때를 위해 리소스를 남겨 두었기 때문에, 이미지 21장과 코드 10개가
+> 고아로 뜹니다(`04-*`, `ch4-card`, `03-section3`, `03-s3-*`,
+> `03-code-04.swift`, `01-code-01.swift`, `01-s2-step5`, `01-s2-step6`,
+> `03-s1-step2`).
+> **누락은 반드시 0이어야 합니다** — 누락이 뜨면 그건 진짜 오류입니다.
+
 ## 실기 검증된 사항
 
 본문의 함정 설명은 전부 iPad Air 11" (M4) / iOS 26.5 시뮬레이터에서 실제로 재현·확인한 것입니다.
@@ -231,19 +254,22 @@ PY
 | `Notification`의 `SourceEntity` | 액션의 Target이 아니라 **타임라인을 재생한 엔티티**(우리 씬에서는 항상 `Root`) |
 | RCP 타임라인과 `AnimationLibraryComponent` | 타임라인은 **이름으로 조회되지 않음.** `animations["SwimLoop"]`은 `nil` |
 | `library.animations.map(_:)` | **크래시**(`EXC_BREAKPOINT`). 키 조회만 안전 |
-| `clone(recursive:)` | 컴포넌트는 따라오지만 **비헤이비어는 안 따라옴** |
-| 복제본의 `applyTapForBehaviors()` | **전부 `false`.** 복제본만 남기면 탭이 아무 데서도 안 먹음 → 원본을 씬에 남기고 폴백 |
-| `clone(recursive:)`과 런타임 컴포넌트 | 진행 중인 런타임 컴포넌트까지 복사됨. 단 `DidAdd`가 `components.set`으로 덮어써서 결과는 정상 |
-| `ComponentEvents.DidAdd` | 복제본에서도 정상 발동 (8마리 확인) |
+| `clone(recursive:)` † | 컴포넌트는 따라오지만 **비헤이비어는 안 따라옴** |
+| 복제본의 `applyTapForBehaviors()` † | **전부 `false`.** 복제본만 남기면 탭이 아무 데서도 안 먹음 → 원본을 씬에 남기고 폴백 |
+| `clone(recursive:)`과 런타임 컴포넌트 † | 진행 중인 런타임 컴포넌트까지 복사됨. 단 `DidAdd`가 `components.set`으로 덮어써서 결과는 정상 |
+| `ComponentEvents.DidAdd` † | 복제본에서도 정상 발동 (8마리 확인) |
 | RCP Collision extent 단위 | 미터가 아니라 **엔티티 로컬 단위**. scale 0.01이면 로컬 12 = 12cm |
 | `import RealityKit` + `import SwiftUI` | `some Scene`이 모호해짐 → `some SwiftUI.Scene` |
 | Swift에서 지운 프로퍼티 | `Scene.usda`에는 옛 값이 남음. 무시되므로 무해하지만 파일을 읽을 때 헷갈림 |
 | **Attachments API** | **iOS/iPadOS에 없음 — visionOS 전용.** iOS 26.5 SDK의 `_RealityKit_SwiftUI`에 `Attachment` 심볼 자체가 없음 |
 
+† 표시한 항목은 **현재 본문에 없는 Chapter 4**에서 쓰이던 것입니다. 측정 결과 자체는
+유효하므로 되살릴 때를 위해 남겨 둡니다.
+
 ## 아직 실기기에서 확인이 필요한 것
 
 - Chapter 3의 패스스루(`content.camera = .spatialTracking`)와 `SpatialTrackingSession`의 오클루전·그림자
-- Chapter 4 마지막 스텝에서 언급하는 `scene.raycast(mask: .sceneUnderstanding)` 벽 회피 (LiDAR 기기 전용, 본문 코드에는 포함되지 않음)
+  — 현재 본문에서 실기기가 필요한 곳은 여기 하나뿐입니다.
 
 ## placeholder 다시 만들기
 
@@ -253,12 +279,15 @@ PY
 cd Tools
 swiftc -O MakePlaceholder.swift -o makeph   # 최초 1회만
 python3 sync-placeholder-list.py            # 본문에서 목록 재추출
-./generate-placeholders.sh                  # 전체 재생성
 
-# 한 장만 필요할 때
+# 한 장만 필요할 때 — 지금은 이쪽만 쓰세요
 ./makeph ../Sources/RoomAquarium/RoomAquarium.docc/Tutorials/Resources \
-  "04-s2-step1|여기에 무엇을 찍을지 설명"
+  "02-section2|RCP 타임라인 편집기와 애니메이션 액션"
 ```
+
+> **`./generate-placeholders.sh`(전체 재생성)는 지금 쓰면 안 됩니다.**
+> 목록에 있는 이름을 전부 다시 그리기 때문에 **이미 찍어 둔 43장을 덮어씁니다.**
+> 스텝을 대량으로 새로 만든 게 아니라면 `./makeph`로 한 장씩 만드세요.
 
 `sync-placeholder-list.py`는 `.tutorial`의 `@Image(source:alt:)`를 그대로 읽어 목록을 만들기 때문에, 본문과 목록이 어긋날 일이 없습니다. 더 이상 쓰이지 않는 PNG도 함께 알려 줍니다.
 
@@ -267,6 +296,8 @@ python3 sync-placeholder-list.py            # 본문에서 목록 재추출
 ## 다이어그램
 
 스크린샷으로 찍을 수 없는 3장은 코드로 그렸습니다.
+**셋 다 지금은 본문에서 참조되지 않습니다** — 삭제된 Chapter 4와 Chapter 3
+세 번째 섹션의 것이라, 되살릴 때 그대로 쓸 수 있게 남겨 둔 것입니다.
 
 | 파일 | 내용 |
 |---|---|

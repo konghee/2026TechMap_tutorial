@@ -1,6 +1,6 @@
 import SwiftUI
 import RealityKit
-import RealityKitContent
+import AquariumContent
 
 struct AquariumView: View {
     // The view has to hold the session so tracking stays alive while it is on screen.
@@ -21,7 +21,7 @@ struct AquariumView: View {
             }
 
             if let scene = try? await Entity(named: "Scene",
-                                             in: realityKitContentBundle) {
+                                             in: aquariumContentBundle) {
                 content.add(scene)
             }
         }

@@ -19,7 +19,7 @@ struct AquariumView: View {
             #endif
 
             if let scene = try? await Entity(named: "Scene",
-                                             in: realityKitContentBundle) {
+                                             in: aquariumContentBundle) {
                 content.add(scene)
             }
         }
