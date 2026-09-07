@@ -15,20 +15,20 @@ struct AquariumView: View {
             let unavailable = await trackingSession.run(
                 .init(tracking: [], sceneUnderstanding: [.occlusion, .shadow])
             )
-
+                     
             if let scene = try? await Entity(named: "Scene",
                                              in: aquariumContentBundle) {
                 content.add(scene)
             }
         }
-        .gesture(
-            TapGesture()
-                .targetedToAnyEntity()
-                .onEnded { value in
-                    _ = value.entity.applyTapForBehaviors()
-                }
-        )
     }
+    .gesture(
+        TapGesture()
+            .targetedToAnyEntity()
+            .onEnded { value in
+                _ = value.entity.applyTapForBehaviors()
+            }
+    )
 }
 
 #Preview {
