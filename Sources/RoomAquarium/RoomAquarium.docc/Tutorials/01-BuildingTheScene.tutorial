@@ -79,11 +79,10 @@
 
                 @Image(source: "01-s1-step4", alt: "RoomAquarium 프로젝트 폴더 안에 AquariumContent 패키지 생성")
             }
-
             @Step {
                 다시 Xcode로 돌아옵니다. Project Navigator에서 최상위
                 `RoomAquarium` 프로젝트를 우클릭하고 **Add Files to
-                "RoomAquarium"…**을 선택합니다. 
+                "RoomAquarium"…**을 선택합니다.
 
                 앞에서 만든 `AquariumContent` 폴더를 선택해 프로젝트에
                 추가합니다. `AquariumContent` 폴더는 이미 프로젝트 루트의
@@ -103,10 +102,9 @@
                 프로젝트 설정에서 **TARGETS > RoomAquarium > General**로
                 이동합니다. **Frameworks, Libraries, and Embedded Content**의
                 **+** 버튼을 누른 뒤, **Workspace > AquariumContent** 아래에
-                표시되는 `AquariumContent`을 선택하고 **Add**를 누릅니다.
-
-                > Note: 이 작업을 통해 `RoomAquarium` 앱에서 패키지에 포함된
-                > Swift 코드와 3D 콘텐츠 번들을 사용할 수 있습니다.
+                표시되는 `AquariumContent`를 선택하고 **Add**를 누릅니다.
+                이 작업을 통해 `RoomAquarium` 앱에서 패키지에 포함된 Swift
+                코드와 3D 콘텐츠 번들을 사용할 수 있습니다.
 
                 @Image(source: "01-s1-step6", alt: "RoomAquarium 프로젝트와 앱 타깃에 AquariumContent 패키지 추가")
             }
@@ -119,14 +117,17 @@
                 **Cmd+B**를 눌러 프로젝트를 빌드합니다. import 문에 오류가 없고
                 Xcode 상단에 **Build Succeeded**가 표시되면 패키지 연결이
                 완료된 것입니다.
-
-                > Tip: 연결되지 않는다면 네 가지를 확인합니다. Project
-                > Navigator에 `AquariumContent`가 갈색 Swift Package 아이콘으로
-                > 들어와 있는지, 앱 타깃의 **Frameworks, Libraries, and Embedded
-                > Content**에 추가되어 있는지, 패키지의 `Package.swift`에 같은
-                > 이름의 library product와 target이 정의되어 있는지, 그리고
-                > 모듈 이름과 `import AquariumContent`의 대소문자가 정확히
-                > 일치하는지 봅니다.
+                
+                > Important: 연결되지 않는다면 다음 항목을 확인합니다.
+                >
+                > 1. Project Navigator에 `AquariumContent`가 갈색 Swift Package
+                >    아이콘으로 추가되어 있는지 확인합니다.
+                > 2. 앱 타깃의 **Frameworks, Libraries, and Embedded Content**에
+                >    `AquariumContent`가 추가되어 있는지 확인합니다.
+                > 3. `AquariumContent` 패키지의 `Package.swift`에 같은 이름의
+                >    library product와 target이 정의되어 있는지 확인합니다.
+                > 4. 패키지 모듈 이름과 `import AquariumContent`의 대소문자가
+                >    정확히 일치하는지 확인합니다.
 
                 @Image(source: "01-s1-step7", alt: "AquariumContent 모듈을 import한 뒤 빌드에 성공한 Xcode 화면")
             }
@@ -180,7 +181,7 @@
                 잘 보이도록 배치합니다.
 
                 @Image(source: "01-s2-step2", alt: "RCP Scene에 배치하고 이름을 Seahorse로 변경한 해마 Entity")
-            }
+            }   
 
             @Step {
                 `Seahorse`를 선택하고 **Add Component**에서 **Collision**과
@@ -249,9 +250,10 @@
                 Scene 이름이며, `aquariumContentBundle`은 패키지가 생성한
                 번들 참조 상수입니다.
 
-                > Important: 번들 상수의 이름은 `AquariumContent` 패키지의
-                > `AquariumContent.swift`에서 직접 확인해 사용합니다.
-
+                > Important: AquariumContent는 모듈 이름이므로 import AquariumContent
+                > 처럼 대문자로 시작합니다. 반면 aquariumContentBundle은 
+                > 번들을 가리키는 Swift 상수이므로 소문자로 시작합니다.
+                
                 @Code(name: "AquariumView.swift", file: "01-code-03.swift")
             }
 
