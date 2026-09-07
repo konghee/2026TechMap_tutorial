@@ -39,7 +39,7 @@
                 SpatialTrackingSession은 기기가 실제 공간에서 어디에 있고 어떻게 움직이는지 추적하는 역할을 합니다. 
                 화면이 표시되는 동안 계속 같은 세션을 사용해야하므로 @State로 저장해 둡니다.
 
-                @Code(name: "AquariumView.swift", file: "03-code-01.swift", previousFile: "03-code-00.swift")
+                @Code(name: "AquariumView.swift", file: "03-code-01.swift")
             }
 
 
