@@ -183,22 +183,22 @@
                 @Image(source: "01-s2-step2", alt: "RCP Scene에 배치하고 이름을 Seahorse로 변경한 해마 Entity")
             }   
 
-            @Step {
-                `Seahorse`를 선택하고 **Add Component**에서 **Collision**과
-                **Input Target**을 추가합니다.
-
-                Collision은 해마가 공간에서 차지하는 영역을 정의하고,
-                Input Target은 해당 Entity가 사용자의 입력 대상이 되도록
-                준비합니다. 이후 Chapter에서 해마를 탭해 애니메이션이나
-                사운드를 실행할 때 이 Component들을 사용합니다.
-
-                > Important: RCP에서는 3D 객체의 외형뿐 아니라 해당
-                > 객체가 어떤 RealityKit Component를 가지는지도 함께
-                > 구성할 수 있습니다. 지금은 나중에 상호작용할 Entity의
-                > 기반을 준비하는 단계입니다.
-
-                @Image(source: "01-s2-step3", alt: "Seahorse에 Collision과 Input Target Component 추가")
-            }
+<!--            @Step {-->
+<!--                `Seahorse`를 선택하고 **Add Component**에서 **Collision**과-->
+<!--                **Input Target**을 추가합니다.-->
+<!---->
+<!--                Collision은 해마가 공간에서 차지하는 영역을 정의하고,-->
+<!--                Input Target은 해당 Entity가 사용자의 입력 대상이 되도록-->
+<!--                준비합니다. 이후 Chapter에서 해마를 탭해 애니메이션이나-->
+<!--                사운드를 실행할 때 이 Component들을 사용합니다.-->
+<!---->
+<!--                > Important: RCP에서는 3D 객체의 외형뿐 아니라 해당-->
+<!--                > 객체가 어떤 RealityKit Component를 가지는지도 함께-->
+<!--                > 구성할 수 있습니다. 지금은 나중에 상호작용할 Entity의-->
+<!--                > 기반을 준비하는 단계입니다.-->
+<!---->
+<!--                @Image(source: "01-s2-step3", alt: "Seahorse에 Collision과 Input Target Component 추가")-->
+<!--            }-->
 
             @Step {
                 계층 패널에서 `Seahorse`가 `Root` 아래에 있는지 확인하고
