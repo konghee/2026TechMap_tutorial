@@ -68,6 +68,13 @@
                 with the seahorse floating right there. Pick the device up
                 and walk around it.
 
+                > Note: If the app stops while running from Xcode and the
+                > `Render` thread shows `__pthread_kill`, Xcode's Metal debug
+                > check is the cause. Go to **Product > Scheme > Edit Scheme… >
+                > Run > Diagnostics**, turn off **Metal API Validation**, and run
+                > again. The check only runs when Xcode launches a debug build, so
+                > apps installed from TestFlight or the App Store aren't affected.
+
                 @Image(source: "03-s1-result", alt: "The aquarium floating in a room, running on a device")
             }
         }

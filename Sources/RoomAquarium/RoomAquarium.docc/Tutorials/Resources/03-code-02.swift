@@ -11,9 +11,13 @@ struct AquariumView: View {
             // 가상 카메라 대신 후면 카메라 영상을 배경으로 씁니다.
             content.camera = .spatialTracking
 
-            if let scene = try? await Entity(named: "Scene",
-                                             in: aquariumContentBundle) {
+            do {
+                let scene = try await Entity(named: "Scene",
+                                             in: aquariumContentBundle)
                 content.add(scene)
+            } catch {
+                // 이름이 틀렸거나 번들을 못 찾으면 여기로 옵니다.
+                print("Scene 로드 실패:", error)
             }
         }
     }
