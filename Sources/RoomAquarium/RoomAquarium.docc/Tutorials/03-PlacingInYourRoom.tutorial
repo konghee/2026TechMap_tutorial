@@ -108,12 +108,23 @@
 
                 @Image(source: "03-s2-step4", alt: "위아래 두 트랙에 나란히 놓인 Emphasize와 Play Audio 액션")
             }
+            
+            @Step {
+            이제 Seahorse가 사용자의 탭을 받을 수 있도록 준비합니다.
+            `Seahorse`를 선택하고 **Add Component**에서 **Collision**과
+            **Input Target**을 추가합니다.
+
+            **Collision**은 사용자의 입력이 해마에 닿았는지 판정할 영역을 만들고,
+            **Input Target**은 `Seahorse`를 입력을 받을 수 있는 대상으로 설정합니다.
+
+            @Image(source: "03-s2-step5", alt: "Seahorse에 Collision과 Input Target Component 추가")
+            }
 
             @Step {
                 `Seahorse`를 선택하고 **Behaviors** 컴포넌트에 On Tap 트리거를 추가합니다.
                 실행할 타임라인은 TapSeahorse로 설정하고, 저장(Cmd+S)합니다.
 
-                @Image(source: "03-s2-step5", alt: "On Tap 트리거와 TapSeahorse 연결")
+                @Image(source: "03-s2-step6", alt: "On Tap 트리거와 TapSeahorse 연결")
             }
 
             @Step {
@@ -131,9 +142,8 @@
                 실행하고 해마를 탭해 보세요. 몸을 한 바퀴 돌리며 고래
                 울음소리가 나면 성공입니다. 
 
-                반응이 없다면 **Chapter 1의 Collision 크기**를 다시 살펴보세요.
-                `0.12`처럼 미터 단위로 넣었다면 박스가
-                해마보다 작아서 손가락이 잘 닿지 않습니다.
+                반응이 없다면 Seahorse에 추가한 Collision 영역의 크기를 확인해 보세요. 
+                Collision 영역이 해마보다 너무 작으면 탭이 제대로 인식되지 않을 수 있습니다.
 
                 @Image(source: "03-s2-result", alt: "탭에 반응해 회전하는 해마")
             }
