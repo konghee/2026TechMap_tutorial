@@ -7,6 +7,9 @@
         the seahorse swim without writing any code, and finish by floating
         it in your real room and making it respond to a tap.
 
+        The instructions and screenshots are based on iPad, but you can follow the same steps on iPhone.
+        You can do Chapters 1 and 2 in the simulator; Chapter 3 uses the camera, so it needs a real iPhone or iPad.
+
         @Image(source: "toc-intro", alt: "A virtual aquarium floating in a room, seen on an iPad")
     }
 
@@ -32,7 +35,7 @@
     @Chapter(name: "Placing It in Your Room") {
         Float the aquarium in your actual room. In Reality Composer Pro you
         make the seahorse respond to a Tap; in Xcode you forward that tap in
-        a single line. From this chapter on you need a real device (iPad).
+        a single line. From this chapter on you need a real device (iPhone or iPad).
 
         @Image(source: "ch3-card", alt: "The aquarium placed in a real room in AR")
 

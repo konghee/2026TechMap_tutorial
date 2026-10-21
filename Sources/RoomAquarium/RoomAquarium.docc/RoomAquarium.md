@@ -20,7 +20,7 @@ Reality Composer Pro로 3D 씬을 조립하는 것에서 시작해, SwiftUI의
   그래서 연출을 바꿀 때 Xcode를 열 필요가 없습니다.
 
 Chapter 1~2는 시뮬레이터만으로 완주할 수 있고, Chapter 3의 카메라
-패스스루에서만 실기기(iPad)가 필요합니다.
+패스스루에서만 실기기(iPhone 또는 iPad)가 필요합니다.
 
 - 요구 환경: Xcode 26 기준 작성 · 배포 대상 iOS/iPadOS 18 이상
 - 에셋: 해마 모델은 [AR Quick Look Gallery](https://developer.apple.com/augmented-reality/quick-look/)에서,

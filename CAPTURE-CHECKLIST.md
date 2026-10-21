@@ -58,7 +58,7 @@
 - **Chapter 4 전체** (여러 마리로 늘리기, 삭제됨): `ch4-card` · `04-intro` ·
   `04-section1`~`section4` · `04-s1-result` · `04-s2-step1` · `04-s2-result` ·
   `04-s3-step1` · `04-s3-result` · `04-s4-step1`~`step3` · `04-s4-result`
-- **옛 스텝**: `01-s2-step3`(Collision 스텝 — 지금은 Chapter 3의 `03-s2-step5`) ·
+- **본문에서 빠진 스텝**: `01-s2-step3`(Chapter 1에서 주석 처리된 Collision 스텝) ·
   `01-s2-step5` · `01-s2-step6` · `03-s1-step2`
 
 `04-section1`·`04-section2`·`03-section3`은 스크린샷이 아니라 `Tools/MakeDiagrams.swift`가

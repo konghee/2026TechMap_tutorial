@@ -6,7 +6,7 @@ DocC 튜토리얼입니다. RealityKit을 처음 접하는 사람을 위해 썼�
 **튜토리얼 보기 → [한국어](https://konghee.github.io/2026TechMap_tutorial/tutorials/roomaquarium) · [English](https://konghee.github.io/2026TechMap_tutorial/en/tutorials/roomaquarium)**
 
 > **English** — A beginner's DocC tutorial for RealityKit and Reality Composer Pro: build
-> an aquarium scene, bring it to life without code, then float it in your own room on iPad
+> an aquarium scene, bring it to life without code, then float it in your own room on iPhone or iPad
 > and make it react to a tap. Read it at the English link above. The rest of this README is
 > in Korean and covers how the catalog is built and maintained.
 
@@ -16,7 +16,7 @@ DocC 튜토리얼입니다. RealityKit을 처음 접하는 사람을 위해 썼�
 |---|---|---|---|
 | 1. Scene 조립하기 | iOS 앱 프로젝트와 RCP 패키지 연결, 해마 배치, `RealityView`로 불러오기 | `AquariumView` 작성 | 시뮬레이터 가능 |
 | 2. 살아 움직이게 하기 | 파티클 기포, 타임라인 + 비헤이비어로 유영, 소리 준비 | **0줄** | 시뮬레이터 가능 |
-| 3. 내 방에 놓기 | 카메라 패스스루, 오클루전·그림자, RCP에서 만든 탭 연출 | 몇 줄 추가 | **실기기(iPad)** |
+| 3. 내 방에 놓기 | 카메라 패스스루, 오클루전·그림자, RCP에서 만든 탭 연출 | 몇 줄 추가 | **실기기(iPhone 또는 iPad)** |
 
 전체를 관통하는 주제는 **RCP와 코드의 경계**입니다. 모양·배치·움직임·소리는 RCP에서 만들고,
 코드는 화면에 띄우고 탭을 넘기는 일만 합니다(`applyTapForBehaviors()`). WWDC24 세션
@@ -30,7 +30,7 @@ DocC 튜토리얼입니다. RealityKit을 처음 접하는 사람을 위해 썼�
   위치나 메뉴 이름이 다를 수 있습니다.
 - 배포 대상 iOS / iPadOS **18 이상** (`RealityView`, `SpatialTrackingSession`,
   `applyTapForBehaviors()`)
-- Chapter 3은 실제 iPad가 필요합니다.
+- Chapter 3은 iPhone 또는 iPad 실기기가 필요합니다. 설명과 화면은 iPad 기준입니다.
 
 에셋은 따로 준비하지 않아도 됩니다. 해마 모델은 Apple의
 [AR Quick Look Gallery](https://developer.apple.com/augmented-reality/quick-look/)에서,

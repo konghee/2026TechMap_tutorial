@@ -3,8 +3,8 @@
         아이패드 카메라로 실제 내 방을 비추고, 아쿠아리움을
         주위 공간에 띄웁니다.
 
-        > Important: 이 챕터는 실기기(iPad, iPadOS 18 이상)가
-        > 필요합니다.
+        > Important: 이 챕터는 실기기(iPhone 또는 iPad, iOS/iPadOS 18
+        > 이상)가 필요합니다. 설명은 iPad를 기준으로 합니다.
 
         @Image(source: "03-intro", alt: "실제 방에 배치된 AR 아쿠아리움")
     }

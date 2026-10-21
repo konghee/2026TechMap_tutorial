@@ -22,7 +22,7 @@ and its official sample.
   in RCP plays. So changing that performance doesn't require opening Xcode.
 
 Chapters 1 and 2 can be finished in the simulator; only the camera
-passthrough in Chapter 3 needs a real device (iPad).
+passthrough in Chapter 3 needs a real device (iPhone or iPad).
 
 - Requirements: written against Xcode 26 · deployment target iOS/iPadOS 18 or later
 - Assets: the seahorse model comes from the [AR Quick Look Gallery](https://developer.apple.com/augmented-reality/quick-look/),

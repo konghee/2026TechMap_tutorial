@@ -3,8 +3,8 @@
         Point the iPad camera at your actual room and float the aquarium
         in the space around you.
 
-        > Important: This chapter needs a real device (iPad running
-        > iPadOS 18 or later).
+        > Important: This chapter needs a real device (iPhone or iPad
+        > running iOS/iPadOS 18 or later). The instructions are based on iPad.
 
         @Image(source: "03-intro", alt: "An AR aquarium placed in a real room")
     }
