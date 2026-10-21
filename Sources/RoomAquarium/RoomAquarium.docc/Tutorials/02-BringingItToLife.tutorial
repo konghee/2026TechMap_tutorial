@@ -86,8 +86,6 @@
 
             애플 공식 샘플에서 나비가 계속 날갯짓하는 것도 정확히 이 구조입니다 —
             무한 반복하는 타임라인 하나 + `On Added To Scene` 비헤이비어 하나.
-
-            @Image(source: "02-section2", alt: "RCP 타임라인 편집기와 애니메이션 액션")
         }
 
         @Steps {
@@ -146,15 +144,10 @@
 
             @Step {
                 트리거를 **On Added To Scene**으로 두고, 실행할 타임라인을
-                `SwimLoop`으로 지정한 뒤 저장(**Cmd+S**)합니다.
+                `SwimLoop`으로 지정한 뒤 저장(**Cmd+S**)합니다. "이 해마가 화면에
+                나타나는 순간 SwimLoop을 재생하라"는 뜻입니다.
 
-                "이 해마가 화면에 나타나는 순간 SwimLoop을 재생하라"는 뜻입니다.
-
-                @Image(source: "02-s2-step4c", alt: "Behaviors의 On Added To Scene과 SwimLoop 연결 완료")
-            }
-
-            @Step {
-                시뮬레이터에서 실행합니다. `AquariumView.swift`를 한 글자도
+                시뮬레이터에서 실행해 보세요. `AquariumView.swift`를 한 글자도
                 고치지 않았는데 해마가 헤엄칩니다.
 
                 > Note: 이 "코드 0줄"은 해마가 **한 마리일 때** 성립합니다.
@@ -162,7 +155,7 @@
                 > 복제본에 따라오지 않아 사정이 달라집니다. 지금은 한 마리라
                 > 잘 동작하니 넘어가세요.
 
-                @Image(source: "02-s2-result", alt: "헤엄치는 해마")
+                @Image(source: "02-s2-step4c", alt: "Behaviors의 On Added To Scene과 SwimLoop 연결 완료")
             }
         }
     }
@@ -180,8 +173,6 @@
 
             그 "언제"를 Chapter 3에서 **탭**으로 만듭니다. 이 섹션은 재료만
             준비합니다.
-
-            @Image(source: "02-section3", alt: "RCP 오디오 라이브러리 인스펙터")
         }
 
         @Steps {
@@ -200,26 +191,18 @@
             @Step {
                 `Seahorse`를 선택하고 **Add Component**에서
                 **Audio Library**를 추가합니다. 그다음 `WhaleCry.usdz`를
-                이 컴포넌트의 리소스 목록으로 끌어다 놓습니다.
+                이 컴포넌트의 리소스 목록으로 끌어다 놓고, 목록에 등록됐는지
+                확인한 뒤 저장(**Cmd+S**)합니다.
 
                 **Audio Library**는 "이 엔티티가 낼 수 있는 소리 목록"입니다.
                 여기 등록해 두면 타임라인의 오디오 액션이 이름으로 골라 쓸 수
-                있습니다.
-
-                @Image(source: "02-s3-step2", alt: "Seahorse에 Audio Library 컴포넌트 추가")
-            }
-
-            @Step {
-                인스펙터의 리소스 목록에 `WhaleCry.usdz`가 등록됐는지 확인하고
-                저장(**Cmd+S**)합니다.
-
-                실행해 보면 아직 아무 소리도 나지 않습니다. **정상입니다.**
+                있습니다. 실행해 보면 아직 아무 소리도 나지 않습니다. **정상입니다.**
                 재료를 얹어 뒀을 뿐 방아쇠를 안 달았으니까요. 여기까지가
                 Chapter 2인데 **코드는 한 글자도 고치지 않았습니다.** RCP는
                 "무엇이 어떻게 생겼고 무엇을 할 수 있는지"를, 코드는 "언제
                 무엇을 할지"를 맡습니다.
 
-                @Image(source: "02-s3-step3", alt: "Audio Library 리소스 목록에 등록된 WhaleCry")
+                @Image(source: "02-s3-step2", alt: "Seahorse에 Audio Library 컴포넌트 추가")
             }
         }
     }

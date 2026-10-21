@@ -39,16 +39,12 @@ OUT="$SP/../Sources/RoomAquarium/RoomAquarium.docc/Tutorials/Resources"
 "02-s1-step2|Emitter Shape과 Birth Rate 설정" \
 "02-s1-step3|Acceleration Y와 Opacity Over Life 설정" \
 "02-s1-step4|시뮬레이터에서 올라가는 기포" \
-"02-section2|RCP 타임라인 편집기와 애니메이션 액션" \
 "02-s2-step1|Seahorse 인스펙터의 Animation Library 컴포넌트" \
 "02-s2-step2|SwimLoop 타임라인 생성" \
 "02-s2-step3|Animation 액션의 Target과 Loop 설정" \
 "02-s2-step4|Behaviors의 On Added To Scene 트리거와 SwimLoop 연결" \
-"02-s2-result|헤엄치는 해마" \
-"02-section3|RCP 오디오 라이브러리 인스펙터" \
 "02-s3-step1|rkassets 폴더의 WhaleCry.usdz" \
 "02-s3-step2|Seahorse에 Audio Library 컴포넌트 추가" \
-"02-s3-step3|Audio Library 리소스 목록에 등록된 WhaleCry" \
 "03-intro|실제 방에 배치된 AR 아쿠아리움" \
 "03-section1|카메라 패스스루로 본 방과 월드 원점" \
 "03-s1-step1|빌드 세팅의 카메라 권한 문구" \
