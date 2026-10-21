@@ -12,23 +12,30 @@ struct AquariumView: View {
             content.camera = .spatialTracking
 
             // 진짜 사물이 해마를 가리는 occlusion과, shadow를 켭니다.
-            let unavailable = await trackingSession.run(
+            // 기기가 지원하지 않는 기능은 조용히 빠지므로, 콘솔에 남겨 둡니다.
+            if let unavailable = await trackingSession.run(
                 .init(tracking: [], sceneUnderstanding: [.occlusion, .shadow])
-            )
-                     
-            if let scene = try? await Entity(named: "Scene",
-                                             in: aquariumContentBundle) {
+            ) {
+                print("지원되지 않는 기능:", unavailable.sceneUnderstanding)
+            }
+
+            do {
+                let scene = try await Entity(named: "Scene",
+                                             in: aquariumContentBundle)
                 content.add(scene)
+            } catch {
+                // 이름이 틀렸거나 번들을 못 찾으면 여기로 옵니다.
+                print("Scene 로드 실패:", error)
             }
         }
+        .gesture(
+            TapGesture()
+                .targetedToAnyEntity()
+                .onEnded { value in
+                    _ = value.entity.applyTapForBehaviors()
+                }
+        )
     }
-    .gesture(
-        TapGesture()
-            .targetedToAnyEntity()
-            .onEnded { value in
-                _ = value.entity.applyTapForBehaviors()
-            }
-    )
 }
 
 #Preview {

@@ -18,9 +18,13 @@ struct AquariumView: View {
             }
             #endif
 
-            if let scene = try? await Entity(named: "Scene",
-                                             in: aquariumContentBundle) {
+            do {
+                let scene = try await Entity(named: "Scene",
+                                             in: aquariumContentBundle)
                 content.add(scene)
+            } catch {
+                // A misspelled name or a missing bundle lands here.
+                print("Failed to load Scene: \(error)")
             }
         }
         .modifier(SimulatorCameraControls())
