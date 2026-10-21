@@ -282,7 +282,7 @@ python3 sync-placeholder-list.py            # 본문에서 목록 재추출
 
 # 한 장만 필요할 때 — 지금은 이쪽만 쓰세요
 ./makeph ../Sources/RoomAquarium/RoomAquarium.docc/Tutorials/Resources \
-  "02-section2|RCP 타임라인 편집기와 애니메이션 액션"
+  "03-section2|탭에 반응하는 해마"
 ```
 
 > **`./generate-placeholders.sh`(전체 재생성)는 지금 쓰면 안 됩니다.**
