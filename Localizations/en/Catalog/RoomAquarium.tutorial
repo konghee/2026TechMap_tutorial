@@ -3,15 +3,18 @@
         Use RealityKit and Reality Composer Pro to put a living aquarium
         inside your own room, on the far side of the iPad camera.
 
-        You start by assembling a 3D scene in Reality Composer Pro, then
-        bring that scene into real space with SwiftUI code, and finish by
-        making seahorses swim around the room.
+        You start by assembling a 3D scene in Reality Composer Pro, make
+        the seahorse swim without writing any code, and finish by floating
+        it in your real room and making it respond to a tap.
+
+        The instructions and screenshots are based on iPad, but you can follow the same steps on iPhone.
+        You can do Chapters 1 and 2 in the simulator; Chapter 3 uses the camera, so it needs a real iPhone or iPad.
 
         @Image(source: "toc-intro", alt: "A virtual aquarium floating in a room, seen on an iPad")
     }
 
     @Chapter(name: "Building the Scene") {
-        Assemble an aquarium scene with a seahorse and a floor in Reality
+        Assemble an aquarium scene with a seahorse in Reality
         Composer Pro, then put it on screen with SwiftUI's RealityView.
         You can finish this chapter in the simulator alone.
 
@@ -32,7 +35,7 @@
     @Chapter(name: "Placing It in Your Room") {
         Float the aquarium in your actual room. In Reality Composer Pro you
         make the seahorse respond to a Tap; in Xcode you forward that tap in
-        a single line. From this chapter on you need a real device (iPad).
+        a single line. From this chapter on you need a real device (iPhone or iPad).
 
         @Image(source: "ch3-card", alt: "The aquarium placed in a real room in AR")
 
@@ -58,11 +61,11 @@
             - [Meet Reality Composer Pro (WWDC23)](https://developer.apple.com/videos/play/wwdc2023/10083/)
         }
 
-        @SampleCode(destination: "https://github.com/konghee/SpatialComputing") {
-            The finished project and its 3D assets.
+        @SampleCode(destination: "https://developer.apple.com/documentation/realitykit/composing-interactive-3d-content-with-realitykit-and-reality-composer-pro") {
+            Apple's official sample this tutorial follows, and the 3D asset.
 
-            - [seahorse.usdz · WhaleCry.usdz](https://github.com/konghee/SpatialComputing)
             - [Composing interactive 3D content with RealityKit and Reality Composer Pro (Apple's official sample)](https://developer.apple.com/documentation/realitykit/composing-interactive-3d-content-with-realitykit-and-reality-composer-pro)
+            - [AR Quick Look Gallery — the `seahorse.usdz` model](https://developer.apple.com/augmented-reality/quick-look/)
         }
     }
 }

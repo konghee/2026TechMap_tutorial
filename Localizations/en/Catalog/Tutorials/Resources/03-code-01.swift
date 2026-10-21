@@ -3,30 +3,18 @@ import RealityKit
 import AquariumContent
 
 struct AquariumView: View {
-    // The view has to hold the session so tracking stays alive while it is on screen.
+    // Keep the session in @State so the same one stays alive while the view is on screen.
     @State private var trackingSession = SpatialTrackingSession()
 
     var body: some View {
         RealityView { content in
-            // Use the rear camera feed as the background instead of a virtual camera.
-            content.camera = .spatialTracking
-
-            // Turn on occlusion, so real objects hide the seahorse, and floor shadows.
-            // These only switch on for devices that can reconstruct the scene (LiDAR).
-            let unavailable = await trackingSession.run(
-                .init(tracking: [], sceneUnderstanding: [.occlusion, .shadow])
-            )
-            if let unavailable {
-                print("Unavailable on this device: \(unavailable.sceneUnderstanding)")
-            }
-
             do {
                 let scene = try await Entity(named: "Scene",
                                              in: aquariumContentBundle)
                 content.add(scene)
             } catch {
                 // A misspelled name or a missing bundle lands here.
-                print("Failed to load Scene: \(error)")
+                print("Failed to load Scene:", error)
             }
         }
     }
