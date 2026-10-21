@@ -82,7 +82,7 @@
             @Step {
                 다시 Xcode로 돌아옵니다. Project Navigator에서 최상위
                 `RoomAquarium` 프로젝트를 우클릭하고 **Add Files to
-                "RoomAquarium"…**을 선택합니다.
+                "RoomAquarium"**을 선택합니다.
 
                 앞에서 만든 `AquariumContent` 폴더를 선택해 프로젝트에
                 추가합니다. `AquariumContent` 폴더는 이미 프로젝트 루트의
