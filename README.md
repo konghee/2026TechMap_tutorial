@@ -1,46 +1,82 @@
 # RoomAquarium
 
-RealityKit과 Reality Composer Pro로 **아이패드 방 안에 아쿠아리움을 만드는** DocC 튜토리얼 카탈로그입니다. 대상 독자는 RealityKit을 처음 접하는 완전 초보자입니다.
+RealityKit과 Reality Composer Pro로 **아이패드 카메라 너머, 내 방 안에 아쿠아리움을 만드는**
+DocC 튜토리얼입니다. RealityKit을 처음 접하는 사람을 위해 썼습니다.
 
-WWDC24 세션 [Compose interactive 3D content in Reality Composer Pro](https://developer.apple.com/videos/play/wwdc2024/10102/)와 그 [공식 샘플](https://developer.apple.com/documentation/realitykit/composing-interactive-3d-content-with-realitykit-and-reality-composer-pro)이 보여주는 구조를 그대로 따릅니다.
+**튜토리얼 보기 → [한국어](https://konghee.github.io/2026TechMap_tutorial/tutorials/roomaquarium) · [English](https://konghee.github.io/2026TechMap_tutorial/en/tutorials/roomaquarium)**
 
-## 관통 주제 — RCP와 코드의 경계
+> **English** — A beginner's DocC tutorial for RealityKit and Reality Composer Pro: build
+> an aquarium scene, bring it to life without code, then float it in your own room on iPad
+> and make it react to a tap. Read it at the English link above. The rest of this README is
+> in Korean and covers how the catalog is built and maintained.
 
-| | 맡는 일 |
-|---|---|
-| **Reality Composer Pro** | 모양·배치·컴포넌트·연출과 그 타이밍 |
-| **코드** | 여러 개를 관리하고 매 프레임 상태를 굴리는 일 |
-| **비헤이비어** | 코드 → RCP (`applyTapForBehaviors()`) |
+## 무엇을 만드나
 
-## 커리큘럼
+| 챕터 | 내용 | 코드 | 필요 환경 |
+|---|---|---|---|
+| 1. Scene 조립하기 | iOS 앱 프로젝트와 RCP 패키지 연결, 해마 배치, `RealityView`로 불러오기 | `AquariumView` 작성 | 시뮬레이터 가능 |
+| 2. 살아 움직이게 하기 | 파티클 기포, 타임라인 + 비헤이비어로 유영, 소리 준비 | **0줄** | 시뮬레이터 가능 |
+| 3. 내 방에 놓기 | 카메라 패스스루, 오클루전·그림자, RCP에서 만든 탭 연출 | 몇 줄 추가 | **실기기(iPad)** |
 
-| 챕터 | 내용 | 필요 환경 |
-|---|---|---|
-| 1. Scene 조립하기 · *Building the Scene* | RCP 패키지 생성·연결, 씬 조립, 충돌 도형 저작, RealityView 로딩 | 시뮬레이터 가능 |
-| 2. 살아 움직이게 하기 · *Bringing It to Life* | 파티클 기포, 타임라인 + 비헤이비어 유영, 오디오 재료 — **코드 0줄** | 시뮬레이터 가능 |
-| 3. 내 방에 놓기 · *Placing It in Your Room* | 카메라 패스스루, RCP 저작 탭 연출 | 패스스루만 **실기기(iPad)** |
-
-> **Chapter 4 "여러 마리로 늘리기"와 Chapter 3의 세 번째 섹션 "Notification 왕복"은
-> 현재 빠져 있습니다.** 리소스(이미지·코드·다이어그램)는
-> `Tutorials/Resources/`에 그대로 남아 있고, 본문 `.tutorial`은 git 히스토리의
-> `dbbf720` 이전 커밋에 있습니다. 되살리려면 그 두 파일을 복원하고 목차
-> (`RoomAquarium.tutorial`)에 `@Chapter` 블록을 다시 넣으면 됩니다.
+전체를 관통하는 주제는 **RCP와 코드의 경계**입니다. 모양·배치·움직임·소리는 RCP에서 만들고,
+코드는 화면에 띄우고 탭을 넘기는 일만 합니다(`applyTapForBehaviors()`). WWDC24 세션
+[Compose interactive 3D content in Reality Composer Pro](https://developer.apple.com/videos/play/wwdc2024/10102/)와
+그 [공식 샘플](https://developer.apple.com/documentation/realitykit/composing-interactive-3d-content-with-realitykit-and-reality-composer-pro)의
+구조를 따릅니다.
 
 ## 요구사항
 
-- **Xcode 26 기준으로 작성**했습니다 (Reality Composer Pro 내장). 그 이전 버전에서도 코드는 동작하지만 RCP의 패널 위치와 메뉴 이름이 다를 수 있습니다.
-- 배포 대상: iOS / iPadOS **18 이상** (`RealityView`, `targetedToAnyEntity()`, `applyTapForBehaviors()`, `SpatialTrackingSession`)
-- Chapter 3의 카메라 패스스루: 실제 iPad. 탭 상호작용은 시뮬레이터에서도 확인됩니다.
-- 문서 빌드: Swift 5.9+ 또는 macOS 러너의 GitHub Actions
+- **Xcode 26 기준으로 작성**했습니다(Reality Composer Pro 포함). 다른 버전에서는 RCP의 패널
+  위치나 메뉴 이름이 다를 수 있습니다.
+- 배포 대상 iOS / iPadOS **18 이상** (`RealityView`, `SpatialTrackingSession`,
+  `applyTapForBehaviors()`)
+- Chapter 3은 실제 iPad가 필요합니다.
 
-## 에셋
+에셋은 따로 준비하지 않아도 됩니다. 해마 모델은 Apple의
+[AR Quick Look Gallery](https://developer.apple.com/augmented-reality/quick-look/)에서,
+고래 울음소리는 Reality Composer Pro의 Asset Library에서 받습니다(Chapter 1에서 안내).
 
-튜토리얼은 완성 프로젝트의 에셋을 그대로 씁니다. 독자가 직접 3D 모델이나 음원을 구하러 다닐 필요가 없습니다.
+## 따라 하다 막히면
 
-- `seahorse.usdz` — 해마 모델, 유영 애니메이션 내장
-- `WhaleCry.usdz` — 고래 울음소리
+| 증상 | 원인과 해결 |
+|---|---|
+| Xcode에서 실행하자마자 멈추고 `Render` 스레드에 `__pthread_kill` | Xcode의 Metal 디버그 검사. **Edit Scheme > Run > Diagnostics**에서 **Metal API Validation**을 끕니다. 디버그 실행에서만 생깁니다. |
+| 화면이 비어 있음 | Xcode 콘솔에 `Scene 로드 실패:`가 찍혔는지 봅니다. Scene 이름이나 패키지 연결(Chapter 1 섹션 1)을 확인합니다. |
+| 해마가 실제 물체에 가려지지 않음 | 콘솔의 `지원되지 않는 기능:` 출력을 봅니다. 기기가 지원하지 않는 기능은 오류 없이 빠집니다. |
+| 해마를 탭해도 반응이 없음 | Collision 영역이 해마를 감싸는지 확인합니다. RCP의 Collision 크기는 미터가 아니라 **엔티티 로컬 단위**라, scale이 0.01이면 로컬 12가 12cm입니다. |
 
-내려받는 곳: [konghee/SpatialComputing](https://github.com/konghee/SpatialComputing)
+---
+
+## 리포지토리 구조
+
+```
+Sources/RoomAquarium/RoomAquarium.docc/   한국어 카탈로그 (원본)
+  RoomAquarium.md                          랜딩 페이지
+  RoomAquarium.tutorial                    목차
+  Tutorials/0N-*.tutorial                  챕터 본문
+  Tutorials/Resources/                     이미지(.png)와 코드 스니펫(.swift)
+  theme-settings.json                      색·글꼴
+Localizations/en/Catalog/                  영어 오버레이 (아래 "한국어 / 영어")
+Web/site.js                                배포 시 주입하는 스크립트 (UI 한글화, 언어 전환 버튼)
+Tools/                                     placeholder·다이어그램 생성기, 영어 오버레이 스크립트
+.github/workflows/deploy-docc.yml          main에 push하면 GitHub Pages로 배포
+CAPTURE-CHECKLIST.md                       스크린샷 현황과 촬영 규격
+WORKLOG.md                                 무엇을 왜 바꿨는지 누적 기록
+```
+
+## 기여하는 법
+
+1. 브랜치를 만들어 작업하고 PR을 엽니다. `main`에 merge되면 자동으로 배포됩니다.
+2. 한국어 본문을 고쳤다면 영어 오버레이의 같은 파일도 고칩니다(아래).
+3. PR 전에 두 가지를 확인합니다.
+   - **DocC 경고 0**: 아래 "로컬 미리보기"의 빌드 명령을 한국어·영어 각각 돌려 `warning:`이
+     없는지 봅니다. DocC는 Step 하나에 **문단 2개**까지만 받습니다. 설명을 더 넣으려면
+     `> Tip:` / `> Note:` 같은 알림 상자를 씁니다.
+   - **참조 무결성**: 아래 "참조 무결성 검사"에서 누락이 0이어야 합니다.
+
+코드 스니펫은 `0N-code-0M.swift`로 단계마다 완성된 파일을 하나씩 둡니다.
+`@Code(..., previousFile:)`를 주면 이전 파일과의 차이가 강조됩니다. 챕터를 넘어가도 됩니다
+(Chapter 3의 첫 코드는 Chapter 1의 마지막 코드와 비교됩니다).
 
 ## 로컬 미리보기
 
@@ -58,108 +94,97 @@ cd .build/en-preview && swift package --disable-sandbox preview-documentation --
 ```
 
 브라우저에서 `http://localhost:8080/tutorials/roomaquarium` 접속.
+미리보기 대신 경고만 확인하려면 `preview-documentation`을 `generate-documentation`으로 바꿉니다.
 
-> 미리보기에는 `Web/site.js`가 주입되지 않습니다. **UI 한글화와 언어 전환
-> 버튼은 미리보기에서 보이지 않습니다.** 그것까지 확인하려면 아래 "정적
-> 빌드로 통째로 확인하기"를 쓰세요.
-
-## 문서 외형 손보기
-
-손댈 수 있는 곳은 두 군데입니다.
-
-| 파일 | 바꿀 수 있는 것 |
-|---|---|
-| `RoomAquarium.docc/theme-settings.json` | 색, 글꼴 **패밀리**, 모서리 반경 (`--color-*`, `--typography-*`, `--border-radius`) |
-| `Web/site.js` | 그 밖의 모든 CSS — 글자 **크기**, 행간, 한글 줄바꿈 — 과 UI 한글화, 언어 전환 버튼 |
-
-`theme-settings.json`의 `theme.color.tutorial-hero-background` 같은 키는 그대로
-CSS 변수 `--color-tutorial-hero-background`가 됩니다. 값에 `{"light": ..., "dark": ...}`를
-쓰면 라이트/다크를 따로 줄 수 있습니다. 이 파일은 렌더러가 런타임에 직접
-fetch 하므로 별도 플래그가 필요 없습니다.
-
-글자 크기는 `Web/site.js`의 `:root { font-size: 18px }` 한 줄이 기준점입니다.
-DocC의 모든 치수가 `rem`이라 이 값만 바꾸면 전체가 같은 비율로 커지고 작아집니다
-(렌더러 기본값은 17px).
-
-> **`header.html`(커스텀 헤더)은 쓰지 않습니다.** DocC의
-> `--experimental-enable-custom-templates`는 그 파일을
-> `<template id="custom-header">` 안에 넣는데, `custom-header` 커스텀 엘리먼트를
-> 정의하는 코드가 렌더러에 없고 `<template>` 안의 `<script>`는 실행되지
-> 않습니다. 즉 아무 효과가 없습니다. 그래서 배포 워크플로가 `Web/site.js`를
-> 각 `index.html`의 앱 번들 **앞에** 직접 끼워 넣습니다.
+> 미리보기에는 `Web/site.js`가 주입되지 않아서 **UI 한글화와 언어 전환 버튼이 보이지
+> 않습니다.** 그것까지 보려면 아래 "배포본과 똑같이 확인하기"를 쓰세요.
 
 ## 한국어 / 영어
 
-한 리포지토리에서 두 벌을 빌드합니다. 하위 경로가 같아서 언어 전환은
-`/en` 세그먼트를 넣고 빼는 것으로 끝납니다.
+한 리포지토리에서 두 벌을 빌드합니다. 하위 경로가 같아서 언어 전환은 `/en` 세그먼트를
+넣고 빼는 것으로 끝납니다. 사이트 루트(`/2026TechMap_tutorial/`)는 저장된 선택이나
+브라우저 언어를 보고 둘 중 하나로 보냅니다.
 
 | | 주소 | 소스 |
 |---|---|---|
 | 한국어 | `/2026TechMap_tutorial/tutorials/roomaquarium/...` | `Sources/RoomAquarium/RoomAquarium.docc/` |
 | English | `/2026TechMap_tutorial/en/tutorials/roomaquarium/...` | 위 카탈로그 + `Localizations/en/Catalog/` 오버레이 |
 
-영어는 **오버레이**입니다. `Localizations/en/Catalog/`에 넣은 파일만 한국어
-카탈로그를 덮어쓰고, 없는 것(아직 번역하지 않은 챕터, 이미지 대부분,
-`theme-settings.json`)은 한국어 원본을 그대로 상속합니다.
-
-현재 번역된 것은 **랜딩 페이지와 Chapter 3**입니다. Chapter 1 / 2는
-영어 빌드에서도 한국어 본문이 나옵니다 — 번역하려면 같은 경로에 파일을
-추가하기만 하면 됩니다.
+영어는 **오버레이**입니다. `Localizations/en/Catalog/`에 있는 파일만 한국어 카탈로그를
+덮어쓰고, 없는 것(이미지, `theme-settings.json`)은 한국어 원본을 그대로 씁니다.
+현재 랜딩 페이지와 **Chapter 1~3 전부**가 번역돼 있습니다.
 
 ```
 Localizations/en/Catalog/
-  RoomAquarium.md
-  RoomAquarium.tutorial
+  RoomAquarium.md, RoomAquarium.tutorial
   Tutorials/
-    03-PlacingInYourRoom.tutorial
+    01-BuildingTheScene.tutorial, 02-BringingItToLife.tutorial, 03-PlacingInYourRoom.tutorial
     Resources/
-      03-code-01…03.swift      주석이 영어인 코드
-      03-code-04.swift         (현재 미사용 — 삭제된 세 번째 섹션의 코드)
-      03-section3.png          (현재 미사용 — 삭제된 세 번째 섹션의 다이어그램)
+      01-code-02…05.swift, 03-code-01…04.swift   주석과 로그 문구만 영어인 코드
+      03-section3.png                             (현재 미사용 — 삭제된 섹션의 다이어그램)
 ```
 
-> **두 언어의 목차는 같아야 합니다.** 영어 오버레이의
-> `RoomAquarium.tutorial`과 `Tutorials/03-PlacingInYourRoom.tutorial`은
-> 한국어 원본을 **통째로** 덮어씁니다. 한국어에서 섹션이나 챕터를 지우면
-> 오버레이의 같은 파일도 같이 고쳐야 `/`와 `/en`의 내용이 어긋나지 않습니다.
-
-한글 텍스트가 그려진 다이어그램은 `Tools/MakeDiagrams.swift`가 만듭니다.
-두 번째 인자로 언어를 줍니다.
-
-```bash
-cd Tools
-xcrun --toolchain XcodeDefault swiftc -O MakeDiagrams.swift -o makediagrams
-./makediagrams ../Sources/RoomAquarium/RoomAquarium.docc/Tutorials/Resources
-./makediagrams ../Localizations/en/Catalog/Tutorials/Resources en
-```
+> **한국어 본문을 고치면 영어 파일도 같이 고쳐야 합니다.** 오버레이 파일은 한국어 원본을
+> **통째로** 덮어쓰기 때문에, 한쪽만 고치면 `/`와 `/en`의 내용이 어긋납니다. 코드
+> 스니펫도 마찬가지로, 한국어 코드를 바꾸면 영어판의 같은 파일을 주석만 영어로 바꿔
+> 맞춥니다.
 
 ### UI 언어는 어떻게 한글이 되었나
 
-DocC 렌더러에는 한국어(`ko-KR`) 메시지 카탈로그가 **이미 통째로 들어있습니다**
-(`예상 시간`, `{number}단계`, `다음` …). 다만 기본 locale이 `en-US`로 고정되어
-있어 쓰이지 않을 뿐입니다. `Web/site.js`가 하는 일:
+DocC 렌더러에는 한국어(`ko-KR`) 메시지 카탈로그가 이미 들어 있지만(`예상 시간`,
+`{number}단계`, `다음` …) 기본 locale이 `en-US`로 고정돼 있습니다. `Web/site.js`가 하는 일:
 
-1. vue-i18n의 locale을 `ko-KR`로 바꾸고 **setter를 막습니다.** 라우터가
-   페이지를 옮길 때마다 `en-US`로 되돌리기 때문에, 막지 않으면 챕터를
-   클릭하는 순간 영어로 돌아갑니다. `<html lang>`도 같은 이유로 붙잡아 둡니다.
-2. `Chapter {number}` / `Section {number}` 두 라벨만 다시 영어로 덮어씁니다.
-   본문에서 "Chapter 2에서 등록한"처럼 쓰기 때문입니다.
-3. i18n을 거치지 않고 DocC가 JSON에 직접 박아 넣는 문구
-   (`Get started`, `Documentation` / `Videos` / `Sample Code`, `View more`,
-   알림 상자의 `Note` / `Important`, 소요 시간 `2hr 35min`)를 치환합니다.
+1. vue-i18n의 locale을 `ko-KR`로 바꾸고 setter를 막습니다. 라우터가 페이지를 옮길 때마다
+   `en-US`로 되돌리기 때문입니다. `<html lang>`도 같은 이유로 붙잡아 둡니다.
+2. `Chapter {number}` / `Section {number}` 두 라벨은 영어로 되돌립니다. 본문에서
+   "Chapter 2에서 등록한"처럼 쓰기 때문입니다.
+3. i18n을 거치지 않고 DocC가 JSON에 직접 넣는 문구(`Get started`, `Documentation` /
+   `Videos` / `Sample Code`, 알림 상자의 `Note` / `Important`, 소요 시간 등)를 치환합니다.
+4. 네비게이션 바 오른쪽에 언어 전환 버튼을 붙입니다.
 
-### 정적 빌드로 통째로 확인하기
+## 문서 외형 손보기
 
-`site.js` 주입까지 포함해 배포본과 같은 것을 로컬에서 보려면:
+| 파일 | 바꿀 수 있는 것 |
+|---|---|
+| `RoomAquarium.docc/theme-settings.json` | 색, 글꼴 **패밀리**, 모서리 반경 (`--color-*`, `--typography-*`, `--border-radius`) |
+| `Web/site.js` | 그 밖의 CSS(글자 **크기**, 행간)와 UI 한글화, 언어 전환 버튼 |
+
+`theme-settings.json`의 `theme.color.tutorial-hero-background` 같은 키는 CSS 변수
+`--color-tutorial-hero-background`가 됩니다. 값에 `{"light": ..., "dark": ...}`를 쓰면
+라이트/다크를 따로 줄 수 있습니다.
+
+글자 크기는 `Web/site.js`의 `:root { font-size: 17px; }` 한 줄이 기준입니다. DocC의
+치수가 전부 `rem`이라 이 값만 바꾸면 전체가 같은 비율로 바뀝니다.
+
+> DocC의 커스텀 헤더(`header.html`)는 쓰지 않습니다. 그 내용은 `<template>` 안에 들어가
+> 실행되지 않기 때문에, 배포 워크플로가 `Web/site.js`를 각 `index.html`의 앱 번들 **앞에**
+> 직접 끼워 넣습니다.
+
+## 배포
+
+배포 주소: **https://konghee.github.io/2026TechMap_tutorial/**
+
+`main`에 push(또는 PR merge)하면 `.github/workflows/deploy-docc.yml`이 한국어·영어를 빌드하고
+`site.js`를 주입해 GitHub Pages에 올립니다. 짧은 간격으로 여러 번 push하면 앞의 실행은
+취소되고 마지막 것만 배포됩니다(정상입니다).
+
+- 리포 이름이 `--hosting-base-path`(`2026TechMap_tutorial`)와 같아야 경로가 맞습니다. 리포
+  이름을 바꾸면 워크플로의 `--hosting-base-path`와 루트 리다이렉트 경로도 함께 바꿉니다.
+- `--target RoomAquarium`은 Swift 타깃 이름이라 리포 이름과 별개입니다. 문서 경로
+  `/tutorials/roomaquarium`도 여기서 나옵니다.
+- Settings > Pages > Source는 **GitHub Actions**여야 합니다.
+
+### 배포본과 똑같이 확인하기
+
+`site.js` 주입까지 포함해 로컬에서 보려면 워크플로와 같은 단계를 밟습니다.
 
 ```bash
-# 워크플로와 같은 4단계
 swift package --allow-writing-to-directory docs generate-documentation \
   --target RoomAquarium --disable-indexing --transform-for-static-hosting \
   --hosting-base-path 2026TechMap_tutorial --output-path docs
 
 ./Tools/overlay-en.sh /tmp/en
-(cd /tmp/en && swift package --allow-writing-to-directory "$PWD/../docs" generate-documentation \
+(cd /tmp/en && swift package --allow-writing-to-directory "$OLDPWD/docs" generate-documentation \
   --target RoomAquarium --disable-indexing --transform-for-static-hosting \
   --hosting-base-path 2026TechMap_tutorial/en --output-path "$OLDPWD/docs/en")
 
@@ -167,159 +192,67 @@ cp Web/site.js docs/site.js && cp Web/site.js docs/en/site.js
 find docs -name index.html -print0 | xargs -0 sed -i '' \
   -e 's#<script defer="defer" src="\([^"]*\)js/chunk-vendors#<script defer="defer" src="\1site.js"></script><script defer="defer" src="\1js/chunk-vendors#'
 
-# baseUrl 이 절대경로라 경로를 맞춰서 띄워야 합니다
+# baseUrl이 절대 경로라 경로를 맞춰서 띄웁니다
 mkdir -p /tmp/serve && ln -sfn "$PWD/docs" /tmp/serve/2026TechMap_tutorial
 (cd /tmp/serve && python3 -m http.server 8765)
 ```
 
 `http://localhost:8765/2026TechMap_tutorial/tutorials/roomaquarium` 접속.
 
-## GitHub Pages 배포
+## 스크린샷
 
-배포 주소: **https://konghee.github.io/2026TechMap_tutorial/tutorials/roomaquarium**
-
-1. 이 폴더를 **`2026TechMap_tutorial`이라는 이름의 Public 리포지토리**로 push 합니다.
-   (`--hosting-base-path`가 `2026TechMap_tutorial`로 맞춰져 있으므로 리포 이름도 같아야
-   경로가 일치합니다. 리포 이름을 바꾸면 워크플로의 `--hosting-base-path`와 루트
-   리다이렉트 경로도 같이 바꿔야 합니다.)
-2. 리포지토리 **Settings > Pages > Source**를 **GitHub Actions**로 설정합니다.
-3. `main` 브랜치에 push 하면 `.github/workflows/deploy-docc.yml`이 자동으로 빌드·배포합니다.
-
-> `--target RoomAquarium`은 **Swift 타깃 이름**이라 리포 이름과 별개입니다. 그대로 두세요.
-> 문서 안의 경로 `/tutorials/roomaquarium`도 타깃 이름에서 나온 것이라 바뀌지 않습니다.
-
-수동 배포를 원하면 위 "정적 빌드로 통째로 확인하기"의 명령을 그대로 쓰고
-`docs/`를 올리면 됩니다. 한국어만 빌드한 채로 올리면 `/en`이 404가 되니
-두 언어를 함께 빌드하세요.
-
-## 스크린샷 교체 안내
-
-본문이 참조하는 이미지는 **50장**이고, 그중 **43장은 촬영이 끝났습니다. 남은 것은 7장**입니다.
-placeholder 이미지 안에는 파일명과 "무엇을 찍어야 하는지"가 적혀 있으니, 열어 보고 그대로
-캡처해 같은 이름으로 덮어쓰면 됩니다. 남은 목록과 촬영 순서는 `CAPTURE-CHECKLIST.md`에
-있습니다.
-
-폴더에는 PNG가 71장 있지만 나머지 21장은 Chapter 4·Chapter 3 세 번째 섹션이 빠지면서
-참조가 끊긴 것들입니다. 되살릴 때를 위해 남겨 둔 것이라 찍을 필요가 없습니다.
+본문이 참조하는 이미지 **46장은 모두 촬영이 끝났습니다.** 다시 찍거나 새 스텝을 추가할 때의
+규격과 네이밍은 `CAPTURE-CHECKLIST.md`에 있습니다. 같은 파일명으로 덮어쓰면 바로 반영됩니다.
 
 네이밍 규칙:
 
 - `NN-intro` / `NN-sectionK` — 챕터 도입·섹션 대표 이미지
-- `NN-sK-stepM` — 챕터 NN, 섹션 K, 스텝 M의 GUI 스크린샷
+- `NN-sK-stepM` — 챕터 NN, 섹션 K, 스텝 M의 스크린샷
 - `NN-sK-result` — 섹션 완료 결과 화면
 - `chN-card` / `toc-intro` — 목차 카드와 표지
 
-전체 41개 스텝 중 **34개가 이미지 전용 GUI 스텝**입니다.
+새로 넣는 이미지는 긴 변 2400px 이하로 줄여 주세요(`sips -Z 2400 파일.png`). 표지와
+Chapter 3 사진은 투명한 모서리가 있는 기기 목업이라 JPEG로 바꾸면 안 됩니다.
 
-## 참조 무결성 검사
+### 참조 무결성 검사
 
-모든 `@Image(source:)`와 `@Code(file:)` 참조가 실제 파일과 1:1로 맞는지 확인합니다.
-
-영어 오버레이는 없는 파일을 한국어 원본에서 상속하므로, 오버레이만 따로
-검사하면 "누락"이 잘못 뜹니다. 오버레이를 씌운 트리에서 검사하세요.
+모든 `@Image(source:)`와 `@Code(file:)` 참조가 실제 파일과 맞는지 확인합니다.
+영어는 오버레이를 씌운 트리(`./Tools/overlay-en.sh /tmp/en-check`)에서 같은 검사를 돌립니다.
 
 ```bash
-./Tools/overlay-en.sh /tmp/en-check   # 영어를 검사할 때만
 cd Sources/RoomAquarium/RoomAquarium.docc && python3 - <<'PY'
 import re, pathlib
 res = pathlib.Path("Tutorials/Resources")
 imgs, codes = set(), set()
 for t in pathlib.Path(".").rglob("*.tutorial"):
-    s = t.read_text()
+    s = re.sub(r"<!--.*?-->", "", t.read_text(), flags=re.S)
     imgs  |= set(re.findall(r'@Image\(\s*source:\s*"([^"]+)"', s))
-    codes |= set(re.findall(r'@Code\([^)]*file:\s*"([^"]+)"', s))
+    codes |= set(re.findall(r'@Code\([^)]*?file:\s*"([^"]+)"', s))
+    codes |= set(re.findall(r'previousFile:\s*"([^"]+)"', s))
 png   = {p.stem for p in res.glob("*.png")}
 swift = {p.name for p in res.glob("*.swift")}
 print("누락 이미지:", sorted(imgs - png)   or "없음")
-print("고아 이미지:", sorted(png - imgs)   or "없음")
 print("누락 코드  :", sorted(codes - swift) or "없음")
-print("고아 코드  :", sorted(swift - codes) or "없음")
+print("고아 이미지:", len(png - imgs), "장 / 고아 코드:", len(swift - codes), "개")
 PY
 ```
 
-> **지금은 "고아"가 0이 아닙니다.** Chapter 4와 Chapter 3 세 번째 섹션을
-> 되살릴 때를 위해 리소스를 남겨 두었기 때문에, 이미지 21장과 코드 10개가
-> 고아로 뜹니다(`04-*`, `ch4-card`, `03-section3`, `03-s3-*`,
-> `03-code-04.swift`, `01-code-01.swift`, `01-s2-step5`, `01-s2-step6`,
-> `03-s1-step2`).
-> **누락은 반드시 0이어야 합니다** — 누락이 뜨면 그건 진짜 오류입니다.
+**누락은 반드시 0이어야 합니다.** 고아(참조되지 않는 파일)는 0이 아닙니다. 삭제된
+Chapter 4 "여러 마리로 늘리기"와 Chapter 3 세 번째 섹션 "Notification 왕복"의 리소스
+(`04-*`, `ch4-card`, `03-section3`, `03-s3-*` 등)를 되살릴 때를 위해 남겨 두었기 때문입니다.
+본문은 커밋 `dbbf720` 이전에 있습니다.
 
-## 실기 검증된 사항
+## placeholder와 다이어그램
 
-본문의 함정 설명은 전부 iPad Air 11" (M4) / iOS 26.5 시뮬레이터에서 실제로 재현·확인한 것입니다.
+- placeholder 생성기: `Tools/MakePlaceholder.swift`(`makeph`)와 `Tools/sync-placeholder-list.py`.
+  지금은 모든 컷이 촬영돼 있으므로 **`generate-placeholders.sh`(전체 재생성)는 쓰지 마세요.**
+  찍어 둔 사진을 덮어씁니다. 새 스텝용으로 한 장만 필요할 때:
 
-| 사항 | 확인 결과 |
-|---|---|
-| 컴포넌트·시스템 등록 위치 | `App.init()`이어야 함. `RealityView` 클로저에서 하면 `ComponentEvents.DidAdd`를 놓쳐 **에러 없이 아무것도 안 움직임** |
-| `Notification`의 `SourceEntity` | 액션의 Target이 아니라 **타임라인을 재생한 엔티티**(우리 씬에서는 항상 `Root`) |
-| RCP 타임라인과 `AnimationLibraryComponent` | 타임라인은 **이름으로 조회되지 않음.** `animations["SwimLoop"]`은 `nil` |
-| `library.animations.map(_:)` | **크래시**(`EXC_BREAKPOINT`). 키 조회만 안전 |
-| `clone(recursive:)` † | 컴포넌트는 따라오지만 **비헤이비어는 안 따라옴** |
-| 복제본의 `applyTapForBehaviors()` † | **전부 `false`.** 복제본만 남기면 탭이 아무 데서도 안 먹음 → 원본을 씬에 남기고 폴백 |
-| `clone(recursive:)`과 런타임 컴포넌트 † | 진행 중인 런타임 컴포넌트까지 복사됨. 단 `DidAdd`가 `components.set`으로 덮어써서 결과는 정상 |
-| `ComponentEvents.DidAdd` † | 복제본에서도 정상 발동 (8마리 확인) |
-| RCP Collision extent 단위 | 미터가 아니라 **엔티티 로컬 단위**. scale 0.01이면 로컬 12 = 12cm |
-| `import RealityKit` + `import SwiftUI` | `some Scene`이 모호해짐 → `some SwiftUI.Scene` |
-| Swift에서 지운 프로퍼티 | `Scene.usda`에는 옛 값이 남음. 무시되므로 무해하지만 파일을 읽을 때 헷갈림 |
-| **Attachments API** | **iOS/iPadOS에 없음 — visionOS 전용.** iOS 26.5 SDK의 `_RealityKit_SwiftUI`에 `Attachment` 심볼 자체가 없음 |
+  ```bash
+  cd Tools && swiftc -O MakePlaceholder.swift -o makeph
+  ./makeph ../Sources/RoomAquarium/RoomAquarium.docc/Tutorials/Resources "03-s2-step7|설명"
+  ```
 
-† 표시한 항목은 **현재 본문에 없는 Chapter 4**에서 쓰이던 것입니다. 측정 결과 자체는
-유효하므로 되살릴 때를 위해 남겨 둡니다.
-
-## 아직 실기기에서 확인이 필요한 것
-
-- Chapter 3의 패스스루(`content.camera = .spatialTracking`)와 `SpatialTrackingSession`의 오클루전·그림자
-  — 현재 본문에서 실기기가 필요한 곳은 여기 하나뿐입니다.
-
-## placeholder 다시 만들기
-
-스텝을 추가·삭제하면 목록을 본문에서 다시 뽑은 뒤 재생성합니다.
-
-```bash
-cd Tools
-swiftc -O MakePlaceholder.swift -o makeph   # 최초 1회만
-python3 sync-placeholder-list.py            # 본문에서 목록 재추출
-
-# 한 장만 필요할 때 — 지금은 이쪽만 쓰세요
-./makeph ../Sources/RoomAquarium/RoomAquarium.docc/Tutorials/Resources \
-  "03-section2|탭에 반응하는 해마"
-```
-
-> **`./generate-placeholders.sh`(전체 재생성)는 지금 쓰면 안 됩니다.**
-> 목록에 있는 이름을 전부 다시 그리기 때문에 **이미 찍어 둔 43장을 덮어씁니다.**
-> 스텝을 대량으로 새로 만든 게 아니라면 `./makeph`로 한 장씩 만드세요.
-
-`sync-placeholder-list.py`는 `.tutorial`의 `@Image(source:alt:)`를 그대로 읽어 목록을 만들기 때문에, 본문과 목록이 어긋날 일이 없습니다. 더 이상 쓰이지 않는 PNG도 함께 알려 줍니다.
-
-손으로 만든 이미지는 `HANDMADE` 집합에 등록해 두면 placeholder 재생성에서 제외됩니다. 현재 다이어그램 3장이 등록돼 있습니다.
-
-## 다이어그램
-
-스크린샷으로 찍을 수 없는 3장은 코드로 그렸습니다.
-**셋 다 지금은 본문에서 참조되지 않습니다** — 삭제된 Chapter 4와 Chapter 3
-세 번째 섹션의 것이라, 되살릴 때 그대로 쓸 수 있게 남겨 둔 것입니다.
-
-| 파일 | 내용 |
-|---|---|
-| `03-section3` | 타임라인 Notification 액션 → 코드 수신부 |
-| `04-section1` | 원점을 비워둔 도넛 배치 (위에서 내려다본 그림) |
-| `04-section2` | 설정 컴포넌트 / System / 런타임 컴포넌트의 관계 |
-
-```bash
-cd Tools
-xcrun --toolchain XcodeDefault swiftc -O MakeDiagrams.swift -o makediagrams
-./makediagrams ../Sources/RoomAquarium/RoomAquarium.docc/Tutorials/Resources
-
-# 영어판 — 두 번째 인자로 언어를 줍니다.
-# 아직 영어 라벨이 있는 03-section3 만 그립니다.
-./makediagrams ../Localizations/en/Catalog/Tutorials/Resources en
-```
-
-900×560을 2배(1800×1120)로 렌더링해 레티나에서도 글자가 또렷합니다.
-
-`04-section1` / `04-section2`는 아직 한글 라벨뿐이라 영어 모드에서 건너뜁니다.
-Chapter 4를 번역할 때 `MakeDiagrams.swift`의 `L(ko, en)`으로 라벨을 채우고
-실행부의 언어 분기를 풀면 됩니다.
-
-> `swiftc`를 그냥 쓰면 실패할 수 있습니다. PATH에 Swift 개발 스냅샷 툴체인이 걸려 있으면
-> stdlib를 못 찾기 때문에 `xcrun --toolchain XcodeDefault`를 붙입니다.
+- 다이어그램 생성기: `Tools/MakeDiagrams.swift`. 지금 본문에서 쓰는 다이어그램은 없습니다
+  (`03-section3`, `04-section1`, `04-section2`는 삭제된 섹션용).
+  `swiftc`가 실패하면 `xcrun --toolchain XcodeDefault swiftc`를 씁니다.

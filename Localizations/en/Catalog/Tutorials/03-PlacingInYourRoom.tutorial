@@ -1,4 +1,4 @@
-@Tutorial(time: 30) {
+@Tutorial(time: 20) {
     @Intro(title: "Turn Your Room Into an Aquarium") {
         Point the iPad camera at your actual room and float the aquarium
         in the space around you.
@@ -9,7 +9,7 @@
         @Image(source: "03-intro", alt: "An AR aquarium placed in a real room")
     }
 
-    @Section(title: "Switching to the Camera") {
+    @Section(title: "Switch From a Virtual Camera to Real Space") {
         @ContentAndMedia {
             So far RealityView has shown the scene through a virtual camera.
             Change the camera mode to `.spatialTracking` so that your own
@@ -21,45 +21,59 @@
         @Steps {
             @Step {
                 Go back to Xcode and open the RoomAquarium project settings.
-                To use the camera you have to state why and get the user's
+                To use the camera you have to tell the user why and get their
                 permission. In **Build Settings**, find the Info.plist Values
                 list, look for `Privacy - Camera Usage Description`, and write
                 "We use the camera to turn your room into an aquarium."
 
-                If the entry isn't there, add it yourself with the + button
-                and then fill it in.
+                If the entry isn't there, add it with the + button and then
+                fill it in.
 
                 @Image(source: "03-s1-step1", alt: "The camera permission string in Build Settings")
             }
 
             @Step {
-                Setting content.camera to .spatialTracking makes the rear camera
-                feed the background and starts the device tracking the space.
+                Until now you explored the scene by dragging and zooming with
+                `.realityViewCameraControls(.orbit)`. From here on the iPad's
+                camera and movement do that job, so the aquarium looks like it
+                is really in the room. Delete that line and prepare a
+                `SpatialTrackingSession`.
 
-                On top of that, trackingSession.run starts a SpatialTrackingSession
-                and asks for .occlusion and .shadow. Now real objects hide the
-                seahorse and a shadow falls on the floor. Both features need the
-                3D shape of the space, so they only work on devices with LiDAR.
+                A SpatialTrackingSession tracks where the device is in real
+                space and how it moves. You need the same session for as long
+                as the view is on screen, so keep it in `@State`.
 
-                > Note: A session isn't something you run once and forget — it
-                > keeps running, and tracking stops when the object goes away. So
-                > it lives in `@State`, which holds the session for as long as the
-                > view is on screen.
+                > Tip: Also change the scene-loading code from `try?` to
+                > `do-catch`. On a real device it's hard to tell why the screen
+                > is empty, so if loading fails, have Xcode's console print
+                > `Failed to load Scene:` and the reason.
 
-                @Code(name: "AquariumView.swift", file: "03-code-01.swift")
+                @Code(name: "AquariumView.swift", file: "03-code-01.swift", previousFile: "01-code-04.swift")
             }
 
             @Step {
-                Passthrough and camera controls **cannot be used together.** The
-                moment the rear camera feed becomes the background, the camera
-                controls you dragged to orbit the view stop working.
+                Now use a camera that follows the real device instead of
+                RealityKit's virtual camera. When you move the iPad, the
+                camera inside RealityKit moves with it, so the seahorse looks
+                like it is sitting in real space.
 
-                So split them with `#if targetEnvironment(simulator)`. The
-                simulator gets the virtual camera and orbit controls; the device
-                gets passthrough. No more commenting and uncommenting every time
-                you change the run destination.
+                @Code(name: "AquariumView.swift", file: "03-code-02.swift", previousFile: "03-code-01.swift")
+            }
 
-                @Code(name: "AquariumView.swift", file: "03-code-02.swift")
+            @Step {
+                Make the seahorse blend into the real space a little more
+                naturally.
+
+                You turn on two features here. `.occlusion` hides the seahorse
+                when a real object is in front of it. `.shadow` gives the
+                seahorse a shadow so it looks like it's really in the room.
+
+                > Tip: `run` returns the features the device doesn't support.
+                > Unsupported features are dropped without an error, so
+                > printing them to the console tells you right away why the
+                > seahorse isn't being hidden.
+
+                @Code(name: "AquariumView.swift", file: "03-code-03.swift", previousFile: "03-code-02.swift")
             }
 
             @Step {
@@ -80,7 +94,7 @@
         }
     }
 
-    @Section(title: "Interacting With the Seahorse") {
+    @Section(title: "Interact With the Seahorse") {
         @ContentAndMedia {
             Make the seahorse spin once and play a sound when you tap it.
 
@@ -109,44 +123,56 @@
             }
 
             @Step {
-                On the track just below Emphasize, place a **Play Audio** action, set
-                Target to `Seahorse`, and pick the `WhaleCry.usdz` audio you registered
-                in Chapter 2. Set Duration to 1.
+                On the track just below Emphasize, place a **Play Audio**
+                action, set Target to `Seahorse`, and pick the `WhaleCry.usdz`
+                audio you registered in Chapter 2. Set Duration to 1.
 
-                They have to be on separate tracks to play at the **same time** —
-                put them on one track and they play in sequence, so watch out.
+                They have to be on separate tracks to play at the **same
+                time** — put them on one track and they play one after the
+                other, so watch out.
 
                 @Image(source: "03-s2-step4", alt: "Emphasize and Play Audio side by side on two tracks")
             }
 
             @Step {
-                Select `Seahorse` and add an On Tap trigger to its **Behaviors**
-                component. Set the timeline to run to TapSeahorse, then save (Cmd+S).
+                Now get the seahorse ready to receive the user's taps. Select
+                `Seahorse` and add **Collision** and **Input Target** from
+                **Add Component**.
 
-                @Image(source: "03-s2-step5", alt: "An On Tap trigger wired to TapSeahorse")
+                **Collision** creates the area used to decide whether the
+                user's input touched the seahorse, and **Input Target** makes
+                `Seahorse` something that can receive input.
+
+                @Image(source: "03-s2-step5", alt: "Adding Collision and Input Target components to Seahorse")
             }
 
             @Step {
-                Back to Xcode. Take the tap gesture and call applyTapForBehaviors()
-                on the tapped entity — the seahorse. That one call is what fires the
-                On Tap Behavior you set up on it.
+                Select `Seahorse` and add an On Tap trigger to its
+                **Behaviors** component. Set the timeline to run to
+                TapSeahorse, then save (Cmd+S).
+
+                @Image(source: "03-s2-step6", alt: "An On Tap trigger wired to TapSeahorse")
+            }
+
+            @Step {
+                Back to Xcode. Take the tap gesture and call
+                applyTapForBehaviors() on the tapped entity — the seahorse.
+                That call is what fires the On Tap Behavior you set up on it.
 
                 Later you can change the Behavior's On Tap timeline in Reality
-                Composer Pro and the seahorse behaves differently without opening
-                Xcode at all.
+                Composer Pro and the seahorse behaves differently without
+                opening Xcode at all.
 
-                @Code(name: "AquariumView.swift", file: "03-code-03.swift")
+                @Code(name: "AquariumView.swift", file: "03-code-04.swift", previousFile: "03-code-03.swift")
             }
 
             @Step {
                 Run it and tap the seahorse. If it spins once while a whale
-                call plays, it worked. This works in the simulator too.
+                call plays, it worked.
 
-                If nothing happens, suspect the **Collision size from Chapter 1**.
-                That's the most common cause. If you entered something like `0.12`
-                as if it were meters, the box is 200 times smaller than the seahorse
-                and your finger can never reach it. Select `Seahorse` in RCP and
-                check with your own eyes that the green wireframe wraps its body.
+                If nothing happens, check the size of the Collision you added
+                to Seahorse. If the Collision area is much smaller than the
+                seahorse, taps may not register.
 
                 @Image(source: "03-s2-result", alt: "The seahorse spinning in response to a tap")
             }

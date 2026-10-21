@@ -3,21 +3,13 @@ import RealityKit
 import AquariumContent
 
 struct AquariumView: View {
+    // Keep the session in @State so the same one stays alive while the view is on screen.
     @State private var trackingSession = SpatialTrackingSession()
 
     var body: some View {
         RealityView { content in
-            // The simulator has neither passthrough nor world tracking, so skip it all.
-            #if !targetEnvironment(simulator)
+            // Use the rear camera feed as the background instead of a virtual camera.
             content.camera = .spatialTracking
-
-            let unavailable = await trackingSession.run(
-                .init(tracking: [], sceneUnderstanding: [.occlusion, .shadow])
-            )
-            if let unavailable {
-                print("Unavailable on this device: \(unavailable.sceneUnderstanding)")
-            }
-            #endif
 
             do {
                 let scene = try await Entity(named: "Scene",
@@ -25,23 +17,9 @@ struct AquariumView: View {
                 content.add(scene)
             } catch {
                 // A misspelled name or a missing bundle lands here.
-                print("Failed to load Scene: \(error)")
+                print("Failed to load Scene:", error)
             }
         }
-        .modifier(SimulatorCameraControls())
-    }
-}
-
-/// The simulator has no passthrough, so let the virtual camera be dragged around.
-/// On a device, camera controls cannot be combined with passthrough
-/// (.spatialTracking), so attach nothing — you move the iPad itself to look around.
-private struct SimulatorCameraControls: ViewModifier {
-    func body(content: Content) -> some View {
-        #if targetEnvironment(simulator)
-        content.realityViewCameraControls(.orbit)
-        #else
-        content
-        #endif
     }
 }
 

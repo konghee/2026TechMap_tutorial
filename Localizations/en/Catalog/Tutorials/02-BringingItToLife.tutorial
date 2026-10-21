@@ -1,0 +1,222 @@
+@Tutorial(time: 35) {
+    @Intro(title: "Bring the Aquarium to Life") {
+        Add movement and sound to the still scene: bubbles rising from the
+        seahorse, a swimming motion that sways its fins, and a sound you'll
+        use later.
+
+        This chapter comes down to one thing. **You don't write a single line
+        of code here.** Particles, animation, and audio setup are all done in
+        Reality Composer Pro. `AquariumView.swift` stays exactly as you wrote
+        it in Chapter 1.
+
+        You can check this chapter **in the simulator** too.
+
+        @Image(source: "02-intro", alt: "The aquarium scene with bubbles rising")
+    }
+
+    @Section(title: "Make Bubbles with a Particle Emitter") {
+        @ContentAndMedia {
+            A **particle emitter** is a component that keeps spraying out
+            small particles, used for effects like sparks, snow, and smoke.
+            Here, small beads floating upward stand in for bubbles under
+            water.
+
+            You attach the emitter to **the seahorse itself** rather than a
+            separate entity. That way the bubbles follow the seahorse as it
+            swims, so it feels like it's cutting through water, and they come
+            along when you move or duplicate it, leaving nothing extra to
+            manage.
+
+            @Image(source: "02-section1", alt: "The RCP particle emitter inspector")
+        }
+
+        @Steps {
+            @Step {
+                In RCP, open `AquariumContent` and select `Seahorse` in the
+                hierarchy panel. Add a **Particle Emitter** from
+                **Add Component** at the bottom of the inspector on the right.
+
+                Even with the default values, you can see particles spraying
+                out in the viewport right away.
+
+                @Image(source: "02-s1-step1", alt: "Adding a Particle Emitter component to Seahorse")
+            }
+
+            @Step {
+                Adjust the values so it looks like bubbles. Leave
+                **Emitter Shape** at `Cylinder` and lower **Birth Rate**
+                (particles per second) to around `20`.
+
+                The seahorse is small, so with the default values the particles
+                cover its whole body.
+
+                @Image(source: "02-s1-step2", alt: "Emitter Shape and Birth Rate settings")
+            }
+
+            @Step {
+                Set the Y value of **Acceleration** to `1` so the particles
+                float up, and change **Opacity Over Life** to
+                `Gradual Fade In Out` so they appear and disappear naturally.
+
+                @Image(source: "02-s1-step3", alt: "Acceleration Y and Opacity Over Life settings")
+            }
+
+            @Step {
+                Save (**Cmd+S**) and run the app again.
+
+                **Bubbles appear without changing a single line of code.** The
+                component you attached in RCP is saved in `Scene.usda`, and
+                when `Entity(named:in:)` loads the scene, the component comes
+                along with it.
+
+                @Image(source: "02-s1-step4", alt: "Bubbles rising in the simulator")
+            }
+        }
+    }
+
+    @Section(title: "Make the Seahorse Swim with a Timeline") {
+        @ContentAndMedia {
+            `seahorse.usdz` already contains an animation that sways its body.
+            You play that animation with an RCP **Timeline**, and use a
+            **Behavior** to make it "start automatically when it appears in
+            the scene." No code needed here either.
+
+            Three new ideas come up.
+
+            - **Animation Library**: the list of animations an entity can
+              use. When you add a model that contains USD animation, RCP
+              attaches this component for you.
+            - **Timeline**: an editor for placing actions in the order and at
+              the moments you want. This one has a single action for now, but
+              in Chapter 3 you chain several together.
+            - **Behavior**: the trigger that decides "when to play this
+              timeline."
+
+            The butterfly that keeps flapping its wings in Apple's official
+            sample uses exactly this structure — one timeline that repeats
+            forever plus one `On Added To Scene` behavior.
+        }
+
+        @Steps {
+            @Step {
+                Select `Seahorse` in the hierarchy panel and look at the
+                inspector. The **Animation Library** component is **already
+                attached.** RCP added it automatically because
+                `seahorse.usdz` contains USD animation. You can see a few
+                default animations in the list.
+
+                @Image(source: "02-s2-step1", alt: "The Animation Library component in the Seahorse inspector")
+            }
+
+            @Step {
+                Go to the **Timelines** tab in the bottom panel and click
+                **Create Timeline**. Double-tap the new timeline and rename it
+                `SwimLoop`.
+
+                @Image(source: "02-s2-step2", alt: "Creating the SwimLoop timeline")
+            }
+
+            @Step {
+                Drag the **Animation** action from the action list on the
+                right onto the timeline.
+
+                @Image(source: "02-s2-step3", alt: "Dragging the Animation action onto the timeline")
+            }
+
+            @Step {
+                When you drop it, an **Animation** action clip appears on the
+                timeline. Select the clip to open the inspector.
+
+                @Image(source: "02-s2-step3b", alt: "The Animation action clip placed on the timeline")
+            }
+
+            @Step {
+                Now decide when this timeline starts. Select `Seahorse` and
+                add **Behaviors** from **Add Component**.
+
+                @Image(source: "02-s2-step4", alt: "Searching for Behaviors in Add Component")
+            }
+
+            @Step {
+                In the inspector, set **Target** to `Seahorse`. The Animation
+                list has two entries marked `Default`
+                (`default scene animation` and `default subtree animation`);
+                choose **`default scene animation`**. Then turn on
+                **Repeat Forever**.
+
+                Without Repeat Forever, it wiggles once and stops. In the
+                saved file this setting shows up as `loopCount = 0`, where
+                **0 means "repeat forever."** Apple's butterfly sample uses
+                the same value. You can preview it with the play button at the
+                top of the timeline.
+
+                @Image(source: "02-s2-step4b", alt: "Target and Repeat Forever settings for the Animation action")
+            }
+
+            @Step {
+                Set the trigger to **On Added To Scene**, set the timeline to
+                run to `SwimLoop`, and save (**Cmd+S**). It means "play
+                SwimLoop the moment this seahorse appears on screen."
+
+                Run it in the simulator. The seahorse swims, and you haven't
+                changed a single character of `AquariumView.swift`.
+
+                > Note: This "zero lines of code" holds while there is **only
+                > one** seahorse. If you make more with `clone(recursive:)`,
+                > the behavior doesn't come along to the copies, and things
+                > change. There's only one for now and it works, so move on.
+
+                @Image(source: "02-s2-step4c", alt: "Behaviors wired up with On Added To Scene and SwimLoop")
+            }
+        }
+    }
+
+    @Section(title: "Prepare the Sound") {
+        @ContentAndMedia {
+            You'll make a whale call play when you tap the seahorse. For now,
+            you put that sound on the scene.
+
+            This is where things part ways with the previous two sections.
+            **The particles and the animation worked the moment you attached
+            their components, but sound doesn't.** Spraying continuously is a
+            natural default for particles, and you gave the animation a
+            "start when it appears" trigger, but the sound doesn't have a
+            **when** yet.
+
+            In Chapter 3 you make that "when" a **tap**. This section only
+            prepares the ingredients.
+        }
+
+        @Steps {
+            @Step {
+                Check that the `WhaleCry.usdz` you got in Chapter 1 is inside
+                `AquariumContent.rkassets/`. If it isn't, add it now.
+
+                > Note: It may look odd that audio has a `.usdz` extension,
+                > but RealityKit handles sound in a USD container too. Drag it
+                > into the RCP hierarchy and it's recognized as a playable
+                > resource.
+
+                @Image(source: "02-s3-step1", alt: "WhaleCry.usdz in the rkassets folder")
+            }
+
+            @Step {
+                Select `Seahorse` and add **Audio Library** from
+                **Add Component**. Then drag `WhaleCry.usdz` into this
+                component's resource list, check that it's registered, and
+                save (**Cmd+S**).
+
+                **Audio Library** is "the list of sounds this entity can
+                make." Once a sound is registered here, a timeline's audio
+                action can pick it by name. If you run it now, there's still
+                no sound. **That's expected.** You've only put the ingredient
+                in place without a trigger. That's the end of Chapter 2, and
+                **you haven't changed a single character of code.** RCP takes
+                care of "what it looks like and what it can do," and code
+                takes care of "what to do and when."
+
+                @Image(source: "02-s3-step2", alt: "Adding an Audio Library component to Seahorse")
+            }
+        }
+    }
+}

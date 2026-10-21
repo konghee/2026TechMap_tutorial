@@ -3,20 +3,21 @@ import RealityKit
 import AquariumContent
 
 struct AquariumView: View {
+    // Keep the session in @State so the same one stays alive while the view is on screen.
     @State private var trackingSession = SpatialTrackingSession()
 
     var body: some View {
         RealityView { content in
-            #if !targetEnvironment(simulator)
+            // Use the rear camera feed as the background instead of a virtual camera.
             content.camera = .spatialTracking
 
-            let unavailable = await trackingSession.run(
+            // Turn on occlusion, so real objects can hide the seahorse, and shadows.
+            // Features the device doesn't support are dropped silently, so log them.
+            if let unavailable = await trackingSession.run(
                 .init(tracking: [], sceneUnderstanding: [.occlusion, .shadow])
-            )
-            if let unavailable {
-                print("Unavailable on this device: \(unavailable.sceneUnderstanding)")
+            ) {
+                print("Unavailable on this device:", unavailable.sceneUnderstanding)
             }
-            #endif
 
             do {
                 let scene = try await Entity(named: "Scene",
@@ -24,35 +25,9 @@ struct AquariumView: View {
                 content.add(scene)
             } catch {
                 // A misspelled name or a missing bundle lands here.
-                print("Failed to load Scene: \(error)")
+                print("Failed to load Scene:", error)
             }
         }
-        .modifier(SimulatorCameraControls())
-        // This is all there is to handling a tap.
-        //
-        // The collision shape, the input target, and the wiring that says "on tap,
-        // play the TapSeahorse timeline" are all authored in RCP, so the code only
-        // has to report that a tap happened.
-        //
-        // This code does not know what will happen next. To change the performance,
-        // you edit the timeline in RCP — not Xcode.
-        .gesture(
-            TapGesture()
-                .targetedToAnyEntity()
-                .onEnded { value in
-                    _ = value.entity.applyTapForBehaviors()
-                }
-        )
-    }
-}
-
-private struct SimulatorCameraControls: ViewModifier {
-    func body(content: Content) -> some View {
-        #if targetEnvironment(simulator)
-        content.realityViewCameraControls(.orbit)
-        #else
-        content
-        #endif
     }
 }
 

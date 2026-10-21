@@ -1,0 +1,270 @@
+@Tutorial(time: 30) {
+    @Intro(title: "Build the Aquarium Scene") {
+        Create an iOS app project, connect a Reality Composer Pro package,
+        and show a scene with a seahorse model in SwiftUI's RealityView.
+
+        Along the way you see the whole path 3D content takes: from Reality
+        Composer Pro, through `AquariumContent`, onto the app's screen.
+
+        @Image(source: "01-intro", alt: "A seahorse model placed in the Reality Composer Pro viewport")
+    }
+
+    @Section(title: "Prepare the Project and the RCP Package") {
+        @ContentAndMedia {
+            Create an iOS app project and connect a Reality Composer Pro
+            package to hold the 3D content.
+
+            It's easy to think of an RCP package as just a folder of assets,
+            but it is actually a **Swift Package** that holds 3D content
+            together with Swift code for that content. Custom components you
+            write in later chapters also go inside this package, not the app
+            project.
+
+            Unlike the visionOS app template, the iOS app template doesn't
+            create an RCP package for you. So you create the `AquariumContent`
+            package yourself in Reality Composer Pro and connect it so the
+            `RoomAquarium` app in Xcode can use it.
+
+            @Image(source: "01-section1", alt: "The AquariumContent package added to the Xcode Project Navigator")
+        }
+
+        @Steps {
+            @Step {
+                In Xcode, choose **File > New > Project**. Pick the **App**
+                template under the **iOS** tab at the top, then click
+                **Next**.
+
+                Name the project `RoomAquarium` and set Interface to
+                **SwiftUI**.
+
+                @Image(source: "01-s1-step1", alt: "Creating the RoomAquarium project from the iOS App template in Xcode")
+            }
+
+            @Step {
+                In the project settings, go to **TARGETS > RoomAquarium >
+                General**. Check that **Minimum Deployments** is **iOS 18.0**
+                or later.
+
+                Features this tutorial uses, such as RealityView, need iOS 18
+                or later on iPhone and iPad.
+
+                @Image(source: "01-s1-step2", alt: "Setting Minimum Deployments of the RoomAquarium target to iOS 18.0 or later")
+            }
+
+            @Step {
+                From the menu bar, choose **Xcode > Open Developer Tool >
+                Reality Composer Pro**.
+
+                Reality Composer Pro (RCP from here on) ships with Xcode, but
+                it opens as a separate app window.
+
+                @Image(source: "01-s1-step3", alt: "Launching Reality Composer Pro from the Xcode menu")
+            }
+
+            @Step {
+                In RCP, choose **File > New** to create a new project. Name it
+                `AquariumContent`. For the location, pick the project root
+                folder that contains RoomAquarium.xcodeproj — not the inner
+                RoomAquarium folder with the app's source, but the spot next
+                to it.
+
+                Creating an RCP project produces a Swift Package that contains
+                an `.rkassets` folder and Swift code. Everything you build in
+                RCP from now on — scenes and custom component code — is saved
+                in this package.
+
+                > Important: The `AquariumContent` module name and the
+                > `aquariumContentBundle` bundle constant are generated from
+                > the package name. Use the same names as the tutorial.
+
+                @Image(source: "01-s1-step4", alt: "Creating the AquariumContent package inside the RoomAquarium project folder")
+            }
+
+            @Step {
+                Go back to Xcode. In the Project Navigator, right-click the
+                top-level `RoomAquarium` project and choose **Add Files to
+                "RoomAquarium"**.
+
+                Select the `AquariumContent` folder you just created. It is
+                already in the right place at the project root, so add it as a
+                reference without copying or moving it. If your Xcode version
+                shows file-adding options, don't choose **Copy items if
+                needed** or **Move files to destination**. When it's added,
+                check that `AquariumContent` appears in the Project Navigator
+                with a brown package icon.
+
+                @Image(source: "01-s1-step5", alt: "Adding the AquariumContent package to the RoomAquarium project in the Project Navigator")
+            }
+
+            @Step {
+                Link the `AquariumContent` package product to the app target.
+
+                In the project settings, go to **TARGETS > RoomAquarium >
+                General**. Click the **+** button under **Frameworks,
+                Libraries, and Embedded Content**, choose `AquariumContent`
+                under **Workspace > AquariumContent**, and click **Add**. This
+                lets the `RoomAquarium` app use the package's Swift code and
+                its 3D content bundle.
+
+                @Image(source: "01-s1-step6", alt: "Adding the AquariumContent package to the RoomAquarium app target")
+            }
+
+            @Step {
+                Check that the app can use the package.
+
+                Open one of the app's Swift files and type
+                `import AquariumContent`. Check that the `AquariumContent`
+                module shows up in autocomplete, then press **Cmd+B** to
+                build. If the import line has no error and Xcode shows
+                **Build Succeeded** at the top, the package is connected.
+
+                > Important: If it doesn't connect, check the following.
+                >
+                > 1. `AquariumContent` is in the Project Navigator with a
+                >    brown Swift Package icon.
+                > 2. `AquariumContent` is listed under the app target's
+                >    **Frameworks, Libraries, and Embedded Content**.
+                > 3. The `Package.swift` of the `AquariumContent` package
+                >    defines a library product and a target with that name.
+                > 4. The package module name and `import AquariumContent`
+                >    match exactly, including capitalization.
+
+                @Image(source: "01-s1-step7", alt: "Xcode after importing the AquariumContent module and building successfully")
+            }
+        }
+    }
+
+    @Section(title: "Prepare the Aquarium Content in RCP") {
+        @ContentAndMedia {
+            Prepare the 3D model and audio asset for the aquarium in RCP.
+
+            Add `seahorse.usdz` from Apple's AR Quick Look Gallery and the
+            Whale Cry audio asset from the RCP Asset Library to the package.
+            Then place the seahorse in the scene as a single entity, and set
+            up the components it needs to receive user input later.
+
+            You don't build any interaction yet. This section focuses on
+            placing the model in the scene and preparing the structure that
+            interaction will need.
+
+            @Image(source: "01-section2", alt: "The seahorse scene and the Project Browser in Reality Composer Pro")
+        }
+
+        @Steps {
+            @Step {
+                Find the seahorse model in Apple Developer's
+                [AR Quick Look Gallery](https://developer.apple.com/augmented-reality/quick-look/)
+                and download it.
+
+                Back in RCP, open the **Project Browser** at the bottom of the
+                window and drag the downloaded seahorse model straight into
+                it. You can also choose **File > Import File** from the menu
+                bar. For the whale sound, click the **+** button at the top of
+                RCP to open the Asset Library, search for Whale Cry, and add
+                it. When the import finishes, you'll see `seahorse.usdz` and
+                `WhaleCry.usdz` in the Project Browser.
+
+                @Image(source: "01-s2-step1", alt: "The seahorse and Whale Cry assets added to the Project Browser")
+            }
+
+            @Step {
+                Double-click `Scene` in the Project Browser to open it. Check
+                that `Root` appears in the Scene Hierarchy on the left and an
+                empty scene is open in the viewport in the middle.
+
+                Drag `seahorse.usdz` from the Project Browser onto `Root` in
+                the Scene Hierarchy. When a new entity appears under `Root`,
+                an instance of the seahorse model has been added to the scene.
+                Select the new entity, rename it `Seahorse`, and adjust
+                Position and Scale under **Transform** in the inspector on the
+                right so the seahorse is easy to see in the viewport.
+
+                @Image(source: "01-s2-step2", alt: "The seahorse entity placed in the RCP scene and renamed Seahorse")
+            }
+
+            @Step {
+                Check in the hierarchy panel that `Seahorse` is under `Root`,
+                then save with **Cmd+S**.
+
+                Saving in RCP updates the `.rkassets` contents inside the
+                `AquariumContent` package right away. There's no separate
+                export step before the app can use it.
+
+                @Image(source: "01-s2-step4", alt: "The saved scene with Seahorse placed under Root")
+            }
+        }
+    }
+
+    @Section(title: "Show the Scene in a RealityView") {
+        @ContentAndMedia {
+            Bring the scene you prepared in RCP into the SwiftUI app.
+
+            SwiftUI's **RealityView** is the view that shows RealityKit 3D
+            content on screen. You load the scene saved in the
+            `AquariumContent` package, add it to a RealityView, and check
+            that the seahorse appears in the running app.
+
+            This completes the whole path that carries 3D content from
+            `AquariumContent` to SwiftUI's RealityView.
+
+            @Image(source: "01-section3", alt: "The seahorse scene shown in a RealityView")
+        }
+
+        @Steps {
+            @Step {
+                Add a new Swift file, `AquariumView.swift`, to the Xcode
+                project. Import `SwiftUI`, `RealityKit`, and `AquariumContent`,
+                and write a RealityView in the body.
+
+                The `content` in the RealityView closure is where the
+                RealityKit content shown on screen lives. Next, you add the
+                scene you made in RCP here.
+
+                @Code(name: "AquariumView.swift", file: "01-code-02.swift")
+            }
+
+            @Step {
+                Load the `Scene` you made in RCP with `Entity(named:in:)` and
+                add it to `content`.
+
+                Reading 3D content can take time, so you use `await`.
+                `"Scene"` is the scene's name inside `AquariumContent.rkassets`,
+                and `aquariumContentBundle` is the bundle constant the package
+                generates.
+
+                > Important: AquariumContent is a module name, so it starts
+                > with a capital letter, as in import AquariumContent.
+                > aquariumContentBundle, on the other hand, is a Swift
+                > constant that points to the bundle, so it starts with a
+                > lowercase letter.
+
+                @Code(name: "AquariumView.swift", file: "01-code-03.swift")
+            }
+
+            @Step {
+                Add `.realityViewCameraControls(.orbit)` to the RealityView.
+
+                Now you can drag the screen to rotate the scene and pinch to
+                zoom in and out. If you need to, move the scene so the
+                seahorse sits well in the camera's view.
+
+                @Code(name: "AquariumView.swift", file: "01-code-04.swift")
+            }
+
+            @Step {
+                Open RoomAquariumApp.swift, the app's entry point, and change
+                the default ContentView() in the WindowGroup to the new
+                AquariumView().
+
+                When you build and run the app and the seahorse appears in the
+                RealityView inside AquariumView, the scene in the
+                AquariumContent package is correctly connected all the way to
+                the app.
+
+                @Code(name: "RoomAquariumApp.swift", file: "01-code-05.swift") {
+                    @Image(source: "01-s3-result", alt: "The seahorse shown in the app's RealityView")
+                }
+            }
+        }
+    }
+}

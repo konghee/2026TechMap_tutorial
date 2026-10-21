@@ -3,9 +3,9 @@
         RealityKit과 Reality Composer Pro를 이용해 아이패드 카메라 너머,
         내 방 안에 살아 움직이는 아쿠아리움을 만듭니다.
 
-        Reality Composer Pro로 3D 씬을 조립하는 것부터
-        시작해서, SwiftUI 코드로 씬을 실제 공간에 불러오고,
-        마지막에는 해마가 방 안을 헤엄쳐 다니게 만드는 것까지 단계별로 학습합니다.
+        Reality Composer Pro로 3D 씬을 조립하는 것부터 시작해서,
+        코드 없이 해마를 헤엄치게 하고, 마지막에는 실제 내 방에 띄워
+        탭으로 상호작용하는 것까지 단계별로 학습합니다.
 
         이 튜토리얼의 설명과 실행 화면은 iPad를 기준으로 합니다. iPhone으로도 동일한 과정을 진행할 수 있습니다.
         Chapter 1~2는 시뮬레이터로 실습할 수 있으며, Chapter 3에서는 카메라를 사용하므로 iPhone 또는 iPad 실기기가 필요합니다.
@@ -14,7 +14,7 @@
     }
 
     @Chapter(name: "Scene 조립하기") {
-        Reality Composer Pro로 해마와 바닥이 있는 아쿠아리움 씬을
+        Reality Composer Pro로 해마를 배치한 아쿠아리움 씬을
         조립하고, SwiftUI의 RealityView로 화면에 띄웁니다.
         시뮬레이터만으로 완주할 수 있습니다.
 
@@ -62,11 +62,11 @@
             - [Meet Reality Composer Pro (WWDC23)](https://developer.apple.com/videos/play/wwdc2023/10083/)
         }
 
-        @SampleCode(destination: "https://github.com/konghee/SpatialComputing") {
-            완성된 프로젝트와 3D 에셋.
+        @SampleCode(destination: "https://developer.apple.com/documentation/realitykit/composing-interactive-3d-content-with-realitykit-and-reality-composer-pro") {
+            이 튜토리얼이 따르는 애플 공식 샘플과 3D 에셋.
 
-            - [seahorse.usdz · WhaleCry.usdz](https://github.com/konghee/SpatialComputing)
             - [Composing interactive 3D content with RealityKit and Reality Composer Pro (애플 공식 샘플)](https://developer.apple.com/documentation/realitykit/composing-interactive-3d-content-with-realitykit-and-reality-composer-pro)
+            - [AR Quick Look Gallery — 해마 모델 `seahorse.usdz`](https://developer.apple.com/augmented-reality/quick-look/)
         }
     }
 }

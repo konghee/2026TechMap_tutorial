@@ -3,26 +3,21 @@ import RealityKit
 import AquariumContent
 
 struct AquariumView: View {
+    // Keep the session in @State so the same one stays alive while the view is on screen.
     @State private var trackingSession = SpatialTrackingSession()
-    @State private var isStartled = false
-
-    /// Every Notification action in an RCP timeline arrives under this one name.
-    /// Which action fired is told apart by the Identifier in userInfo.
-    private let notificationTrigger = NotificationCenter.default
-        .publisher(for: Notification.Name("RealityKit.NotificationTrigger"))
 
     var body: some View {
         RealityView { content in
-            #if !targetEnvironment(simulator)
+            // Use the rear camera feed as the background instead of a virtual camera.
             content.camera = .spatialTracking
 
-            let unavailable = await trackingSession.run(
+            // Turn on occlusion, so real objects can hide the seahorse, and shadows.
+            // Features the device doesn't support are dropped silently, so log them.
+            if let unavailable = await trackingSession.run(
                 .init(tracking: [], sceneUnderstanding: [.occlusion, .shadow])
-            )
-            if let unavailable {
-                print("Unavailable on this device: \(unavailable.sceneUnderstanding)")
+            ) {
+                print("Unavailable on this device:", unavailable.sceneUnderstanding)
             }
-            #endif
 
             do {
                 let scene = try await Entity(named: "Scene",
@@ -30,10 +25,9 @@ struct AquariumView: View {
                 content.add(scene)
             } catch {
                 // A misspelled name or a missing bundle lands here.
-                print("Failed to load Scene: \(error)")
+                print("Failed to load Scene:", error)
             }
         }
-        .modifier(SimulatorCameraControls())
         .gesture(
             TapGesture()
                 .targetedToAnyEntity()
@@ -41,42 +35,6 @@ struct AquariumView: View {
                     _ = value.entity.applyTapForBehaviors()
                 }
         )
-        // The notification arrives at the time the timeline decided.
-        .onReceive(notificationTrigger) { output in
-            guard let name = output.userInfo?["RealityKit.NotificationTrigger.Identifier"]
-                    as? String else { return }
-
-            switch name {
-            case "SeahorseStartled":
-                isStartled = true
-            case "SeahorseCalmed":
-                isStartled = false
-            default:
-                break
-            }
-        }
-        .overlay(alignment: .top) {
-            if isStartled {
-                Text("The seahorse is startled!")
-                    .font(.title2.bold())
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .background(.thinMaterial, in: .capsule)
-                    .padding(.top, 40)
-                    .transition(.opacity)
-            }
-        }
-        .animation(.easeInOut(duration: 0.25), value: isStartled)
-    }
-}
-
-private struct SimulatorCameraControls: ViewModifier {
-    func body(content: Content) -> some View {
-        #if targetEnvironment(simulator)
-        content.realityViewCameraControls(.orbit)
-        #else
-        content
-        #endif
     }
 }
 
